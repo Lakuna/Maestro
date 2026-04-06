@@ -15,10 +15,12 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"outDir": "dist",
+		"resolveJsonModule": true,
 		"rootDir": "src",
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"stripInternal": true,
+		"types": ["node"],
 		"verbatimModuleSyntax": true
 	},
 	"exclude": ["dist", "node_modules"]

@@ -13,6 +13,7 @@
 		"@eslint/js": "^10.0.1",
 		"@types/eslint": "^9.6.1",
 		"@types/eslint-config-prettier": "^6.11.3",
+		"@types/node": "^25.5.2",
 		"eslint": "^10.2.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-perfectionist": "^5.8.0",
@@ -47,5 +48,8 @@
 	"sideEffects": false,
 	"type": "module",
 	"typings": "./dist/index.d.ts",
-	"version": "0.1.0"
+	"version": "0.1.0",
+	"dependencies": {
+		"zod": "^4.3.6"
+	}
 }
