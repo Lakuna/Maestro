@@ -1,0 +1,51 @@
+{
+	"author": {
+		"email": "travis@lakuna.pw",
+		"name": "Travis Martin",
+		"url": "https://www.lakuna.pw/"
+	},
+	"bugs": {
+		"email": "travis@lakuna.pw",
+		"url": "https://github.com/Lakuna/Maestro/issues"
+	},
+	"description": "The Discord bot for the Magical Maestros Discord server.",
+	"devDependencies": {
+		"@eslint/js": "^10.0.1",
+		"@types/eslint": "^9.6.1",
+		"@types/eslint-config-prettier": "^6.11.3",
+		"eslint": "^10.2.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-perfectionist": "^5.8.0",
+		"eslint-plugin-prettier": "^5.5.5",
+		"eslint-plugin-tsdoc": "^0.5.2",
+		"prettier": "^3.8.1",
+		"typescript": "^6.0.2",
+		"typescript-eslint": "^8.58.0"
+	},
+	"files": [
+		"dist",
+		"src"
+	],
+	"funding": {
+		"type": "individual",
+		"url": "https://github.com/sponsors/Lakuna"
+	},
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"name": "@lakuna/maestro",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Lakuna/Maestro.git"
+	},
+	"scripts": {
+		"build": "tsc",
+		"fix": "eslint --fix",
+		"lint": "eslint",
+		"start": "node ."
+	},
+	"sideEffects": false,
+	"type": "module",
+	"typings": "./dist/index.d.ts",
+	"version": "0.1.0"
+}

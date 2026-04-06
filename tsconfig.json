@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"composite": true,
+		"declarationMap": true,
+		"exactOptionalPropertyTypes": true,
+		"isolatedDeclarations": true,
+		"module": "nodenext",
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"outDir": "dist",
+		"rootDir": "src",
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"stripInternal": true,
+		"verbatimModuleSyntax": true
+	},
+	"exclude": ["dist", "node_modules"]
+}

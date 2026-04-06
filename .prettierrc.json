@@ -1,0 +1,7 @@
+{
+	"$schema": "https://json.schemastore.org/prettierrc",
+	"experimentalTernaries": true,
+	"objectWrap": "collapse",
+	"trailingComma": "none",
+	"useTabs": true
+}
