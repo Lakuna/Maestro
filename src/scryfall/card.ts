@@ -1,9 +1,9 @@
 import {
 	array,
 	boolean,
-	date,
 	enum as enum_,
 	int,
+	iso,
 	nullish,
 	number,
 	object,
@@ -19,6 +19,13 @@ import {
  * @internal
  */
 const colors = array(enum_(["W", "U", "B", "R", "G", "C"]));
+
+/**
+ * A set of producable mana as returned by the Scryfall API. This is different from {@link colors} because Sole Performer can produce `"T"`.
+ * @see {@link https://scryfall.com/docs/api/colors | Colors and Costs}
+ * @internal
+ */
+const producedMana = array(enum_(["W", "U", "B", "R", "G", "C", "T"]));
 
 /**
  * A Magic: the Gathering card as returned by the Scryfall API.
@@ -52,7 +59,7 @@ const card = object({
 		"silver",
 		"gold"
 	]),
-	card_back_id: uuid(),
+	card_back_id: nullish(uuid()), // Not documented as being nullish but appears to be in practice.
 	card_faces: nullish(
 		array(
 			object({
@@ -94,7 +101,7 @@ const card = object({
 		)
 	),
 	cardmarket_id: nullish(int()),
-	cmc: number(),
+	cmc: nullish(number()), // Not documented as being nullish but appears to be in practice.
 	collector_number: string(),
 	color_identity: colors,
 	color_indicator: nullish(colors),
@@ -133,7 +140,9 @@ const card = object({
 				"convertdfc",
 				"fandfc",
 				"upsidedowndfc",
-				"spree"
+				"spree",
+				"fullart", // Not documented but appears to exist in practice.
+				"translucent" // Not documented but appears to exist in practice.
 			])
 		)
 	),
@@ -172,7 +181,11 @@ const card = object({
 	penny_rank: nullish(int()),
 	power: nullish(string()),
 	preview: nullish(
-		object({ previewed_at: date(), source: string(), source_uri: url() })
+		object({
+			previewed_at: iso.date(),
+			source: string(),
+			source_uri: string() // Documented as a URI but appears to also include other strings in practice.
+		})
 	),
 	prices: record(
 		enum_([
@@ -190,11 +203,11 @@ const card = object({
 	printed_text: nullish(string()),
 	printed_type_line: nullish(string()),
 	prints_search_uri: url(),
-	produced_mana: nullish(colors),
+	produced_mana: nullish(producedMana),
 	promo: boolean(),
-	promo_types: array(string()),
-	purchase_uris: record(string(), url()),
-	released_at: date(),
+	promo_types: nullish(array(string())),
+	purchase_uris: nullish(record(string(), url())),
+	released_at: iso.date(),
 	reprint: boolean(),
 	reserved: boolean(),
 	resource_id: nullish(string()),
@@ -215,7 +228,7 @@ const card = object({
 	tcgplayer_id: nullish(int()),
 	textless: boolean(),
 	toughness: nullish(string()),
-	type_line: string(),
+	type_line: nullish(string()), // Not documented as being nullish but appears to be in practice.
 	uri: url(),
 	variation: boolean(),
 	variation_of: nullish(uuid()),
