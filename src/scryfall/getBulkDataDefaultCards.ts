@@ -17,21 +17,19 @@ const cardArray = array(card);
  * @internal
  */
 export default async function getBulkDataDefaultCards(): Promise<
-	undefined | zinfer<typeof cardArray>
+	zinfer<typeof cardArray>
 > {
-	const bulkData = await getBulkData("default_cards");
-	if (!bulkData) {
-		return void 0;
-	}
-
-	const response = await fetch(bulkData.download_uri);
+	const response = await fetch(
+		(await getBulkData("default_cards")).download_uri
+	);
 	if (!response.ok) {
-		return void 0;
+		throw new Error(await response.text());
 	}
 
-	try {
-		return cardArray.safeParse(await response.json()).data;
-	} catch {
-		return void 0;
+	const result = cardArray.safeParse(await response.json());
+	if (!result.success) {
+		throw result.error;
 	}
+
+	return result.data;
 }

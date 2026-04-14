@@ -34,7 +34,7 @@ export default function listOf<T extends SomeType>(
 	next_page: ZodOptional<ZodNullable<ZodURL>>;
 	object: ZodEnum<{ list: "list" }>;
 	total_cards: ZodOptional<ZodNullable<ZodInt>>;
-	warnings: ZodArray<ZodString>;
+	warnings: ZodOptional<ZodNullable<ZodArray<ZodString>>>;
 	/* eslint-enable @typescript-eslint/naming-convention */
 }> {
 	return object({
@@ -44,7 +44,7 @@ export default function listOf<T extends SomeType>(
 		next_page: nullish(url()),
 		object: enum_(["list"]),
 		total_cards: nullish(int()),
-		warnings: array(string())
+		warnings: nullish(array(string()))
 		/* eslint-enable @typescript-eslint/naming-convention */
 	});
 }
