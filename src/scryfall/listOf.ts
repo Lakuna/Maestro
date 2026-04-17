@@ -3,7 +3,6 @@ import type { SomeType } from "zod/v4/core";
 import {
 	array,
 	boolean,
-	enum as enum_,
 	int,
 	nullish,
 	object,
@@ -11,7 +10,6 @@ import {
 	url,
 	type ZodArray,
 	type ZodBoolean,
-	type ZodEnum,
 	type ZodInt,
 	type ZodNullable,
 	type ZodObject,
@@ -32,7 +30,6 @@ export default function listOf<T extends SomeType>(
 	data: ZodArray<T>;
 	has_more: ZodBoolean;
 	next_page: ZodOptional<ZodNullable<ZodURL>>;
-	object: ZodEnum<{ list: "list" }>;
 	total_cards: ZodOptional<ZodNullable<ZodInt>>;
 	warnings: ZodOptional<ZodNullable<ZodArray<ZodString>>>;
 	/* eslint-enable @typescript-eslint/naming-convention */
@@ -42,7 +39,6 @@ export default function listOf<T extends SomeType>(
 		data: array(element),
 		has_more: boolean(),
 		next_page: nullish(url()),
-		object: enum_(["list"]),
 		total_cards: nullish(int()),
 		warnings: nullish(array(string()))
 		/* eslint-enable @typescript-eslint/naming-convention */

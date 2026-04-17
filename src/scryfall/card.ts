@@ -40,7 +40,6 @@ const card = object({
 				component: enum_(["token", "meld_part", "meld_result", "combo_piece"]),
 				id: uuid(),
 				name: string(),
-				object: enum_(["related_card"]),
 				type_line: string(),
 				uri: url()
 			})
@@ -87,7 +86,6 @@ const card = object({
 				layout: nullish(string()),
 				mana_cost: string(),
 				name: string(),
-				object: enum_(["card_face"]),
 				oracle_id: nullish(uuid()),
 				oracle_text: nullish(string()),
 				power: nullish(string()),
@@ -174,7 +172,6 @@ const card = object({
 	mtgo_id: nullish(int()),
 	multiverse_ids: nullish(array(int())),
 	name: string(),
-	object: enum_(["card"]),
 	oracle_id: nullish(uuid()),
 	oracle_text: nullish(string()),
 	oversized: boolean(),
