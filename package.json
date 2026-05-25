@@ -8,20 +8,23 @@
 		"email": "travis@lakuna.pw",
 		"url": "https://github.com/Lakuna/Maestro/issues"
 	},
+	"dependencies": {
+		"hono": "^4.12.23",
+		"zod": "^4.4.3"
+	},
 	"description": "The Discord bot for the Magical Maestros Discord server.",
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
-		"@types/eslint": "^9.6.1",
-		"@types/eslint-config-prettier": "^6.11.3",
-		"@types/node": "^25.5.2",
-		"eslint": "^10.2.0",
+		"@types/node": "^25.9.1",
+		"eslint": "^10.4.0",
 		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-perfectionist": "^5.8.0",
+		"eslint-plugin-perfectionist": "^5.9.0",
 		"eslint-plugin-prettier": "^5.5.5",
 		"eslint-plugin-tsdoc": "^0.5.2",
-		"prettier": "^3.8.1",
-		"typescript": "^6.0.2",
-		"typescript-eslint": "^8.58.0"
+		"prettier": "^3.8.3",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.59.4",
+		"vercel": "^54.4.1"
 	},
 	"files": [
 		"dist",
@@ -41,6 +44,7 @@
 	},
 	"scripts": {
 		"build": "tsc",
+		"dev": "vercel dev",
 		"fix": "eslint --fix",
 		"lint": "eslint",
 		"start": "node ."
@@ -48,8 +52,5 @@
 	"sideEffects": false,
 	"type": "module",
 	"typings": "./dist/index.d.ts",
-	"version": "0.1.0",
-	"dependencies": {
-		"zod": "^4.3.6"
-	}
+	"version": "0.1.0"
 }
