@@ -43,7 +43,6 @@
 	},
 	"scripts": {
 		"build": "tsc",
-		"dev": "vercel dev",
 		"fix": "eslint --fix",
 		"lint": "eslint",
 		"start": "node ."
