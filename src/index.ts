@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
 import type { infer as zinfer } from "zod";
 
-import { zValidator } from "@hono/zod-validator";
+// `import { zValidator } from "@hono/zod-validator";`
 import { Hono } from "hono";
 import nacl from "tweetnacl";
 
@@ -15,7 +15,7 @@ import InteractionType from "./discord/interactions/receivingAndResponding/Inter
 
 const app: Hono = new Hono();
 
-app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+app.post("/api/interactions", async (c) => {
 	// eslint-disable-next-line no-console
 	console.info("Interaction start.");
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
@@ -46,19 +46,29 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		return c.json(void 0, 401);
 	}
 
-	const data = c.req.valid("json");
+	// `const data = c.req.valid("json");`
+	const json: unknown = await c.req.json();
+	// eslint-disable-next-line no-console
+	console.info(json);
+	const parse = interaction.safeParse(json);
+	if (!parse.success) {
+		// eslint-disable-next-line no-console
+		console.error(parse.error);
+		return c.json(void 0, 400);
+	}
+	const { data } = parse;
 	// eslint-disable-next-line no-console
 	console.info(data);
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
-			const parse = applicationCommandData.safeParse(data.data);
-			if (!parse.success) {
+			const parse2 = applicationCommandData.safeParse(data.data);
+			if (!parse2.success) {
 				// eslint-disable-next-line no-console
-				console.error(parse.error);
-				return c.json(parse.error, 400);
+				console.error(parse2.error);
+				return c.json(parse2.error, 400);
 			}
 
-			const commandData = parse.data;
+			const commandData = parse2.data;
 			// eslint-disable-next-line no-console
 			console.info(commandData);
 			switch (commandData.name) {
