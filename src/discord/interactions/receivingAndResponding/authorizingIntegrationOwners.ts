@@ -1,4 +1,4 @@
-import { enum as enum_, record } from "zod";
+import { enum as enum_, partialRecord } from "zod";
 
 import ApplicationIntegrationType from "../../resources/application/ApplicationIntegrationType.js";
 import snowflake from "../../snowflake.js";
@@ -8,7 +8,7 @@ import snowflake from "../../snowflake.js";
  * @see {@link https://docs.discord.com/developers/interactions/receiving-and-responding#interaction-object-authorizing-integration-owners-object}
  * @internal
  */
-const authorizingIntegrationOwners = record(
+const authorizingIntegrationOwners = partialRecord(
 	enum_(ApplicationIntegrationType),
 	snowflake
 );

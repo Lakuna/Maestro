@@ -7,6 +7,7 @@ import {
 	nullish,
 	number,
 	object,
+	partialRecord,
 	record,
 	string,
 	url,
@@ -60,7 +61,7 @@ const card = object({
 				flavor_text: nullish(string()),
 				illustration_id: nullish(uuid()),
 				image_uris: nullish(
-					record(
+					partialRecord(
 						enum_([
 							"png",
 							"border_crop",
@@ -142,7 +143,7 @@ const card = object({
 	illustration_id: nullish(uuid()),
 	image_status: enum_(["missing", "placeholder", "lowres", "highres_scan"]),
 	image_uris: nullish(
-		record(
+		partialRecord(
 			enum_(["png", "border_crop", "art_crop", "large", "normal", "small"]),
 			url()
 		)
@@ -173,7 +174,7 @@ const card = object({
 			source_uri: string() // Documented as a URI but appears to also include other strings in practice.
 		})
 	),
-	prices: record(
+	prices: partialRecord(
 		enum_([
 			"usd",
 			"usd_foil",

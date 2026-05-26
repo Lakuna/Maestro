@@ -7,7 +7,7 @@ import {
 	nullish,
 	object,
 	optional,
-	record,
+	partialRecord,
 	string
 } from "zod";
 
@@ -47,7 +47,10 @@ const application = object({
 	id: snowflake,
 	install_params: optional(installParams),
 	integration_types_config: optional(
-		record(enum_(ApplicationIntegrationType), integrationTypeConfiguration)
+		partialRecord(
+			enum_(ApplicationIntegrationType),
+			integrationTypeConfiguration
+		)
 	),
 	interactions_endpoint_url: nullish(string()),
 	name: string(),
