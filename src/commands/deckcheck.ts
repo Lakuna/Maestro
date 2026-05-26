@@ -1,31 +1,38 @@
-import ApplicationCommandOptionType from "../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
-
-/*
-```
 import type { infer as zinfer } from "zod";
 
 import type { DeepReadonly } from "../DeepReadonly.js";
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type deck from "../moxfield/deck.js";
 
+import ApplicationCommandOptionType from "../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import getDeck from "../moxfield/getDeck.js";
 
 const handleClassicMagic = (
-	deck: zinfer<typeof deck>
+	d: DeepReadonly<zinfer<typeof deck>>
 ): zinfer<typeof interactionResponse> => {
-	// TODO
+	void d;
+	throw new Error("Not implemented.");
 };
 
 const handleTribalWars = (
-	deck: zinfer<typeof deck>
+	d: DeepReadonly<zinfer<typeof deck>>
 ): zinfer<typeof interactionResponse> => {
-	// TODO
+	void d;
+	throw new Error("Not implemented.");
 };
 
 export const handle = async (
 	commandData: DeepReadonly<zinfer<typeof applicationCommandData>>
 ): Promise<zinfer<typeof interactionResponse>> => {
-	const urlOption = commandData.options?.find(
+	const subcommandOption = commandData.options?.find(
+		({ type }) => type === ApplicationCommandOptionType.SUB_COMMAND
+	);
+	if (typeof subcommandOption?.value !== "string") {
+		throw new Error("Invalid subcommand value.");
+	}
+
+	const urlOption = subcommandOption.options?.find(
 		({ name, type }) =>
 			name === "url" && type === ApplicationCommandOptionType.STRING
 	);
@@ -40,10 +47,17 @@ export const handle = async (
 	}
 
 	const deck = await getDeck(id);
-	void deck; // TODO
+	switch (subcommandOption.name) {
+		case "classicmagic":
+			return handleClassicMagic(deck);
+		case "tribalwars":
+			return handleTribalWars(deck);
+		default:
+			throw new Error(
+				`Unhandled subcommand ${subcommandOption.name ?? "undefined"}`
+			);
+	}
 };
-```
-*/
 
 /**
  * The `deckcheck` command definition.
