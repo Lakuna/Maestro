@@ -9,19 +9,26 @@ import ApplicationCommandOptionType from "../discord/interactions/applicationCom
 import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import MessageFlag from "../discord/resources/message/MessageFlag.js";
 import getDeck from "../moxfield/getDeck.js";
+import getCatalogCreatureTypes from "../scryfall/getCatalogCreatureTypes.js";
 
-const handleClassicMagic = (
+const handleClassicMagic = async (
 	deck: DeepReadonly<zinfer<typeof deckSchema>>
-): zinfer<typeof interactionResponse> => {
-	void deck;
+): Promise<zinfer<typeof interactionResponse>> => {
+	await new Promise(() => {
+		void deck;
+	});
 	throw new Error("Not implemented.");
 };
 
 const subtypeDelimiter = " — ";
-const handleTribalWars = (
+const handleTribalWars = async (
 	deck: DeepReadonly<zinfer<typeof deckSchema>>
-): zinfer<typeof interactionResponse> => {
+): Promise<zinfer<typeof interactionResponse>> => {
 	const subtypeMap = new Map<string, number>();
+	for (const creatureType of (await getCatalogCreatureTypes()).data) {
+		subtypeMap.set(creatureType, 0);
+	}
+
 	for (const cards of Object.values(deck.boards.mainboard.cards)) {
 		if (!cards.card.type_line) {
 			continue;
@@ -32,6 +39,10 @@ const handleTribalWars = (
 				cards.card.type_line.indexOf(subtypeDelimiter) + subtypeDelimiter.length
 			)
 			.split(" ")) {
+			if (!subtypeMap.has(subtype)) {
+				continue;
+			}
+
 			subtypeMap.set(subtype, (subtypeMap.get(subtype) ?? 0) + cards.quantity);
 		}
 	}
@@ -65,7 +76,8 @@ const handleTribalWars = (
 					description: `[${deck.name}](${deck.publicUrl}) is a legal Tribal Wars deck for the following tribes:\n${legalSubtypes.map((subtype) => `- ${subtype}`).join("\n")}`,
 					title: "Legal Deck"
 				}
-			]
+			],
+			flags: MessageFlag.EPHEMERAL
 		},
 		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
 	};
