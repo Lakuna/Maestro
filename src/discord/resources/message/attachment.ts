@@ -22,7 +22,7 @@ import user from "../user/user.js";
 const attachment = object({
 	/* eslint-disable @typescript-eslint/naming-convention */
 	application: nullish(application),
-	clip_created_at: optional(iso.datetime()),
+	clip_created_at: optional(iso.datetime({ offset: true })),
 	clip_participants: optional(array(user)),
 	content_type: optional(string()),
 	description: optional(string()),

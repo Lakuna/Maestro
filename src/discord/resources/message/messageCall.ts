@@ -9,7 +9,7 @@ import snowflake from "../../snowflake.js";
  */
 const messageCall = object({
 	/* eslint-disable @typescript-eslint/naming-convention */
-	ended_timestamp: nullish(iso.datetime()),
+	ended_timestamp: nullish(iso.datetime({ offset: true })),
 	participants: array(snowflake)
 	/* eslint-enable @typescript-eslint/naming-convention */
 });

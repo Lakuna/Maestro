@@ -7,10 +7,10 @@ import { iso, nullable, nullish, object } from "zod";
  */
 const incidentsData = object({
 	/* eslint-disable @typescript-eslint/naming-convention */
-	dm_spam_detected_at: nullish(iso.datetime()),
-	dms_disabled_until: nullable(iso.datetime()),
-	invites_disabled_until: nullable(iso.datetime()),
-	raid_detected_at: nullish(iso.datetime())
+	dm_spam_detected_at: nullish(iso.datetime({ offset: true })),
+	dms_disabled_until: nullable(iso.datetime({ offset: true })),
+	invites_disabled_until: nullable(iso.datetime({ offset: true })),
+	raid_detected_at: nullish(iso.datetime({ offset: true }))
 	/* eslint-enable @typescript-eslint/naming-convention */
 });
 

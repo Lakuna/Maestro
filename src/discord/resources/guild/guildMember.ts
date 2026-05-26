@@ -26,15 +26,15 @@ const guildMember = object({
 	avatar_decoration_data: nullish(avatarDecorationData),
 	banner: nullish(string()),
 	collectibles: nullish(collectibles),
-	communication_disabled_until: nullish(iso.datetime()),
+	communication_disabled_until: nullish(iso.datetime({ offset: true })),
 	deaf: boolean(),
 	flags: int(),
-	joined_at: nullable(iso.datetime()),
+	joined_at: nullable(iso.datetime({ offset: true })),
 	mute: boolean(),
 	nick: nullish(string()),
 	pending: optional(boolean()),
 	permissions: optional(string()),
-	premium_since: nullish(iso.datetime()),
+	premium_since: nullish(iso.datetime({ offset: true })),
 	roles: array(snowflake),
 	user: optional(user)
 	/* eslint-enable @typescript-eslint/naming-convention */

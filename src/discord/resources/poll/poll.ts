@@ -22,7 +22,7 @@ const poll = object({
 	/* eslint-disable @typescript-eslint/naming-convention */
 	allow_multiselect: boolean(),
 	answers: array(pollAnswer),
-	expiry: nullable(iso.datetime()),
+	expiry: nullable(iso.datetime({ offset: true })),
 	layout_type: enum_(LayoutType),
 	question: pollMedia,
 	results: optional(pollResults)

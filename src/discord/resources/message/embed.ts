@@ -23,7 +23,7 @@ const embed = object({
 	image: optional(embedImage),
 	provider: optional(embedProvider),
 	thumbnail: optional(embedImage),
-	timestamp: optional(iso.datetime()),
+	timestamp: optional(iso.datetime({ offset: true })),
 	title: optional(string()),
 	type: optional(enum_(EmbedType)),
 	url: optional(string()),

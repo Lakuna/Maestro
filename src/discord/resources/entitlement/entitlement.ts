@@ -13,11 +13,11 @@ const entitlement = object({
 	application_id: snowflake,
 	consumed: optional(boolean()),
 	deleted: boolean(),
-	ends_at: nullable(iso.datetime()),
+	ends_at: nullable(iso.datetime({ offset: true })),
 	guild_id: optional(snowflake),
 	id: snowflake,
 	sku_id: snowflake,
-	starts_at: nullable(iso.datetime()),
+	starts_at: nullable(iso.datetime({ offset: true })),
 	type: enum_(EntitlementType),
 	user_id: optional(snowflake)
 	/* eslint-enable @typescript-eslint/naming-convention */

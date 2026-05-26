@@ -51,7 +51,7 @@ const message = object({
 	channel_id: snowflake,
 	components: optional(array(component)),
 	content: string(),
-	edited_timestamp: nullable(iso.datetime()),
+	edited_timestamp: nullable(iso.datetime({ offset: true })),
 	embeds: array(embed),
 	flags: optional(int()),
 	id: snowflake,
@@ -81,7 +81,7 @@ const message = object({
 	sticker_items: optional(array(stickerItem)),
 	stickers: optional(array(sticker)),
 	thread: optional(channel),
-	timestamp: iso.datetime(),
+	timestamp: iso.datetime({ offset: true }),
 	tts: boolean(),
 	type: enum_(MessageType),
 	webhook_id: optional(snowflake)

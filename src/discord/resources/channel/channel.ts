@@ -43,7 +43,7 @@ const channel = object({
 	icon: nullish(string()),
 	id: snowflake,
 	last_message_id: nullish(snowflake),
-	last_pin_timestamp: nullish(iso.datetime()),
+	last_pin_timestamp: nullish(iso.datetime({ offset: true })),
 	managed: optional(boolean()),
 	member: optional(threadMember),
 	member_count: optional(int()),
