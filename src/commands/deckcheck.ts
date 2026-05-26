@@ -3,23 +3,74 @@ import type { infer as zinfer } from "zod";
 import type { DeepReadonly } from "../DeepReadonly.js";
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
-import type deck from "../moxfield/deck.js";
+import type deckSchema from "../moxfield/deck.js";
 
 import ApplicationCommandOptionType from "../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
+import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
+import MessageFlag from "../discord/resources/message/MessageFlag.js";
 import getDeck from "../moxfield/getDeck.js";
 
 const handleClassicMagic = (
-	d: DeepReadonly<zinfer<typeof deck>>
+	deck: DeepReadonly<zinfer<typeof deckSchema>>
 ): zinfer<typeof interactionResponse> => {
-	void d;
+	void deck;
 	throw new Error("Not implemented.");
 };
 
+const subtypeDelimiter = " — ";
 const handleTribalWars = (
-	d: DeepReadonly<zinfer<typeof deck>>
+	deck: DeepReadonly<zinfer<typeof deckSchema>>
 ): zinfer<typeof interactionResponse> => {
-	void d;
-	throw new Error("Not implemented.");
+	const subtypeMap = new Map<string, number>();
+	for (const cards of Object.values(deck.boards.mainboard.cards)) {
+		if (!cards.card.type_line) {
+			continue;
+		}
+
+		for (const subtype of cards.card.type_line
+			.slice(
+				cards.card.type_line.indexOf(subtypeDelimiter) + subtypeDelimiter.length
+			)
+			.split(" ")) {
+			subtypeMap.set(subtype, (subtypeMap.get(subtype) ?? 0) + cards.quantity);
+		}
+	}
+
+	const legalSubtypes = subtypeMap
+		.entries()
+		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+		.filter(([, quantity]) => quantity >= deck.boards.mainboard.count / 3)
+		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+		.map(([subtype]) => subtype)
+		.toArray();
+	if (legalSubtypes.length < 1) {
+		return {
+			data: {
+				embeds: [
+					{
+						color: 0xff0000,
+						description: `[${deck.name}](${deck.publicUrl}) is not a legal Tribal Wars deck.`,
+						title: "Illegal Deck"
+					}
+				],
+				flags: MessageFlag.EPHEMERAL
+			},
+			type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+		};
+	}
+
+	return {
+		data: {
+			embeds: [
+				{
+					color: 0x00ff00,
+					description: `[${deck.name}](${deck.publicUrl}) is a legal Tribal Wars deck for the following tribes:\n${legalSubtypes.map((subtype) => `- ${subtype}`).join("\n")}`,
+					title: "Legal Deck"
+				}
+			]
+		},
+		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+	};
 };
 
 export const handle = async (
