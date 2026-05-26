@@ -29,7 +29,8 @@ export const handle = async (
 		({ type }) => type === ApplicationCommandOptionType.SUB_COMMAND
 	);
 	if (typeof subcommandOption?.value !== "string") {
-		throw new Error("Invalid subcommand value.");
+		// eslint-disable-next-line @typescript-eslint/only-throw-error
+		throw commandData;
 	}
 
 	const urlOption = subcommandOption.options?.find(
