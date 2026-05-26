@@ -18,7 +18,8 @@ const resolvedData = object({
 	channels: optional(record(snowflake, channel.partial())),
 	members: optional(record(snowflake, guildMember.partial())),
 	get messages() {
-		// @ts-expect-error TypeScript struggles with circular type references.
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore TypeScript struggles with circular type references. This directive is required in some environments and not others (hence ts-ignore over ts-expect-error).
 		return optional(record(snowflake, message.partial()));
 	},
 	roles: optional(record(snowflake, role)),
