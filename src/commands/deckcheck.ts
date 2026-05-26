@@ -36,9 +36,7 @@ const handleTribalWars = (
 		}
 	}
 
-	const legalSubtypes = subtypeMap
-		.entries()
-		.toArray()
+	const legalSubtypes = [...subtypeMap.entries()]
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 		.filter(([, quantity]) => quantity >= deck.boards.mainboard.count / 3)
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
