@@ -30,6 +30,8 @@ app.post("/api/interactions", async (c) => {
 
 	// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 	const body = await c.req.text();
+	// eslint-disable-next-line no-console
+	console.log(body);
 	const verified = nacl.sign.detached.verify(
 		Buffer.from(timestamp + body),
 		Buffer.from(signature, "hex"),
@@ -60,6 +62,6 @@ app.post("/api/interactions", async (c) => {
 	}
 
 	return c.json(void 0, 501);
-};);
+});
 
 export default app;
