@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
 import type { infer as zinfer } from "zod";
 
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import nacl from "tweetnacl";
 
@@ -14,7 +13,7 @@ import InteractionType from "./discord/interactions/receivingAndResponding/Inter
 
 const app: Hono = new Hono();
 
-app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+app.post("/api/interactions", async (c) => {
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
 		console.error("No public key.");
@@ -41,7 +40,14 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		return c.json(void 0, 401);
 	}
 
-	const data = c.req.valid("json");
+	const json: unknown = await c.req.json();
+	console.log(json);
+	const parse = interaction.safeParse(json);
+	if (!parse.success) {
+		console.error(parse.error);
+		return c.json(void 0, 400);
+	}
+	const { data } = parse;
 	console.log(data);
 
 	// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
