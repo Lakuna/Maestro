@@ -1,6 +1,6 @@
 import type { infer as zinfer } from "zod";
 
-import userAgent from "../scryfall/userAgent.js";
+import userAgent from "../userAgent.js";
 import deck from "./deck.js";
 
 /**

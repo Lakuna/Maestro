@@ -1,8 +1,8 @@
 import type { infer as zinfer } from "zod";
 import type { SomeType } from "zod/v4/core";
 
+import userAgent from "../userAgent.js";
 import listOf from "./listOf.js";
-import userAgent from "./userAgent.js";
 
 /**
  * Create an array from the values in a Scryfall API list.

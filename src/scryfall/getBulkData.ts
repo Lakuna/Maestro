@@ -1,7 +1,7 @@
 import type { infer as zinfer } from "zod";
 
+import userAgent from "../userAgent.js";
 import bulkData from "./bulkData.js";
-import userAgent from "./userAgent.js";
 
 /**
  * Get the Scryfall bulk data object with the given type.

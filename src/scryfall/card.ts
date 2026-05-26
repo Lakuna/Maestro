@@ -13,19 +13,8 @@ import {
 	uuid
 } from "zod";
 
-/**
- * A set of colors as returned by the Scryfall API.
- * @see {@link https://scryfall.com/docs/api/colors | Colors and Costs}
- * @internal
- */
-const colors = array(enum_(["W", "U", "B", "R", "G", "C"]));
-
-/**
- * A set of producable mana as returned by the Scryfall API. This is different from {@link colors} because Sole Performer can produce `"T"`.
- * @see {@link https://scryfall.com/docs/api/colors | Colors and Costs}
- * @internal
- */
-const producedMana = array(enum_(["W", "U", "B", "R", "G", "C", "T"]));
+import colors from "./colors.js";
+import producedMana from "./producedMana.js";
 
 /**
  * A Magic: the Gathering card as returned by the Scryfall API.

@@ -1,15 +1,15 @@
 import type { infer as zinfer } from "zod";
 
+import userAgent from "../userAgent.js";
 import card from "./card.js";
 import listOf from "./listOf.js";
-import userAgent from "./userAgent.js";
 
 /**
  * Parameters for getting cards.
  * @see {@link https://scryfall.com/docs/api/cards/search | GET `/cards/search`}
  * @internal
  */
-export interface GetCardsParameters {
+export interface GetCardsParams {
 	/* eslint-disable @typescript-eslint/naming-convention */
 	/** The direction to sort cards. */
 	readonly dir?: "asc" | "auto" | "desc";
@@ -64,7 +64,7 @@ export interface GetCardsParameters {
  * @internal
  */
 export default async function getCards(
-	params: GetCardsParameters
+	params: GetCardsParams
 ): Promise<zinfer<ReturnType<typeof listOf<typeof card>>>> {
 	const url = new URL("https://api.scryfall.com/cards/search");
 	url.searchParams.set("q", params.q);

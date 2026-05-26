@@ -9,7 +9,9 @@
 		"url": "https://github.com/Lakuna/Maestro/issues"
 	},
 	"dependencies": {
+		"@hono/zod-validator": "^0.8.0",
 		"hono": "^4.12.23",
+		"tweetnacl": "^1.0.3",
 		"zod": "^4.4.3"
 	},
 	"description": "The Discord bot for the Magical Maestros Discord server.",

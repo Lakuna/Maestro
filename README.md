@@ -11,3 +11,9 @@ This project uses the [Challonge API](https://challonge.apidog.io/) to interact 
 Moxfield does not have a public API, but this project uses its private API to fetch deck details. This is allowed for personal, non-commercial projects, per Moxfield's [FAQ](https://moxfield.com/help/faq#moxfield-api).
 
 Collation details for booster pack simulations come from [The Collation Project](https://www.lethe.xyz/mtg/collation/).
+
+## Environment Variables
+
+| Name                 | Description                                                                                                           |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `DISCORD_PUBLIC_KEY` | The Discord application's public key, taken from the [Discord Developer Portal](https://discord.com/developers/home). |
