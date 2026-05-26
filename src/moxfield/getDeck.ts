@@ -12,11 +12,13 @@ import deck from "./deck.js";
 export default async function getDeck(
 	id: string
 ): Promise<zinfer<typeof deck>> {
-	const response = await fetch(
-		`https://api2.moxfield.com/v3/decks/all/${id}`,
-		// eslint-disable-next-line @typescript-eslint/naming-convention
-		{ headers: { "User-Agent": userAgent } }
-	);
+	const response = await fetch(`https://api2.moxfield.com/v3/decks/all/${id}`, {
+		headers: {
+			/* eslint-disable @typescript-eslint/naming-convention */
+			"User-Agent": userAgent
+			/* eslint-enable @typescript-eslint/naming-convention */
+		}
+	});
 	if (!response.ok) {
 		throw new Error(await response.text());
 	}

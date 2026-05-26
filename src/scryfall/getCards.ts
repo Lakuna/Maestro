@@ -96,11 +96,14 @@ export default async function getCards(
 		url.searchParams.set("page", String(params.page));
 	}
 
-	const response = await fetch(
-		url,
-		// eslint-disable-next-line @typescript-eslint/naming-convention
-		{ headers: { Accept: "application/json", "User-Agent": userAgent } }
-	);
+	const response = await fetch(url, {
+		headers: {
+			/* eslint-disable @typescript-eslint/naming-convention */
+			Accept: "application/json",
+			"User-Agent": userAgent
+			/* eslint-enable @typescript-eslint/naming-convention */
+		}
+	});
 	if (!response.ok) {
 		throw new Error(await response.text());
 	}

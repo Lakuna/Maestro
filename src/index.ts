@@ -7,6 +7,8 @@ import nacl from "tweetnacl";
 
 import type interactionResponse from "./discord/interactions/receivingAndResponding/interactionResponse.js";
 
+import deckcheck from "./commands/deckcheck.js";
+import applicationCommandData from "./discord/interactions/receivingAndResponding/applicationCommandData.js";
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
@@ -37,15 +39,31 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	}
 
 	const data = c.req.valid("json");
+	switch (data.type) {
+		case InteractionType.APPLICATION_COMMAND: {
+			const parse = applicationCommandData.safeParse(data.data);
+			if (!parse.success) {
+				return c.json(parse.error, 400);
+			}
 
-	// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
-	if (data.type === InteractionType.PING) {
-		return c.json({ type: InteractionCallbackType.PONG } satisfies zinfer<
-			typeof interactionResponse
-		>);
+			const commandData = parse.data;
+			// eslint-disable-next-line no-console
+			console.info(commandData);
+			switch (commandData.name) {
+				case deckcheck.name:
+					return c.json(void 0, 501);
+				default:
+					return c.json(void 0, 400);
+			}
+		}
+		case InteractionType.PING:
+			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
+			return c.json({ type: InteractionCallbackType.PONG } satisfies zinfer<
+				typeof interactionResponse
+			>);
+		default:
+			return c.json(void 0, 400);
 	}
-
-	return c.json(void 0, 501);
 });
 
 export default app;

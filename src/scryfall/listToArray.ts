@@ -27,11 +27,14 @@ export default async function listToArray<T extends SomeType>(
 		}
 
 		// eslint-disable-next-line no-await-in-loop
-		const response = await fetch(
-			nextList.next_page,
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			{ headers: { Accept: "application/json", "User-Agent": userAgent } }
-		);
+		const response = await fetch(nextList.next_page, {
+			headers: {
+				/* eslint-disable @typescript-eslint/naming-convention */
+				Accept: "application/json",
+				"User-Agent": userAgent
+				/* eslint-enable @typescript-eslint/naming-convention */
+			}
+		});
 		if (!response.ok) {
 			// eslint-disable-next-line no-await-in-loop
 			throw new Error(await response.text());

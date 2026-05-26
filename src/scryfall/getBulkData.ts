@@ -13,11 +13,14 @@ import bulkData from "./bulkData.js";
 export default async function getBulkData(
 	type: string
 ): Promise<zinfer<typeof bulkData>> {
-	const response = await fetch(
-		`https://api.scryfall.com/bulk-data/${type}`,
-		// eslint-disable-next-line @typescript-eslint/naming-convention
-		{ headers: { Accept: "application/json", "User-Agent": userAgent } }
-	);
+	const response = await fetch(`https://api.scryfall.com/bulk-data/${type}`, {
+		headers: {
+			/* eslint-disable @typescript-eslint/naming-convention */
+			Accept: "application/json",
+			"User-Agent": userAgent
+			/* eslint-enable @typescript-eslint/naming-convention */
+		}
+	});
 	if (!response.ok) {
 		throw new Error(await response.text());
 	}
