@@ -16,14 +16,20 @@ import InteractionType from "./discord/interactions/receivingAndResponding/Inter
 const app: Hono = new Hono();
 
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+	// eslint-disable-next-line no-console
+	console.info("Interaction start.");
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
+		// eslint-disable-next-line no-console
+		console.error("No public key.");
 		return c.json(void 0, 500);
 	}
 
 	const signature = c.req.header("X-Signature-Ed25519");
 	const timestamp = c.req.header("X-Signature-Timestamp");
 	if (!signature || !timestamp) {
+		// eslint-disable-next-line no-console
+		console.error("No signature or timestamp.");
 		return c.json(void 0, 401);
 	}
 
@@ -35,14 +41,20 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		Buffer.from(publicKey, "hex")
 	);
 	if (!verified) {
+		// eslint-disable-next-line no-console
+		console.error("Not verified.");
 		return c.json(void 0, 401);
 	}
 
 	const data = c.req.valid("json");
+	// eslint-disable-next-line no-console
+	console.info(data);
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
 			const parse = applicationCommandData.safeParse(data.data);
 			if (!parse.success) {
+				// eslint-disable-next-line no-console
+				console.error(parse.error);
 				return c.json(parse.error, 400);
 			}
 
@@ -57,11 +69,15 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			}
 		}
 		case InteractionType.PING:
+			// eslint-disable-next-line no-console
+			console.info("Pong.");
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json({ type: InteractionCallbackType.PONG } satisfies zinfer<
 				typeof interactionResponse
 			>);
 		default:
+			// eslint-disable-next-line no-console
+			console.error("Unhandled interaction.");
 			return c.json(void 0, 400);
 	}
 });
