@@ -62,7 +62,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 							embeds: [
 								{
 									color: 0xff0000,
-									description: `An error occurred while processing your request:\n\`\`\`\n${e instanceof Error ? e.message : JSON.stringify(e)}\n\`\`\``,
+									description: `An error occurred while processing your request:${e instanceof Error ? ` ${e.message}` : `\n\`\`\`\n${JSON.stringify(e)}\n\`\`\``}`,
 									title: "Error"
 								}
 							],
