@@ -38,11 +38,11 @@ const handleTribalWars = (
 
 	const legalSubtypes = subtypeMap
 		.entries()
+		.toArray()
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 		.filter(([, quantity]) => quantity >= deck.boards.mainboard.count / 3)
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-		.map(([subtype]) => subtype)
-		.toArray();
+		.map(([subtype]) => subtype);
 	if (legalSubtypes.length < 1) {
 		return {
 			data: {
