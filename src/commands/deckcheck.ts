@@ -23,7 +23,7 @@ const listify = (strings: readonly string[]): string =>
 			(s) =>
 				`- ${s
 					.split("\n")
-					.map((t) => (/^\s*$/u.test(t) ? t : "​")) // Add a zero-width space to empty lines so that they don't end code blocks.
+					.map((t) => (/^\s*$/u.test(t) ? "​" : t)) // Add a zero-width space to empty lines so that they don't end code blocks.
 					.join("\n  ")}`
 		)
 		.join("\n");
