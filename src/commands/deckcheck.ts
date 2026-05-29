@@ -131,12 +131,13 @@ const handleClassicMagic = (
 			problems.push(`${card.name} is banned.`);
 		}
 
-		// Restricted cards.
 		const mainboardCount =
 			deck.boards.mainboard.cards[card.uniqueCardId]?.quantity ?? 0;
 		const sideboardCount =
 			deck.boards.sideboard.cards[card.uniqueCardId]?.quantity ?? 0;
-		if (
+		if (mainboardCount > 0 && cards.boardType === "sideboard") {
+			// Prevent printing these warnings twice.
+		} else if (
 			[
 				"Ancestral Recall",
 				"Balance",
@@ -185,6 +186,7 @@ const handleClassicMagic = (
 			].includes(card.name) &&
 			mainboardCount + sideboardCount > 1
 		) {
+			// Restricted cards.
 			problems.push(
 				`Too many copies of ${cards.card.name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be at most 1 total).`
 			);
