@@ -18,7 +18,15 @@ import getCatalogCreatureTypes from "../scryfall/getCatalogCreatureTypes.js";
  * @internal
  */
 const listify = (strings: readonly string[]): string =>
-	strings.map((s) => `- ${s.split("\n").join("\n  ")}`).join("\n");
+	strings
+		.map(
+			(s) =>
+				`- ${s
+					.split("\n")
+					.map((t) => (/^\s*$/u.test(t) ? t : "​")) // Add a zero-width space to empty lines so that they don't end code blocks.
+					.join("\n  ")}`
+		)
+		.join("\n");
 
 /**
  * Deck check for Classic Magic.
