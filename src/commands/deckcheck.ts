@@ -28,6 +28,25 @@ const listify = (strings: readonly string[]): string =>
 		)
 		.join("\n");
 
+const superDelimiter = " — ";
+const subDelimiter = " ";
+/**
+ * Split a card's type line into lists of supertypes + type and subtypes.
+ * @param typeLine - The type line.
+ * @returns A list of the card's supertypes and a list of the card's subtypes, respectively. The last element of the supertypes array is the card's type.
+ * @internal
+ */
+const parseTypes = (typeLine: string): [string[], string[]] => [
+	typeLine
+		.slice(0, typeLine.indexOf(superDelimiter))
+		.split(subDelimiter)
+		.filter((type) => type.length),
+	typeLine
+		.slice(typeLine.indexOf(superDelimiter) + superDelimiter.length)
+		.split(subDelimiter)
+		.filter((type) => type.length)
+];
+
 /**
  * Deck check for Classic Magic.
  * @param deck - The deck to check.
@@ -135,8 +154,11 @@ const handleClassicMagic = (
 			deck.boards.mainboard.cards[card.uniqueCardId]?.quantity ?? 0;
 		const sideboardCount =
 			deck.boards.sideboard.cards[card.uniqueCardId]?.quantity ?? 0;
-		if (mainboardCount > 0 && cards.boardType === "sideboard") {
-			// Prevent printing these warnings twice.
+		if (
+			(mainboardCount > 0 && cards.boardType === "sideboard") ||
+			parseTypes(card.type_line ?? "")[0].includes("Basic")
+		) {
+			// Prevent printing these warnings twice or for basic lands.
 		} else if (
 			[
 				"Ancestral Recall",
@@ -247,7 +269,6 @@ const handleClassicMagic = (
  * @returns The Discord interaction response.
  * @internal
  */
-const subtypeDelimiter = " — ";
 const handleTribalWars = async (
 	deck: DeepReadonly<zinfer<typeof deckSchema>>
 ): Promise<zinfer<typeof interactionResponse>> => {
@@ -257,15 +278,12 @@ const handleTribalWars = async (
 	}
 
 	for (const cards of Object.values(deck.boards.mainboard.cards)) {
-		if (!cards.card.type_line) {
+		const { card } = cards;
+		if (!card.type_line) {
 			continue;
 		}
 
-		for (const subtype of cards.card.type_line
-			.slice(
-				cards.card.type_line.indexOf(subtypeDelimiter) + subtypeDelimiter.length
-			)
-			.split(" ")) {
+		for (const subtype of parseTypes(card.type_line)[1]) {
 			if (!subtypeMap.has(subtype)) {
 				continue;
 			}
