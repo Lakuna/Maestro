@@ -198,7 +198,9 @@ This artifact doesn't untap during your untap step.
 
 If you would begin your turn while this artifact is tapped, you may skip that turn instead. If you do, untap this artifact and put a time counter on it.
 
+
 {T}, remove a time counter from this artifact: Take an extra turn after this one.
+
 \`\`\`\
 `);
 		}
