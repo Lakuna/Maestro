@@ -189,28 +189,14 @@ const handleClassicMagic = (
 
 		// Cards with modified rules text.
 		if (card.name === "Time Vault") {
-			infos.push(`\
-Time Vault has the following updated Oracle text:
-\`\`\`
-This artifact enters tapped.
-
-This artifact doesn't untap during your untap step.
-
-If you would begin your turn while this artifact is tapped, you may skip that turn instead. If you do, untap this artifact and put a time counter on it.
-
-
-{T}, remove a time counter from this artifact: Take an extra turn after this one.
-
-\`\`\`\
-`);
+			infos.push(
+				"Time Vault has the following updated Oracle text:\n```This artifact enters tapped.\n\nThis artifact doesn't untap during your untap step.\n\nIf you would begin your turn while this artifact is tapped, you may skip that turn instead. If you do, untap this artifact and put a time counter on it.\n\n{T}, remove a time counter from this artifact: Take an extra turn after this one.\n```"
+			);
 		}
 		if (card.name === "Illusionary Mask") {
-			infos.push(`\
-Illusionary Mask has the following updated Oracle text:
-\`\`\`
-{X}: You may put a creature card with mana value X or less from your hand onto the battlefield face down as a 0/1 creature. Put X mask counters on that creature. The creature's controller may turn the creature face up by removing all mask counters from it. This effect ends if the creature is turned face up. Activate only as a sorcery.
-\`\`\`\
-`);
+			infos.push(
+				"Illusionary Mask has the following updated Oracle text:\n```\n{X}: You may put a creature card with mana value X or less from your hand onto the battlefield face down as a 0/1 creature. Put X mask counters on that creature. The creature's controller may turn the creature face up by removing all mask counters from it. This effect ends if the creature is turned face up. Activate only as a sorcery.\n```"
+			);
 		}
 	}
 
