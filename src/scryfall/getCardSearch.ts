@@ -9,7 +9,7 @@ import listOf from "./listOf.js";
  * @see {@link https://scryfall.com/docs/api/cards/search | GET `/cards/search`}
  * @internal
  */
-export interface GetCardsParams {
+export interface GetCardSearchParams {
 	/* eslint-disable @typescript-eslint/naming-convention */
 	/** The direction to sort cards. */
 	readonly dir?: "asc" | "auto" | "desc";
@@ -63,8 +63,8 @@ export interface GetCardsParams {
  * @see {@link https://scryfall.com/docs/syntax | Scryfall Search Reference}
  * @internal
  */
-export default async function getCards(
-	params: GetCardsParams
+export default async function getCardSearch(
+	params: GetCardSearchParams
 ): Promise<zinfer<ReturnType<typeof listOf<typeof card>>>> {
 	const url = new URL("https://api.scryfall.com/cards/search");
 	url.searchParams.set("q", params.q);
