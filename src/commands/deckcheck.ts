@@ -300,7 +300,7 @@ const handleTribalWars = async (
  * @returns The Discord interaction response.
  * @internal
  */
-export const handle = async (
+export const deckcheckHandler = async (
 	commandData: DeepReadonly<zinfer<typeof applicationCommandData>>
 ): Promise<zinfer<typeof interactionResponse>> => {
 	const subcommandOption = commandData.options?.find(
@@ -341,7 +341,7 @@ export const handle = async (
  * The `deckcheck` command definition.
  * @internal
  */
-const definition = {
+const deckcheckDefinition = {
 	description: "Check a deck for a specific format.",
 	name: "deckcheck",
 	options: [
@@ -374,4 +374,4 @@ const definition = {
 	]
 };
 
-export default definition;
+export default deckcheckDefinition;

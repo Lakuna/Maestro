@@ -7,12 +7,11 @@ import nacl from "tweetnacl";
 
 import type interactionResponse from "./discord/interactions/receivingAndResponding/interactionResponse.js";
 
-import deckcheck, { handle as handleDeckcheck } from "./commands/deckcheck.js";
+import handleApplicationCommand from "./commands/handleApplicationCommand.js";
 import applicationCommandData from "./discord/interactions/receivingAndResponding/applicationCommandData.js";
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
-import MessageFlag from "./discord/resources/message/MessageFlag.js";
 
 const app: Hono = new Hono();
 
@@ -47,35 +46,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 				return c.json(parseResult.error, 400);
 			}
 
-			const commandData = parseResult.data;
-			try {
-				switch (commandData.name) {
-					case deckcheck.name:
-						return c.json(await handleDeckcheck(commandData), 200);
-					default:
-						return c.json(void 0, 400);
-				}
-			} catch (e) {
-				return c.json(
-					{
-						data: {
-							embeds: [
-								{
-									color: 0xff0000,
-									description:
-										typeof e === "string" ? e
-										: e instanceof Error ? e.message
-										: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
-									title: "Error"
-								}
-							],
-							flags: MessageFlag.EPHEMERAL
-						},
-						type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-					} satisfies zinfer<typeof interactionResponse>,
-					200
-				);
-			}
+			return c.json(await handleApplicationCommand(parseResult.data), 200);
 		}
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
