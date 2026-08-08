@@ -49,13 +49,13 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 
 	const data = c.req.valid("json");
 	// eslint-disable-next-line no-console
-	console.info(data);
+	console.info(JSON.stringify(data));
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
 			const parse = applicationCommandData.safeParse(data.data);
 			if (!parse.success) {
 				// eslint-disable-next-line no-console
-				console.error(parse.error);
+				console.error(JSON.stringify(parse.error));
 				return c.json(parse.error, 400);
 			}
 
@@ -65,7 +65,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 					case deckcheck.name: {
 						const foo = await handleDeckcheck(commandData);
 						// eslint-disable-next-line no-console
-						console.info(foo);
+						console.info(JSON.stringify(foo));
 						return c.json(foo, 200);
 					}
 					default:
@@ -91,7 +91,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 					type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
 				};
 				// eslint-disable-next-line no-console
-				console.error(foo);
+				console.error(JSON.stringify(foo));
 				return c.json(foo, 200);
 			}
 		}
@@ -100,7 +100,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 				type: InteractionCallbackType.PONG
 			};
 			// eslint-disable-next-line no-console
-			console.info(foo);
+			console.info(JSON.stringify(foo));
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json(foo);
 		}
