@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
@@ -15,8 +15,8 @@ import deckcheckDefinition, { deckcheckHandler } from "./deckcheck.js";
  * @internal
  */
 export default async function handleApplicationCommand(
-	data: DeepReadonly<zinfer<typeof applicationCommandData>>
-): Promise<zinfer<typeof interactionResponse>> {
+	data: DeepReadonly<infer_<typeof applicationCommandData>>
+): Promise<infer_<typeof interactionResponse>> {
 	try {
 		switch (data.name) {
 			case deckcheckDefinition.name:

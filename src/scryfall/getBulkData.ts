@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import userAgent from "../utility/userAgent.js";
 import bulkData from "./bulkData.js";
@@ -12,7 +12,7 @@ import bulkData from "./bulkData.js";
  */
 export default async function getBulkData(
 	type: string
-): Promise<zinfer<typeof bulkData>> {
+): Promise<infer_<typeof bulkData>> {
 	const response = await fetch(`https://api.scryfall.com/bulk-data/${type}`, {
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */

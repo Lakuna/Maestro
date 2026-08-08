@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import userAgent from "../utility/userAgent.js";
 import card from "./card.js";
@@ -65,7 +65,7 @@ export interface GetCardSearchParams {
  */
 export default async function getCardSearch(
 	params: GetCardSearchParams
-): Promise<zinfer<ReturnType<typeof listOf<typeof card>>>> {
+): Promise<infer_<ReturnType<typeof listOf<typeof card>>>> {
 	const url = new URL("https://api.scryfall.com/cards/search");
 	url.searchParams.set("q", params.q);
 	if (params.unique) {

@@ -1,4 +1,4 @@
-import { array, type infer as zinfer } from "zod";
+import { array, type infer as infer_ } from "zod";
 
 import card from "./card.js";
 import getBulkData from "./getBulkData.js";
@@ -10,7 +10,7 @@ import getBulkData from "./getBulkData.js";
  * @internal
  */
 export default async function getBulkDataDefaultCards(): Promise<
-	zinfer<typeof card>[]
+	infer_<typeof card>[]
 > {
 	const response = await fetch(
 		(await getBulkData("default_cards")).download_uri

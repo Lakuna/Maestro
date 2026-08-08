@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 import type { SomeType } from "zod/v4/core";
 
 import userAgent from "../utility/userAgent.js";
@@ -14,11 +14,11 @@ import listOf from "./listOf.js";
  */
 export default async function listToArray<T extends SomeType>(
 	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-	list: zinfer<ReturnType<typeof listOf<T>>>,
+	list: infer_<ReturnType<typeof listOf<T>>>,
 	type: T
-): Promise<zinfer<T>[]> {
+): Promise<infer_<T>[]> {
 	let nextList = list;
-	let out: zinfer<T>[] = [];
+	let out: infer_<T>[] = [];
 	while (nextList.data.length) {
 		out = out.concat(nextList.data);
 

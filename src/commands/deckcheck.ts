@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
@@ -21,8 +21,8 @@ import parseTypeLine from "../utility/parseTypeLine.js";
  * @internal
  */
 const handleClassicMagic = (
-	deck: DeepReadonly<zinfer<typeof deckSchema>>
-): zinfer<typeof interactionResponse> => {
+	deck: DeepReadonly<infer_<typeof deckSchema>>
+): infer_<typeof interactionResponse> => {
 	const problems = [];
 	const infos = [];
 	if (deck.boards.mainboard.count < 60) {
@@ -236,8 +236,8 @@ const handleClassicMagic = (
  * @internal
  */
 const handleTribalWars = async (
-	deck: DeepReadonly<zinfer<typeof deckSchema>>
-): Promise<zinfer<typeof interactionResponse>> => {
+	deck: DeepReadonly<infer_<typeof deckSchema>>
+): Promise<infer_<typeof interactionResponse>> => {
 	const subtypeMap = new Map<string, number>();
 	for (const creatureType of (await getCatalogCreatureTypes()).data) {
 		subtypeMap.set(creatureType, 0);
@@ -301,8 +301,8 @@ const handleTribalWars = async (
  * @internal
  */
 export const deckcheckHandler = async (
-	commandData: DeepReadonly<zinfer<typeof applicationCommandData>>
-): Promise<zinfer<typeof interactionResponse>> => {
+	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
+): Promise<infer_<typeof interactionResponse>> => {
 	const subcommandOption = commandData.options?.find(
 		({ type }) => type === ApplicationCommandOptionType.SUB_COMMAND
 	);

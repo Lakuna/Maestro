@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -50,7 +50,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		}
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
-			return c.json({ type: InteractionCallbackType.PONG } satisfies zinfer<
+			return c.json({ type: InteractionCallbackType.PONG } satisfies infer_<
 				typeof interactionResponse
 			>);
 		default:

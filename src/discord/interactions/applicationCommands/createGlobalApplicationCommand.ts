@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 import type Locale from "../../Locale.js";
@@ -48,7 +48,7 @@ export interface CreateGlobalApplicationCommandParams {
 
 	/** The parameters for the command. Max of 25. */
 	readonly options?: readonly DeepReadonly<
-		zinfer<typeof applicationCommandOption>
+		infer_<typeof applicationCommandOption>
 	>[];
 
 	/** Type of command. Defaults to `1` if not set. */
@@ -65,7 +65,7 @@ export interface CreateGlobalApplicationCommandParams {
  */
 export default async function createGlobalApplicationCommand(
 	params: CreateGlobalApplicationCommandParams
-): Promise<zinfer<typeof applicationCommand>> {
+): Promise<infer_<typeof applicationCommand>> {
 	const applicationId = process.env["DISCORD_APPLICATION_ID"];
 	const botToken = process.env["DISCORD_BOT_TOKEN"];
 	if (!applicationId || !botToken) {

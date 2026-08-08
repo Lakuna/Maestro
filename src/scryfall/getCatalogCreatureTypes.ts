@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import userAgent from "../utility/userAgent.js";
 import catalog from "./catalog.js";
@@ -10,7 +10,7 @@ import catalog from "./catalog.js";
  * @internal
  */
 export default async function getCatalogCreatureTypes(): Promise<
-	zinfer<typeof catalog>
+	infer_<typeof catalog>
 > {
 	const url = new URL("https://api.scryfall.com/catalog/creature-types");
 

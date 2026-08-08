@@ -1,4 +1,4 @@
-import type { infer as zinfer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import userAgent from "../utility/userAgent.js";
 import deck from "./deck.js";
@@ -11,7 +11,7 @@ import deck from "./deck.js";
  */
 export default async function getDeck(
 	id: string
-): Promise<zinfer<typeof deck>> {
+): Promise<infer_<typeof deck>> {
 	const response = await fetch(`https://api2.moxfield.com/v3/decks/all/${id}`, {
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */
