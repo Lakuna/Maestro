@@ -4,7 +4,7 @@ const allSupertypes = ["Basic", "Legendary", "Ongoing", "Snow", "World"]; // Com
  * Split a card's type line into lists of supertypes + type and subtypes.
  * @param typeLine - The type line.
  * @returns A list of the card's supertypes, types, and subtypes, respectively. The last element of the supertypes array is the card's type.
- * @public
+ * @internal
  */
 export default function parseTypeLine(
 	typeLine: string

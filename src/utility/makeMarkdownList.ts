@@ -2,7 +2,7 @@
  * Turn a list of strings into a markdown list.
  * @param strings - The strings to turn into a list.
  * @returns A markdown list of the strings.
- * @public
+ * @internal
  */
 export default function makeMarkdownList(strings: readonly string[]): string {
 	return strings
