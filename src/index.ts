@@ -19,12 +19,18 @@ const app: Hono = new Hono();
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
+		// eslint-disable-next-line no-console
+		console.error("No public key.");
 		return c.json(void 0, 500);
 	}
 
 	const signature = c.req.header("X-Signature-Ed25519");
 	const timestamp = c.req.header("X-Signature-Timestamp");
 	if (!signature || !timestamp) {
+		// eslint-disable-next-line no-console
+		console.error(
+			`No signature or timestamp: ${signature ?? "<undefined>"}, ${timestamp ?? "<undefined>"}`
+		);
 		return c.json(void 0, 401);
 	}
 
@@ -36,6 +42,8 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		Buffer.from(publicKey, "hex")
 	);
 	if (!verified) {
+		// eslint-disable-next-line no-console
+		console.error("Not verified.");
 		return c.json(void 0, 401);
 	}
 
@@ -46,6 +54,8 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		case InteractionType.APPLICATION_COMMAND: {
 			const parse = applicationCommandData.safeParse(data.data);
 			if (!parse.success) {
+				// eslint-disable-next-line no-console
+				console.error(parse.error);
 				return c.json(parse.error, 400);
 			}
 
@@ -59,33 +69,44 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 						return c.json(foo, 200);
 					}
 					default:
+						// eslint-disable-next-line no-console
+						console.error("Unknown command.");
 						return c.json(void 0, 400);
 				}
 			} catch (e) {
-				return c.json(
-					{
-						data: {
-							embeds: [
-								{
-									color: 0xff0000,
-									description: `An error occurred while processing your request:${e instanceof Error ? ` ${e.message}` : `\n\`\`\`\n${JSON.stringify(e)}\n\`\`\``}`,
-									title: "Error"
-								}
-							],
-							flags: MessageFlag.EPHEMERAL
-						},
-						type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-					} satisfies zinfer<typeof interactionResponse>,
-					200
-				);
+				const foo: zinfer<typeof interactionResponse> = {
+					data: {
+						embeds: [
+							{
+								color: 0xff0000,
+								description:
+									typeof e === "string" ? e
+									: e instanceof Error ? e.message
+									: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
+								title: "Error"
+							}
+						],
+						flags: MessageFlag.EPHEMERAL
+					},
+					type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+				};
+				// eslint-disable-next-line no-console
+				console.error(foo);
+				return c.json(foo, 200);
 			}
 		}
-		case InteractionType.PING:
+		case InteractionType.PING: {
+			const foo: zinfer<typeof interactionResponse> = {
+				type: InteractionCallbackType.PONG
+			};
+			// eslint-disable-next-line no-console
+			console.info(foo);
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
-			return c.json({ type: InteractionCallbackType.PONG } satisfies zinfer<
-				typeof interactionResponse
-			>);
+			return c.json(foo);
+		}
 		default:
+			// eslint-disable-next-line no-console
+			console.error("Unhandled interaction type.");
 			return c.json(void 0, 400);
 	}
 });

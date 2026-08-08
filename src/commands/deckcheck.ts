@@ -10,48 +10,8 @@ import InteractionCallbackType from "../discord/interactions/receivingAndRespond
 import MessageFlag from "../discord/resources/message/MessageFlag.js";
 import getDeck from "../moxfield/getDeck.js";
 import getCatalogCreatureTypes from "../scryfall/getCatalogCreatureTypes.js";
-
-/**
- * Turn a list of strings into a markdown list.
- * @param strings - The strings to turn into a list.
- * @returns A markdown list of the strings.
- * @internal
- */
-const listify = (strings: readonly string[]): string =>
-	strings
-		.map(
-			(s) =>
-				`- ${s
-					.split("\n")
-					.map((t) => (/^\s*$/u.test(t) ? "​" : t)) // Add a zero-width space to empty lines so that they don't end code blocks.
-					.join("\n  ")}`
-		)
-		.join("\n");
-
-const superDelimiter = " — ";
-const subDelimiter = " ";
-const supertypes = ["Basic", "Legendary", "Ongoing", "Snow", "World"]; // Comprehensive Rules 205.4.
-
-/**
- * Split a card's type line into lists of supertypes + type and subtypes.
- * @param typeLine - The type line.
- * @returns A list of the card's supertypes, types, and subtypes, respectively. The last element of the supertypes array is the card's type.
- * @internal
- */
-const parseTypes = (typeLine: string): [string[], string[], string[]] => [
-	typeLine
-		.slice(0, typeLine.indexOf(superDelimiter))
-		.split(subDelimiter)
-		.filter((type) => type.length && supertypes.includes(type)),
-	typeLine
-		.slice(0, typeLine.indexOf(superDelimiter))
-		.split(subDelimiter)
-		.filter((type) => type.length && !supertypes.includes(type)),
-	typeLine
-		.slice(typeLine.indexOf(superDelimiter) + superDelimiter.length)
-		.split(subDelimiter)
-		.filter((type) => type.length)
-];
+import makeMarkdownList from "../utility/makeMarkdownList.js";
+import parseTypeLine from "../utility/parseTypeLine.js";
 
 /**
  * Deck check for Classic Magic.
@@ -162,7 +122,7 @@ const handleClassicMagic = (
 			deck.boards.sideboard.cards[card.uniqueCardId]?.quantity ?? 0;
 		if (
 			(mainboardCount > 0 && cards.boardType === "sideboard") ||
-			parseTypes(card.type_line ?? "")[0].includes("Basic")
+			parseTypeLine(card.type_line ?? "")[0].includes("Basic")
 		) {
 			// Prevent printing these warnings twice or for basic lands.
 		} else if (
@@ -244,7 +204,7 @@ const handleClassicMagic = (
 				embeds: [
 					{
 						color: 0xff0000,
-						description: `[${deck.name}](${deck.publicUrl}) is not a legal Classic Magic deck.\n${listify(problems)}`,
+						description: `[${deck.name}](${deck.publicUrl}) is not a legal Classic Magic deck.\n${makeMarkdownList(problems)}`,
 						title: "Illegal Deck"
 					}
 				],
@@ -259,7 +219,7 @@ const handleClassicMagic = (
 			embeds: [
 				{
 					color: 0x00ff00,
-					description: `[${deck.name}](${deck.publicUrl}) is a legal Classic Magic deck.${infos.length ? ` Note the following:\n${listify(infos)}` : ""}`,
+					description: `[${deck.name}](${deck.publicUrl}) is a legal Classic Magic deck.${infos.length ? ` Note the following:\n${makeMarkdownList(infos)}` : ""}`,
 					title: "Legal Deck"
 				}
 			],
@@ -289,7 +249,7 @@ const handleTribalWars = async (
 			continue;
 		}
 
-		for (const subtype of parseTypes(card.type_line)[2]) {
+		for (const subtype of parseTypeLine(card.type_line)[2]) {
 			if (!subtypeMap.has(subtype)) {
 				continue;
 			}
@@ -324,7 +284,7 @@ const handleTribalWars = async (
 			embeds: [
 				{
 					color: 0x00ff00,
-					description: `[${deck.name}](${deck.publicUrl}) is a legal Tribal Wars deck for the following tribes:\n${listify(legalSubtypes)}`,
+					description: `[${deck.name}](${deck.publicUrl}) is a legal Tribal Wars deck for the following tribes:\n${makeMarkdownList(legalSubtypes)}`,
 					title: "Legal Deck"
 				}
 			],
