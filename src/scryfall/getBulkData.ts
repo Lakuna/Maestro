@@ -1,6 +1,6 @@
 import type { infer as zinfer } from "zod";
 
-import userAgent from "../userAgent.js";
+import userAgent from "../utility/userAgent.js";
 import bulkData from "./bulkData.js";
 
 /**

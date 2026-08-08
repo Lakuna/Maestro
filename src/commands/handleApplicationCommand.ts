@@ -1,8 +1,8 @@
 import type { infer as zinfer } from "zod";
 
-import type { DeepReadonly } from "../DeepReadonly.js";
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import MessageFlag from "../discord/resources/message/MessageFlag.js";

@@ -1,9 +1,9 @@
 import type { infer as zinfer } from "zod";
 
-import type { DeepReadonly } from "../DeepReadonly.js";
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type deckSchema from "../moxfield/deck.js";
+import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";

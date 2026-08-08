@@ -1,6 +1,6 @@
 import type { infer as zinfer } from "zod";
 
-import type { DeepReadonly } from "../../../DeepReadonly.js";
+import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 import type Locale from "../../Locale.js";
 import type ApplicationIntegrationType from "../../resources/application/ApplicationIntegrationType.js";
 import type InteractionContextType from "../receivingAndResponding/InteractionContextType.js";

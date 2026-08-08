@@ -1,7 +1,7 @@
 import type { infer as zinfer } from "zod";
 import type { SomeType } from "zod/v4/core";
 
-import userAgent from "../userAgent.js";
+import userAgent from "../utility/userAgent.js";
 import listOf from "./listOf.js";
 
 /**
