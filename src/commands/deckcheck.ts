@@ -30,17 +30,23 @@ const listify = (strings: readonly string[]): string =>
 
 const superDelimiter = " — ";
 const subDelimiter = " ";
+const supertypes = ["Basic", "Legendary", "Ongoing", "Snow", "World"]; // Comprehensive Rules 205.4.
+
 /**
  * Split a card's type line into lists of supertypes + type and subtypes.
  * @param typeLine - The type line.
- * @returns A list of the card's supertypes and a list of the card's subtypes, respectively. The last element of the supertypes array is the card's type.
+ * @returns A list of the card's supertypes, types, and subtypes, respectively. The last element of the supertypes array is the card's type.
  * @internal
  */
-const parseTypes = (typeLine: string): [string[], string[]] => [
+const parseTypes = (typeLine: string): [string[], string[], string[]] => [
 	typeLine
 		.slice(0, typeLine.indexOf(superDelimiter))
 		.split(subDelimiter)
-		.filter((type) => type.length),
+		.filter((type) => type.length && supertypes.includes(type)),
+	typeLine
+		.slice(0, typeLine.indexOf(superDelimiter))
+		.split(subDelimiter)
+		.filter((type) => type.length && !supertypes.includes(type)),
 	typeLine
 		.slice(typeLine.indexOf(superDelimiter) + superDelimiter.length)
 		.split(subDelimiter)
@@ -283,7 +289,7 @@ const handleTribalWars = async (
 			continue;
 		}
 
-		for (const subtype of parseTypes(card.type_line)[1]) {
+		for (const subtype of parseTypes(card.type_line)[2]) {
 			if (!subtypeMap.has(subtype)) {
 				continue;
 			}

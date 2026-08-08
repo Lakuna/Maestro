@@ -16,27 +16,6 @@ import MessageFlag from "./discord/resources/message/MessageFlag.js";
 
 const app: Hono = new Hono();
 
-// Temporary index.
-app.get("/", (c) => {
-	return c.html(
-		`\
-<!doctype html>
-
-<html>
-	<head>
-		<title>Maestro</title>
-	</head>
-	<body>
-		<h1>Maestro</h1>
-		<hr />
-		<p>${new Date().toISOString()}</p>
-	</body>
-</html>
-`,
-		200
-	);
-});
-
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
@@ -61,6 +40,8 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	}
 
 	const data = c.req.valid("json");
+	// eslint-disable-next-line no-console
+	console.info(data);
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
 			const parse = applicationCommandData.safeParse(data.data);
@@ -71,8 +52,12 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			const commandData = parse.data;
 			try {
 				switch (commandData.name) {
-					case deckcheck.name:
-						return c.json(await handleDeckcheck(commandData), 200);
+					case deckcheck.name: {
+						const foo = await handleDeckcheck(commandData);
+						// eslint-disable-next-line no-console
+						console.info(foo);
+						return c.json(foo, 200);
+					}
 					default:
 						return c.json(void 0, 400);
 				}
