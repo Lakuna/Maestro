@@ -16,6 +16,27 @@ import MessageFlag from "./discord/resources/message/MessageFlag.js";
 
 const app: Hono = new Hono();
 
+// Temporary index.
+app.get("/", (c) => {
+	return c.html(
+		`\
+<!doctype html>
+
+<html>
+	<head>
+		<title>Maestro</title>
+	</head>
+	<body>
+		<h1>Maestro</h1>
+		<hr />
+		<p>${new Date().toISOString()}</p>
+	</body>
+</html>
+`,
+		200
+	);
+});
+
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
