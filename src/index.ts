@@ -8,7 +8,6 @@ import nacl from "tweetnacl";
 import type interactionResponse from "./discord/interactions/receivingAndResponding/interactionResponse.js";
 
 import handleApplicationCommand from "./commands/handleApplicationCommand.js";
-import applicationCommandData from "./discord/interactions/receivingAndResponding/applicationCommandData.js";
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
@@ -40,14 +39,8 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 
 	const data = c.req.valid("json");
 	switch (data.type) {
-		case InteractionType.APPLICATION_COMMAND: {
-			const parseResult = applicationCommandData.safeParse(data.data);
-			if (!parseResult.success) {
-				return c.json(parseResult.error, 400);
-			}
-
-			return c.json(await handleApplicationCommand(parseResult.data), 200);
-		}
+		case InteractionType.APPLICATION_COMMAND:
+			return c.json(await handleApplicationCommand(data.data), 200);
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json({ type: InteractionCallbackType.PONG } satisfies infer_<
