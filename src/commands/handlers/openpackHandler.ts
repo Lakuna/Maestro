@@ -28,7 +28,7 @@ export default function openpackHandler(
 
 	const seedOption = commandData.options?.find(
 		({ name, type }) =>
-			name === "seed" && type === ApplicationCommandOptionType.NUMBER
+			name === "seed" && type === ApplicationCommandOptionType.INTEGER
 	);
 	const seed =
 		typeof seedOption?.value === "number" ? seedOption.value : defaultSeed();
@@ -40,8 +40,8 @@ export default function openpackHandler(
 					embeds: [
 						{
 							color: 0x0000ff,
-							description: `Seed: ${seed.toString()}\nCards: ${leaPack(seed).join()}`,
-							title: "Pack"
+							description: `Seed: \`${seed.toString()}\`\nCards: \`${leaPack(seed).join()}\``,
+							title: "Limited Edition Alpha Booster Pack"
 						}
 					]
 				},
