@@ -1,33 +1,10 @@
 import type { infer as infer_ } from "zod";
 
+import type GetCardCollectionParams from "./GetCardCollectionParams.js";
+
 import userAgent from "../utility/userAgent.js";
 import card from "./card.js";
 import listOf from "./listOf.js";
-
-/**
- * A card identifier.
- * @internal
- */
-export type CardIdentifier =
-	/* eslint-disable @typescript-eslint/naming-convention */
-	| { readonly collector_number: string; readonly set: string }
-	| { readonly id: string }
-	| { readonly illustration_id: string }
-	| { readonly mtgo_id: number }
-	| { readonly multiverse_id: number }
-	| { readonly name: string; readonly set: string }
-	| { readonly name: string }
-	| { readonly oracle_id: string };
-/* eslint-enable @typescript-eslint/naming-convention */
-
-/**
- * Parameters for getting cards.
- * @see {@link https://scryfall.com/docs/api/cards/collection | GET `/cards/collection`}
- * @internal
- */
-export interface GetCardCollectionParams {
-	readonly identifiers: readonly CardIdentifier[];
-}
 
 /**
  * Get a list of cards from Scryfall.

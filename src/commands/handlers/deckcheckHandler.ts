@@ -1,18 +1,17 @@
 import type { infer as infer_ } from "zod";
 
-import type CreateGlobalApplicationCommandParams from "../discord/interactions/applicationCommands/CreateGlobalApplicationCommandParams.js";
-import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
-import type deckSchema from "../moxfield/deck.js";
-import type { DeepReadonly } from "../utility/DeepReadonly.js";
+import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
+import type interactionResponse from "../../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type deckSchema from "../../moxfield/deck.js";
+import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
-import ApplicationCommandOptionType from "../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
-import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
-import MessageFlag from "../discord/resources/message/MessageFlag.js";
-import getDeck from "../moxfield/getDeck.js";
-import getCatalogCreatureTypes from "../scryfall/getCatalogCreatureTypes.js";
-import makeMarkdownList from "../utility/makeMarkdownList.js";
-import parseTypeLine from "../utility/parseTypeLine.js";
+import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
+import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
+import MessageFlag from "../../discord/resources/message/MessageFlag.js";
+import getDeck from "../../moxfield/getDeck.js";
+import getCatalogCreatureTypes from "../../scryfall/getCatalogCreatureTypes.js";
+import makeMarkdownList from "../../utility/makeMarkdownList.js";
+import parseTypeLine from "../../utility/parseTypeLine.js";
 
 /**
  * Deck check for Classic Magic.
@@ -301,9 +300,9 @@ const handleTribalWars = async (
  * @returns The Discord interaction response.
  * @internal
  */
-export const deckcheckHandler = async (
+export default async function deckcheckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): Promise<infer_<typeof interactionResponse>> => {
+): Promise<infer_<typeof interactionResponse>> {
 	const subcommandOption = commandData.options?.find(
 		({ type }) => type === ApplicationCommandOptionType.SUB_COMMAND
 	);
@@ -336,43 +335,4 @@ export const deckcheckHandler = async (
 				`Unhandled subcommand ${subcommandOption.name ?? "undefined"}`
 			);
 	}
-};
-
-/**
- * The `deckcheck` command definition.
- * @internal
- */
-const deckcheckDefinition = {
-	description: "Check a deck for a specific format.",
-	name: "deckcheck",
-	options: [
-		{
-			description: "Check a deck for Tribal Wars.",
-			name: "tribalwars",
-			options: [
-				{
-					description: "The link to the deck on Moxfield.",
-					name: "url",
-					required: true,
-					type: ApplicationCommandOptionType.STRING
-				}
-			],
-			type: ApplicationCommandOptionType.SUB_COMMAND
-		},
-		{
-			description: "Check a deck for Classic Magic.",
-			name: "classicmagic",
-			options: [
-				{
-					description: "The link to the deck on Moxfield.",
-					name: "url",
-					required: true,
-					type: ApplicationCommandOptionType.STRING
-				}
-			],
-			type: ApplicationCommandOptionType.SUB_COMMAND
-		}
-	]
-} satisfies CreateGlobalApplicationCommandParams;
-
-export default deckcheckDefinition;
+}
