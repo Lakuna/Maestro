@@ -29,14 +29,11 @@
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.69.0"
 	},
-	"files": [
-		"dist",
-		"src"
-	],
 	"funding": {
 		"type": "individual",
 		"url": "https://github.com/sponsors/Lakuna"
 	},
+	"homepage": "https://maestro.lakuna.pw/",
 	"license": "MIT",
 	"main": "./dist/index.js",
 	"name": "@lakuna/maestro",
