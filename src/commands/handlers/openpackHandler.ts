@@ -39,16 +39,7 @@ export default function openpackHandler(
 
 			return {
 				data: {
-					attachments: cards.map((card) => ({
-						url: `https://api.scryfall.com/cards/lea/${card.toString()}?format=image`
-					})),
-					embeds: [
-						{
-							color: 0x0000ff,
-							description: `Seed: \`${seed.toString()}\`\nCards: \`${cards.join()}\``,
-							title: "Limited Edition Alpha Booster Pack"
-						}
-					]
+					content: `Seed: \`${seed.toString()}\`\n${cards.map((card) => `https://api.scryfall.com/cards/lea/${card.toString()}?format=image`).join("\n")}`
 				},
 				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
 			};
