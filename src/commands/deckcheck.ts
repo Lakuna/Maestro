@@ -1,5 +1,6 @@
 import type { infer as infer_ } from "zod";
 
+import type CreateGlobalApplicationCommandParams from "../discord/interactions/applicationCommands/CreateGlobalApplicationCommandParams.js";
 import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type deckSchema from "../moxfield/deck.js";
@@ -372,6 +373,6 @@ const deckcheckDefinition = {
 			type: ApplicationCommandOptionType.SUB_COMMAND
 		}
 	]
-};
+} satisfies CreateGlobalApplicationCommandParams;
 
 export default deckcheckDefinition;

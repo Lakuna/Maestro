@@ -236,6 +236,16 @@ export default defineConfig(
 		}
 	},
 	{
+		extends: [tseslint.configs.disableTypeChecked],
+		files: ["test/**"],
+		name: "Disable Type-Checked Linting for Tests",
+		rules: {
+			"@typescript-eslint/explicit-function-return-type": "off",
+			"@typescript-eslint/explicit-member-accessibility": "off",
+			"@typescript-eslint/explicit-module-boundary-types": "off"
+		}
+	},
+	{
 		name: "Use eslint-plugin-tsdoc",
 		plugins: { tsdoc },
 		rules: { "tsdoc/syntax": "error" }
