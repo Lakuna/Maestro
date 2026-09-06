@@ -34,19 +34,25 @@ export default function openpackHandler(
 		typeof seedOption?.value === "number" ? seedOption.value : defaultSeed();
 
 	switch (setOption.value) {
-		case "lea":
+		case "lea": {
+			const cards = leaPack(seed);
+
 			return {
 				data: {
+					attachments: cards.map((card) => ({
+						url: `https://api.scryfall.com/cards/lea/${card.toString()}?format=image`
+					})),
 					embeds: [
 						{
 							color: 0x0000ff,
-							description: `Seed: \`${seed.toString()}\`\nCards: \`${leaPack(seed).join()}\``,
+							description: `Seed: \`${seed.toString()}\`\nCards: \`${cards.join()}\``,
 							title: "Limited Edition Alpha Booster Pack"
 						}
 					]
 				},
 				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
 			};
+		}
 		default:
 			throw new Error(`Invalid set code. The valid set codes are: \`lea\`.`);
 	}
