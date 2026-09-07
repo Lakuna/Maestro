@@ -64,11 +64,16 @@ const card = object({
 					partialRecord(
 						enum_([
 							"png",
+							"small",
+							"normal",
+							"large",
 							"border_crop",
 							"art_crop",
-							"large",
-							"normal",
-							"small"
+							"thumb",
+							"grid",
+							"display",
+							"crop",
+							"art"
 						]),
 						url()
 					)
