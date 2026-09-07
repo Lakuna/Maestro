@@ -149,7 +149,19 @@ const card = object({
 	image_status: enum_(["missing", "placeholder", "lowres", "highres_scan"]),
 	image_uris: nullish(
 		partialRecord(
-			enum_(["png", "border_crop", "art_crop", "large", "normal", "small"]),
+			enum_([
+				"png",
+				"small",
+				"normal",
+				"large",
+				"border_crop",
+				"art_crop",
+				"thumb",
+				"grid",
+				"display",
+				"crop",
+				"art"
+			]),
 			url()
 		)
 	),
