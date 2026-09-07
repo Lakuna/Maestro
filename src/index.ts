@@ -15,9 +15,6 @@ import InteractionType from "./discord/interactions/receivingAndResponding/Inter
 const app: Hono = new Hono();
 
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
-	// eslint-disable-next-line no-console
-	console.info(c);
-
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
 		return c.json(void 0, 500);
@@ -41,11 +38,13 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	}
 
 	const data = c.req.valid("json");
+	// eslint-disable-next-line no-console
+	console.info(JSON.stringify(data));
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
 			const out = await handleApplicationCommand(data.data);
 			// eslint-disable-next-line no-console
-			console.info(out);
+			console.info(JSON.stringify(out));
 			return c.json(out, 200);
 		}
 		case InteractionType.PING:
