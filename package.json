@@ -44,7 +44,9 @@
 	},
 	"scripts": {
 		"build": "tsc",
+		"deleteGlobalCommand": "node ./dist/deleteGlobalCommand.js",
 		"fix": "eslint --fix",
+		"getGlobalCommands": "node ./dist/getGlobalCommands.js",
 		"lint": "eslint",
 		"makeGlobalCommands": "node ./dist/makeGlobalCommands.js",
 		"start": "node .",
