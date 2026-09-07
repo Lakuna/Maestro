@@ -15,7 +15,6 @@ export default async function getDeck(
 	const response = await fetch(`https://api2.moxfield.com/v3/decks/all/${id}`, {
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */
-			Accept: "application/json",
 			"User-Agent": userAgent
 			/* eslint-enable @typescript-eslint/naming-convention */
 		}
