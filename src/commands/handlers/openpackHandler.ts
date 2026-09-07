@@ -64,10 +64,9 @@ export default async function openpackHandler(
 		data: {
 			embeds: [
 				{
-					color: 0x0000ff,
 					// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
 					description: `Seed: \`${seed.toString()}\`\n${cards.map((card) => `[${collection.data.find(({ collector_number }) => collector_number === card.toString())?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${card.toString()}?format=image)`).join("\n")}`,
-					title: `\`${set.code}\` Pack`,
+					title: `${collection.data[0]?.set_name ?? `\`${set.code}\``} Pack`,
 					type: EmbedType.RICH
 				}
 			]

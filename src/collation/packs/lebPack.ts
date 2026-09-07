@@ -32,6 +32,7 @@ export default function lebPack(seed?: number): readonly number[] {
 		rng = nextRng;
 	}
 
+	// LEB packs could occasionally contain rares from the LEA rare sheet instead. This is not simulated here.
 	const rGen = striped(lebSet, 2, rng);
 	const [rare] = rGen.next().value;
 	out.push(rare);
