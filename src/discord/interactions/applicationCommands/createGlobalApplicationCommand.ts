@@ -2,6 +2,7 @@ import type { infer as infer_ } from "zod";
 
 import type CreateGlobalApplicationCommandParams from "./CreateGlobalApplicationCommandParams.js";
 
+import userAgent from "../../../utility/userAgent.js";
 import applicationCommand from "./applicationCommand.js";
 
 /**
@@ -28,8 +29,10 @@ export default async function createGlobalApplicationCommand(
 		body: JSON.stringify(params),
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */
+			Accept: "application/json",
 			Authorization: `Bot ${botToken}`,
-			"Content-Type": "application/json"
+			"Content-Type": "application/json",
+			"User-Agent": userAgent
 			/* eslint-enable @typescript-eslint/naming-convention */
 		},
 		method: "POST"

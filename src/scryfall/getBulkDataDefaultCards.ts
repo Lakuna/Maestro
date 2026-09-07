@@ -1,5 +1,6 @@
 import { array, type infer as infer_ } from "zod";
 
+import userAgent from "../utility/userAgent.js";
 import card from "./card.js";
 import getBulkData from "./getBulkData.js";
 
@@ -13,7 +14,15 @@ export default async function getBulkDataDefaultCards(): Promise<
 	infer_<typeof card>[]
 > {
 	const response = await fetch(
-		(await getBulkData("default_cards")).download_uri
+		(await getBulkData("default_cards")).download_uri,
+		{
+			headers: {
+				/* eslint-disable @typescript-eslint/naming-convention */
+				Accept: "application/json",
+				"User-Agent": userAgent
+				/* eslint-enable @typescript-eslint/naming-convention */
+			}
+		}
 	);
 	if (!response.ok) {
 		throw new Error(await response.text());

@@ -23,6 +23,7 @@ export default async function getCardCollection(
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */
 			Accept: "application/json",
+			"Content-Type": "application/json",
 			"User-Agent": userAgent
 			/* eslint-enable @typescript-eslint/naming-convention */
 		},
