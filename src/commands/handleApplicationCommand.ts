@@ -6,9 +6,7 @@ import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import MessageFlag from "../discord/resources/message/MessageFlag.js";
-import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
-import deckcheckHandler from "./handlers/deckcheckHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 
 /**
@@ -22,8 +20,6 @@ export default async function handleApplicationCommand(
 ): Promise<infer_<typeof interactionResponse>> {
 	try {
 		switch (data.name) {
-			case deckcheckDefinition.name:
-				return await deckcheckHandler(data);
 			case openpackDefinition.name:
 				return await openpackHandler(data);
 			default:
