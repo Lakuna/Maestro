@@ -13,7 +13,7 @@ import listOf from "./listOf.js";
  * @see {@link https://scryfall.com/docs/api/cards/collection | GET `/cards/collection`}
  * @internal
  */
-export default async function getCardSearch(
+export default async function getCardCollection(
 	params: GetCardCollectionParams
 ): Promise<infer_<ReturnType<typeof listOf<typeof card>>>> {
 	const url = new URL("https://api.scryfall.com/cards/collection");

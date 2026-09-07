@@ -25,7 +25,7 @@ export default async function handleApplicationCommand(
 			case deckcheckDefinition.name:
 				return await deckcheckHandler(data);
 			case openpackDefinition.name:
-				return openpackHandler(data);
+				return await openpackHandler(data);
 			default:
 				throw new Error("Invalid command name.");
 		}
