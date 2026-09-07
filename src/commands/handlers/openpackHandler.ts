@@ -32,8 +32,11 @@ export default async function openpackHandler(
 		throw new Error("No set code was given.");
 	}
 
-	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-	const setResult = setMap.entries().find(([{ code }]) => code === setCode);
+	const setResult = setMap
+		.entries()
+		.toArray()
+		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+		.find(([{ code }]) => code === setCode);
 	if (!setResult) {
 		throw new Error(
 			`Invalid set code. The valid set codes are: ${setMap
