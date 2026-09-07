@@ -28,7 +28,7 @@ export default function listOf<T extends SomeType>(
 ): ZodObject<{
 	/* eslint-disable @typescript-eslint/naming-convention */
 	data: ZodArray<T>;
-	has_more: ZodBoolean;
+	has_more: ZodOptional<ZodNullable<ZodBoolean>>;
 	next_page: ZodOptional<ZodNullable<ZodURL>>;
 	total_cards: ZodOptional<ZodNullable<ZodInt>>;
 	warnings: ZodOptional<ZodNullable<ZodArray<ZodString>>>;
@@ -37,7 +37,7 @@ export default function listOf<T extends SomeType>(
 	return object({
 		/* eslint-disable @typescript-eslint/naming-convention */
 		data: array(element),
-		has_more: boolean(),
+		has_more: nullish(boolean()), // Documented as required but sometimes `undefined` in practice.
 		next_page: nullish(url()),
 		total_cards: nullish(int()),
 		warnings: nullish(array(string()))
