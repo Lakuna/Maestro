@@ -4,7 +4,7 @@ import type applicationCommandData from "../../discord/interactions/receivingAnd
 import type interactionResponse from "../../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
-import leaPack from "../../collation/packs/leaPack.js";
+import setMap from "../../collation/setMap.js";
 import defaultSeed from "../../collation/utility/defaultSeed.js";
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
@@ -24,9 +24,27 @@ export default async function openpackHandler(
 		({ name, type }) =>
 			name === "set" && type === ApplicationCommandOptionType.STRING
 	);
-	if (typeof setOption?.value !== "string") {
+	const setCode =
+		typeof setOption?.value === "string" ?
+			setOption.value.toLowerCase()
+		:	void 0;
+	if (!setCode) {
 		throw new Error("No set code was given.");
 	}
+
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+	const setResult = setMap.entries().find(([{ code }]) => code === setCode);
+	if (!setResult) {
+		throw new Error(
+			`Invalid set code. The valid set codes are: ${setMap
+				.keys()
+				.toArray()
+				.map(({ code }) => `\`${code}\``)
+				.join(", ")}.`
+		);
+	}
+
+	const [set, packFn] = setResult;
 
 	const seedOption = commandData.options?.find(
 		({ name, type }) =>
@@ -35,34 +53,26 @@ export default async function openpackHandler(
 	const seed =
 		typeof seedOption?.value === "number" ? seedOption.value : defaultSeed();
 
-	switch (setOption.value) {
-		case "lea": {
-			const cards = leaPack(seed);
-
-			const collection = await getCardCollection({
-				identifiers: cards.map((card) => ({
-					// eslint-disable-next-line @typescript-eslint/naming-convention
-					collector_number: card.toString(),
-					set: "lea"
-				}))
-			});
-
-			return {
-				data: {
-					embeds: [
-						{
-							color: 0x0000ff,
-							// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
-							description: `Seed: \`${seed.toString()}\`\n${cards.map((card) => `[${collection.data.find(({ collector_number }) => collector_number === card.toString())?.name ?? "undefined"}](https://api.scryfall.com/cards/lea/${card.toString()}?format=image)`).join("\n")}`,
-							title: "Limited Edition Alpha Booster Pack",
-							type: EmbedType.RICH
-						}
-					]
-				},
-				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-			};
-		}
-		default:
-			throw new Error(`Invalid set code. The valid set codes are: \`lea\`.`);
-	}
+	const cards = packFn(seed);
+	const collection = await getCardCollection({
+		identifiers: cards.map((card) => ({
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			collector_number: card.toString(),
+			set: set.code
+		}))
+	});
+	return {
+		data: {
+			embeds: [
+				{
+					color: 0x0000ff,
+					// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
+					description: `Seed: \`${seed.toString()}\`\n${cards.map((card) => `[${collection.data.find(({ collector_number }) => collector_number === card.toString())?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${card.toString()}?format=image)`).join("\n")}`,
+					title: `\`${set.code}\` Pack`,
+					type: EmbedType.RICH
+				}
+			]
+		},
+		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+	};
 }
