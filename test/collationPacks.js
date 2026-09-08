@@ -5,6 +5,7 @@ import leaPack from "../dist/collation/packs/leaPack.js";
 import lebPack from "../dist/collation/packs/lebPack.js";
 import x2edPack from "../dist/collation/packs/x2edPack.js";
 import x3edPack from "../dist/collation/packs/x3edPack.js";
+import x4edPack from "../dist/collation/packs/x4edPack.js";
 
 void describe("leaPack", () => {
 	void it("should return the correct output", async (t) => {
@@ -168,6 +169,53 @@ void describe("x3edPack", () => {
 			deepEqual(
 				x3edPack(4),
 				[8, 90, 235, 135, 294, 99, 199, 78, 297, 10, 123, 306, 297, 157, 21]
+			);
+		});
+	});
+});
+
+void describe("x4edPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(
+				x4edPack(0),
+				[10, 165, 242, 211, 128, 70, 92, 272, 42, 35, 297, 151, 138, 93, 270]
+			);
+		});
+
+		await t.test("1", () => {
+			deepEqual(
+				x4edPack(1),
+				[285, 348, 159, 313, 213, 103, 249, 36, 219, 167, 16, 190, 133, 63, 263]
+			);
+		});
+
+		await t.test("2", () => {
+			deepEqual(
+				x4edPack(2),
+				[290, 71, 122, 247, 89, 238, 22, 218, 356, 145, 241, 41, 177, 206, 152]
+			);
+		});
+
+		await t.test("3", () => {
+			deepEqual(
+				x4edPack(3),
+				[352, 302, 139, 295, 255, 47, 145, 69, 277, 7, 213, 103, 249, 36, 16]
+			);
+		});
+
+		await t.test("4", () => {
+			deepEqual(
+				x4edPack(4),
+				[333, 311, 341, 295, 166, 86, 164, 109, 286, 14, 255, 47, 196, 148, 7]
+			);
+		});
+
+		// Lowest mode 1 seed.
+		await t.test("15099494", () => {
+			deepEqual(
+				x4edPack(15099494),
+				[314, 333, 311, 149, 238, 63, 14, 123, 141, 265, 89, 305, 135, 128, 244]
 			);
 		});
 	});
