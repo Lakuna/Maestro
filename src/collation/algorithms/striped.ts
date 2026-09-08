@@ -15,11 +15,11 @@ const MAX_STRIPE = 5;
 const uniformIntPure = purify(uniformInt);
 
 /**
- * Generate a sequence of collector's numbers from the given sheet using striped collation.
+ * Generate a sequence of collector numbers from the given sheet using striped collation.
  * @param set - The set that contains the sheet.
  * @param sheet - The sheet.
  * @param prng - The PRNG instance to use.
- * @returns The next collector's number and the next PRNG.
+ * @returns The next collector number and the next PRNG.
  * @see {@link https://www.lethe.xyz/mtg/collation/striped-collation.html | Striped Collation}
  * @internal
  */

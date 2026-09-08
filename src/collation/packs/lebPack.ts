@@ -7,9 +7,9 @@ import lebSet from "../sets/lebSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 
 /**
- * Generate the collector's numbers of the cards in a Limited Edition Beta pack.
+ * Generate the collector numbers of the cards in a Limited Edition Beta pack.
  * @param seed - The seed to use to generate the pack.
- * @returns The collector's numbers of the cards in the pack in order.
+ * @returns The collector numbers of the cards in the pack in order.
  * @see {@link https://www.lethe.xyz/mtg/collation/leb.html}
  * @public
  */

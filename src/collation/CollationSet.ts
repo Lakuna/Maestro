@@ -3,7 +3,7 @@
  * @internal
  */
 export default interface CollationSet {
-	/** The collector's numbers of the cards in the set in the order they appear on the sheets from first sheet to last, then top to bottom, then left to right. */
+	/** The collector numbers of the cards in the set in the order they appear on the sheets from first sheet to last, then top to bottom, then left to right. */
 	readonly cards: readonly number[];
 
 	/** The set code. */

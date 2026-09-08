@@ -7,9 +7,9 @@ import leaSet from "../sets/leaSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 
 /**
- * Generate the collector's numbers of the cards in a Limited Edition Alpha pack.
+ * Generate the collector numbers of the cards in a Limited Edition Alpha pack.
  * @param seed - The seed to use to generate the pack.
- * @returns The collector's numbers of the cards in the pack in order.
+ * @returns The collector numbers of the cards in the pack in order.
  * @see {@link https://www.lethe.xyz/mtg/collation/lea.html}
  * @public
  */
