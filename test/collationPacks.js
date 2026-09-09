@@ -225,28 +225,28 @@ void describe("x4edPack", () => {
 void describe("arnPack", () => {
 	void it("should return the correct output", async (t) => {
 		await t.test("0", () => {
-			deepEqual(arnPack(0), [226, 87, 76, 289, 109, 228, 181, 299]);
+			deepEqual(arnPack(0), [37, 27, 25, 52, 14, 31, 6, 73]);
 		});
 
 		await t.test("1", () => {
-			deepEqual(arnPack(1), [299, 198, 77, 291, 300, 291, 15, 235]);
+			deepEqual(arnPack(1), [25, 11, 55, 53, 53, 38, 32, 62]);
 		});
 
 		await t.test("2", () => {
-			deepEqual(arnPack(2), [298, 298, 13, 295, 144, 23, 188, 154]);
+			deepEqual(arnPack(2), [3, 7, 72, 49, 72, 51, 76, 46]);
 		});
 
 		await t.test("3", () => {
-			deepEqual(arnPack(3), [178, 300, 291, 59, 157, 226, 302, 254]);
+			deepEqual(arnPack(3), [25, 53, 38, 40, 22, 37, 63, 65]);
 		});
 
 		await t.test("4", () => {
-			deepEqual(arnPack(4), [300, 292, 159, 288, 131, 204, 302, 297]);
+			deepEqual(arnPack(4), [14, 11, 38, 25, 15, 2, 63, 17]);
 		});
 
 		// Lowest mode 1 seed.
 		await t.test("8388608", () => {
-			deepEqual(arnPack(8388608), [258, 240, 301, 38, 162, 300, 297, 191]);
+			deepEqual(arnPack(8388608), [42, 45, 51, 38, 39, 33, 27, 15]);
 		});
 	});
 });

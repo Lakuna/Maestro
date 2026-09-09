@@ -5,7 +5,7 @@ import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 import { purify } from "pure-rand/utils/purify";
 
 import striped from "../algorithms/striped.js";
-import x2edSet from "../sets/x2edSet.js";
+import arnSet from "../sets/arnSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 
 const uniformFloat32Pure = purify(uniformFloat32);
@@ -27,14 +27,14 @@ export default function arnPack(seed?: number): readonly number[] {
 
 	// Mode 1: uncommons first. Arbitrarily assigned a one-in-two chance to appear here.
 	if (mode < 1 / 2) {
-		const uGen = striped(x2edSet, 1, rng);
+		const uGen = striped(arnSet, 1, rng);
 		for (let i = 0; i < 2; i++) {
 			const [uncommon, nextRng] = uGen.next().value;
 			out.push(uncommon);
 			rng = nextRng;
 		}
 
-		const cGen = striped(x2edSet, 0, rng);
+		const cGen = striped(arnSet, 0, rng);
 		for (let i = 0; i < 6; i++) {
 			const [common] = cGen.next().value;
 			out.push(common);
@@ -44,14 +44,14 @@ export default function arnPack(seed?: number): readonly number[] {
 	}
 
 	// Mode 2: commons first.
-	const cGen = striped(x2edSet, 0, rng);
+	const cGen = striped(arnSet, 0, rng);
 	for (let i = 0; i < 6; i++) {
 		const [common, nextRng] = cGen.next().value;
 		out.push(common);
 		rng = nextRng;
 	}
 
-	const uGen = striped(x2edSet, 1, rng);
+	const uGen = striped(arnSet, 1, rng);
 	for (let i = 0; i < 2; i++) {
 		const [uncommon] = uGen.next().value;
 		out.push(uncommon);
