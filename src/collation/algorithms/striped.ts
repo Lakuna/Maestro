@@ -9,9 +9,6 @@ import type CollationSet from "../CollationSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 import getCard from "../utility/getCard.js";
 
-const MIN_STRIPE = 2;
-const MAX_STRIPE = 5;
-
 const uniformIntPure = purify(uniformInt);
 
 /**
@@ -19,6 +16,8 @@ const uniformIntPure = purify(uniformInt);
  * @param set - The set that contains the sheet.
  * @param sheet - The sheet.
  * @param prng - The PRNG instance to use.
+ * @param min - The minimum possible stripe width.
+ * @param max - The maximum possible stripe width.
  * @returns The next collector number and the next PRNG.
  * @see {@link https://www.lethe.xyz/mtg/collation/striped-collation.html | Striped Collation}
  * @internal
@@ -26,14 +25,12 @@ const uniformIntPure = purify(uniformInt);
 export default function* striped(
 	set: CollationSet,
 	sheet: number,
-	prng?: Readonly<RandomGenerator>
+	prng?: Readonly<RandomGenerator>,
+	min = 2,
+	max = 5
 ): Generator<[string, RandomGenerator], [string, RandomGenerator], never> {
 	const initStripeRng = prng ?? xoroshiro128plus(defaultSeed());
-	const [initStripe, initProgRng] = uniformIntPure(
-		initStripeRng,
-		MIN_STRIPE,
-		MAX_STRIPE
-	);
+	const [initStripe, initProgRng] = uniformIntPure(initStripeRng, min, max);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const [initProg, initXRng] = uniformIntPure(initProgRng, 0, initStripe - 1);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
@@ -69,7 +66,7 @@ export default function* striped(
 				y += set.height;
 			}
 
-			const [nextStripe, nextRng] = uniformIntPure(rng, MIN_STRIPE, MAX_STRIPE);
+			const [nextStripe, nextRng] = uniformIntPure(rng, min, max);
 			rng = nextRng;
 			stripe = nextStripe;
 			continue;

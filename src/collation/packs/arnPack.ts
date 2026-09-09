@@ -22,19 +22,23 @@ export default function arnPack(seed?: number): readonly string[] {
 	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
 	const out = [];
 
-	const [mode, nextRng0] = uniformFloat32Pure(rng);
-	rng = nextRng0;
+	const [mode0, nextRng0] = uniformFloat32Pure(rng);
+	const [mode1, nextRng1] = uniformFloat32Pure(nextRng0);
+	rng = nextRng1;
 
-	// Mode 1: uncommons first. Arbitrarily assigned a one-in-two chance to appear here.
-	if (mode < 1 / 2) {
-		const uGen = striped(arnSet, 1, rng);
+	// A stripe width of 5 is supposedly extremely rare in Antiquities. Arbitrarily assigned a 1% chance to appear here.
+	const max = mode1 < 0.01 ? 5 : 4;
+
+	// Mode 1: uncommons first. Arbitrarily assigned a 50% chance to appear here.
+	if (mode0 < 0.5) {
+		const uGen = striped(arnSet, 1, rng, 2, max);
 		for (let i = 0; i < 2; i++) {
 			const [uncommon, nextRng] = uGen.next().value;
 			out.push(uncommon);
 			rng = nextRng;
 		}
 
-		const cGen = striped(arnSet, 0, rng);
+		const cGen = striped(arnSet, 0, rng, 2, max);
 		for (let i = 0; i < 6; i++) {
 			const [common] = cGen.next().value;
 			out.push(common);
@@ -44,14 +48,14 @@ export default function arnPack(seed?: number): readonly string[] {
 	}
 
 	// Mode 2: commons first.
-	const cGen = striped(arnSet, 0, rng);
+	const cGen = striped(arnSet, 0, rng, 2, max);
 	for (let i = 0; i < 6; i++) {
 		const [common, nextRng] = cGen.next().value;
 		out.push(common);
 		rng = nextRng;
 	}
 
-	const uGen = striped(arnSet, 1, rng);
+	const uGen = striped(arnSet, 1, rng, 2, max);
 	for (let i = 0; i < 2; i++) {
 		const [uncommon] = uGen.next().value;
 		out.push(uncommon);

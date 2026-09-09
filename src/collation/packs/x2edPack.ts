@@ -25,8 +25,8 @@ export default function x2edPack(seed?: number): readonly string[] {
 	const [mode, nextRng0] = uniformFloat32Pure(rng);
 	rng = nextRng0;
 
-	// Mode 1: back-facing cards with rare-uncommon-common ordering. Arbitrarily assigned a one-in-ten chance to appear here.
-	if (mode < 1 / 10) {
+	// Mode 1: back-facing cards with rare-uncommon-common ordering. Arbitrarily assigned a 10% chance to appear here.
+	if (mode < 0.1) {
 		const rGen = striped(x2edSet, 2, rng);
 		const [rare, nextRng1] = rGen.next().value;
 		out.push(rare);

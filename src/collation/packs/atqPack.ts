@@ -25,8 +25,8 @@ export default function atqPack(seed?: number): readonly string[] {
 	const [mode, nextRng0] = uniformFloat32Pure(rng);
 	rng = nextRng0;
 
-	// Mode 1: uncommons first. Arbitrarily assigned a one-in-two chance to appear here.
-	if (mode < 1 / 2) {
+	// Mode 1: uncommons first. Arbitrarily assigned a 50% chance to appear here.
+	if (mode < 0.5) {
 		const uGen = striped(atqSet, 1, rng);
 		for (let i = 0; i < 2; i++) {
 			const [uncommon, nextRng] = uGen.next().value;

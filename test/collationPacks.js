@@ -219,6 +219,7 @@ void describe("lebPack", () => {
 
 void describe("x2edPack", () => {
 	void it("should return the correct output", async (t) => {
+		// Lowest mode 2 seed.
 		await t.test("0", () => {
 			deepEqual(x2edPack(0), [
 				"259",
@@ -448,6 +449,7 @@ void describe("x3edPack", () => {
 
 void describe("x4edPack", () => {
 	void it("should return the correct output", async (t) => {
+		// Lowest mode 2 seed.
 		await t.test("0", () => {
 			deepEqual(x4edPack(0), [
 				"10",
@@ -573,37 +575,66 @@ void describe("x4edPack", () => {
 
 void describe("arnPack", () => {
 	void it("should return the correct output", async (t) => {
+		// Lowest mode 2 seed with stripe width 5 not possible.
 		await t.test("0", () => {
-			deepEqual(arnPack(0), ["37", "27", "25†", "52", "14", "31", "6", "73"]);
+			deepEqual(arnPack(0), ["38", "40", "23", "51", "39", "52†", "28", "21"]);
 		});
 
 		await t.test("1", () => {
-			deepEqual(arnPack(1), ["25", "11", "55", "53", "53", "38", "32", "62"]);
+			deepEqual(arnPack(1), ["55", "53", "38", "23", "51", "39", "76", "35"]);
 		});
 
 		await t.test("2", () => {
-			deepEqual(arnPack(2), ["3", "7†", "72", "49", "72", "51", "76", "46"]);
+			deepEqual(arnPack(2), ["31", "12", "3", "72", "13", "8", "4", "17"]);
 		});
 
 		await t.test("3", () => {
-			deepEqual(arnPack(3), ["25†", "53", "38", "40", "22", "37", "63", "65"]);
+			deepEqual(arnPack(3), [
+				"33†",
+				"37†",
+				"27†",
+				"14",
+				"31†",
+				"12",
+				"42",
+				"45"
+			]);
 		});
 
 		await t.test("4", () => {
-			deepEqual(arnPack(4), ["14", "11", "38", "25", "15", "2", "63", "17"]);
+			deepEqual(arnPack(4), ["22", "7", "3", "72", "72", "52", "78", "5"]);
 		});
 
-		// Lowest mode 1 seed.
+		// Lowest mode 2 seed with stripe width 5 possible.
+		await t.test("253", () => {
+			deepEqual(arnPack(253), ["15", "14", "7", "2", "40", "25†", "76", "35"]);
+		});
+
+		// Lowest mode 1 seed with stripe width 5 not possible.
 		await t.test("8388608", () => {
 			deepEqual(arnPack(8388608), [
-				"42",
-				"45",
-				"51",
+				"4",
+				"10",
 				"38",
-				"39",
-				"33",
+				"25",
+				"11",
+				"55",
+				"53",
+				"25†"
+			]);
+		});
+
+		// Lowest mode 1 seed with stripe width 5 possible.
+		await t.test("8388733", () => {
+			deepEqual(arnPack(8388733), [
+				"46",
+				"57",
+				"49",
+				"43",
+				"37",
 				"27",
-				"15"
+				"31",
+				"12"
 			]);
 		});
 	});
@@ -611,6 +642,7 @@ void describe("arnPack", () => {
 
 void describe("atqPack", () => {
 	void it("should return the correct output", async (t) => {
+		// Lowest mode 2 seed.
 		await t.test("0", () => {
 			deepEqual(atqPack(0), ["80a", "79", "22", "27", "41", "15", "77", "63"]);
 		});

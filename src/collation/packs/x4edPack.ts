@@ -37,9 +37,9 @@ export default function x4edPack(seed?: number): readonly string[] {
 	out.push(rare);
 	rng = nextRng1;
 
-	// Mode 1: common sheet 1. Arbitrarily assigned a one-in-ten chance to appear here.
+	// Mode 1: common sheet 1. Arbitrarily assigned a 10% chance to appear here.
 	// Mode 2: common sheet 2.
-	const cGen = striped(x4edSet, mode < 1 / 10 ? 0 : 1, rng);
+	const cGen = striped(x4edSet, mode < 0.1 ? 0 : 1, rng);
 	for (let i = 0; i < 11; i++) {
 		const [common] = cGen.next().value;
 		out.push(common);
