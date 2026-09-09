@@ -2,6 +2,7 @@ import { deepEqual } from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import arnPack from "../dist/collation/packs/arnPack.js";
+import atqPack from "../dist/collation/packs/atqPack.js";
 import leaPack from "../dist/collation/packs/leaPack.js";
 import lebPack from "../dist/collation/packs/lebPack.js";
 import x2edPack from "../dist/collation/packs/x2edPack.js";
@@ -247,6 +248,35 @@ void describe("arnPack", () => {
 		// Lowest mode 1 seed.
 		await t.test("8388608", () => {
 			deepEqual(arnPack(8388608), [42, 45, 51, 38, 39, 33, 27, 15]);
+		});
+	});
+});
+
+void describe("atqPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(atqPack(0), [80, 79, 22, 27, 41, 15, 77, 63]);
+		});
+
+		await t.test("1", () => {
+			deepEqual(atqPack(1), [23, 7, 82, 13, 65, 7, 59, 68]);
+		});
+
+		await t.test("2", () => {
+			deepEqual(atqPack(2), [3, 12, 83, 52, 75, 12, 55, 34]);
+		});
+
+		await t.test("3", () => {
+			deepEqual(atqPack(3), [84, 65, 7, 65, 7, 80, 72, 11]);
+		});
+
+		await t.test("4", () => {
+			deepEqual(atqPack(4), [32, 22, 49, 13, 85, 67, 72, 25]);
+		});
+
+		// Lowest mode 1 seed.
+		await t.test("8388608", () => {
+			deepEqual(atqPack(8388608), [40, 61, 27, 8, 2, 49, 60, 3]);
 		});
 	});
 });
