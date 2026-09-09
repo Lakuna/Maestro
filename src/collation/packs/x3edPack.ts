@@ -13,7 +13,7 @@ import defaultSeed from "../utility/defaultSeed.js";
  * @see {@link https://www.lethe.xyz/mtg/collation/3ed.html}
  * @public
  */
-export default function x3edPack(seed?: number): readonly number[] {
+export default function x3edPack(seed?: number): readonly string[] {
 	const actualSeed = seed ?? defaultSeed();
 	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
 	const out = [];

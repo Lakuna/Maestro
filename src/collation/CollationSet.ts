@@ -4,7 +4,7 @@
  */
 export default interface CollationSet {
 	/** The collector numbers of the cards in the set in the order they appear on the sheets from first sheet to last, then top to bottom, then left to right. */
-	readonly cards: readonly number[];
+	readonly cards: readonly string[];
 
 	/** The set code. */
 	readonly code: string;

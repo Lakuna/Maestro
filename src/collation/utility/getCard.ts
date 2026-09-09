@@ -14,7 +14,7 @@ export default function getCard(
 	sheet: number,
 	x: number,
 	y: number
-): number {
+): string {
 	const out = set.cards[sheet * (set.width * set.height) + y * set.width + x];
 	if (typeof out === "undefined") {
 		throw new Error("Out of bounds.");

@@ -13,7 +13,7 @@ import defaultSeed from "../utility/defaultSeed.js";
  * @see {@link https://www.lethe.xyz/mtg/collation/lea.html}
  * @public
  */
-export default function leaPack(seed?: number): readonly number[] {
+export default function leaPack(seed?: number): readonly string[] {
 	const actualSeed = seed ?? defaultSeed();
 	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
 	const out = [];

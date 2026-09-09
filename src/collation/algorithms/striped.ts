@@ -27,7 +27,7 @@ export default function* striped(
 	set: CollationSet,
 	sheet: number,
 	prng?: Readonly<RandomGenerator>
-): Generator<[number, RandomGenerator], [number, RandomGenerator], never> {
+): Generator<[string, RandomGenerator], [string, RandomGenerator], never> {
 	const initStripeRng = prng ?? xoroshiro128plus(defaultSeed());
 	const [initStripe, initProgRng] = uniformIntPure(
 		initStripeRng,

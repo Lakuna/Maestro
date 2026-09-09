@@ -17,7 +17,7 @@ const uniformFloat32Pure = purify(uniformFloat32);
  * @see {@link https://www.lethe.xyz/mtg/collation/2ed.html}
  * @public
  */
-export default function x2edPack(seed?: number): readonly number[] {
+export default function x2edPack(seed?: number): readonly string[] {
 	const actualSeed = seed ?? defaultSeed();
 	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
 	const out = [];

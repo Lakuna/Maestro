@@ -17,7 +17,7 @@ const uniformFloat32Pure = purify(uniformFloat32);
  * @see {@link https://www.lethe.xyz/mtg/collation/atq.html}
  * @public
  */
-export default function atqPack(seed?: number): readonly number[] {
+export default function atqPack(seed?: number): readonly string[] {
 	const actualSeed = seed ?? defaultSeed();
 	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
 	const out = [];

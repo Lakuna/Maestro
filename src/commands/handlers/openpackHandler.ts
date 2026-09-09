@@ -54,9 +54,9 @@ export default async function openpackHandler(
 
 	const cards = packFn(seed);
 	const collection = await getCardCollection({
-		identifiers: cards.map((card) => ({
+		identifiers: cards.map((cn) => ({
 			// eslint-disable-next-line @typescript-eslint/naming-convention
-			collector_number: card.toString(),
+			collector_number: cn,
 			set: set.code
 		}))
 	});
@@ -65,7 +65,7 @@ export default async function openpackHandler(
 			embeds: [
 				{
 					// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
-					description: `Seed: \`${seed.toString()}\`\n${cards.map((card) => `[${collection.data.find(({ collector_number }) => collector_number === card.toString())?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${card.toString()}?format=image)`).join("\n")}`,
+					description: `Seed: \`${seed.toString()}\`\n${cards.map((cn) => `[${collection.data.find(({ collector_number }) => collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${cn}?format=image)`).join("\n")}`,
 					title: `${collection.data[0]?.set_name ?? `\`${set.code}\``} Pack`,
 					type: EmbedType.RICH
 				}
