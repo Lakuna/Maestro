@@ -5,9 +5,110 @@ import arnPack from "../dist/collation/packs/arnPack.js";
 import atqPack from "../dist/collation/packs/atqPack.js";
 import leaPack from "../dist/collation/packs/leaPack.js";
 import lebPack from "../dist/collation/packs/lebPack.js";
+import legPack from "../dist/collation/packs/legPack.js";
 import x2edPack from "../dist/collation/packs/x2edPack.js";
 import x3edPack from "../dist/collation/packs/x3edPack.js";
 import x4edPack from "../dist/collation/packs/x4edPack.js";
+
+void describe("arnPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(arnPack(0), ["38", "40", "23", "51", "39", "52†", "28", "21"]);
+		});
+
+		await t.test("1", () => {
+			deepEqual(arnPack(1), ["55", "53", "38", "23", "51", "39", "76", "35"]);
+		});
+
+		await t.test("2", () => {
+			deepEqual(arnPack(2), ["31", "12", "3", "72", "13", "8", "4", "17"]);
+		});
+
+		await t.test("3", () => {
+			deepEqual(arnPack(3), [
+				"33†",
+				"37†",
+				"27†",
+				"14",
+				"31†",
+				"12",
+				"42",
+				"45"
+			]);
+		});
+
+		await t.test("4", () => {
+			deepEqual(arnPack(4), ["22", "7", "3", "72", "72", "52", "78", "5"]);
+		});
+
+		await t.test("253", () => {
+			deepEqual(arnPack(253), ["15", "14", "7", "2", "40", "25†", "76", "35"]);
+		});
+
+		await t.test("8388608", () => {
+			deepEqual(arnPack(8388608), [
+				"4",
+				"10",
+				"38",
+				"25",
+				"11",
+				"55",
+				"53",
+				"25†"
+			]);
+		});
+
+		await t.test("8388733", () => {
+			deepEqual(arnPack(8388733), [
+				"46",
+				"57",
+				"49",
+				"43",
+				"37",
+				"27",
+				"31",
+				"12"
+			]);
+		});
+	});
+});
+
+void describe("atqPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(atqPack(0), ["80a", "79", "22", "27", "41", "15", "77", "63"]);
+		});
+
+		await t.test("1", () => {
+			deepEqual(atqPack(1), ["23", "7", "82a", "13", "65", "7", "59", "68"]);
+		});
+
+		await t.test("2", () => {
+			deepEqual(atqPack(2), ["3", "12", "83d", "52", "75", "12", "55", "34"]);
+		});
+
+		await t.test("3", () => {
+			deepEqual(atqPack(3), ["84d", "65", "7", "65", "7", "80a", "72", "11"]);
+		});
+
+		await t.test("4", () => {
+			deepEqual(atqPack(4), ["32", "22", "49", "13", "85a", "67", "72", "25"]);
+		});
+
+		await t.test("8388608", () => {
+			deepEqual(atqPack(8388608), [
+				"40",
+				"61",
+				"27",
+				"8",
+				"2",
+				"49",
+				"60",
+				"3"
+			]);
+		});
+	});
+});
 
 void describe("leaPack", () => {
 	void it("should return the correct output", async (t) => {
@@ -217,9 +318,172 @@ void describe("lebPack", () => {
 	});
 });
 
+void describe("legPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(legPack(0), [
+				"47",
+				"36",
+				"248",
+				"227",
+				"84",
+				"9",
+				"114",
+				"182",
+				"3",
+				"141",
+				"186",
+				"48",
+				"161",
+				"100",
+				"58"
+			]);
+		});
+
+		await t.test("1", () => {
+			deepEqual(legPack(1), [
+				"241",
+				"96",
+				"47",
+				"140",
+				"12",
+				"170",
+				"94",
+				"83",
+				"189",
+				"42",
+				"13",
+				"188",
+				"7",
+				"98",
+				"48"
+			]);
+		});
+
+		await t.test("2", () => {
+			deepEqual(legPack(2), [
+				"95",
+				"304",
+				"154",
+				"216",
+				"137",
+				"111",
+				"84",
+				"9",
+				"114",
+				"182",
+				"3",
+				"141",
+				"186",
+				"48",
+				"161"
+			]);
+		});
+
+		await t.test("3", () => {
+			deepEqual(legPack(3), [
+				"221",
+				"41",
+				"51",
+				"101",
+				"184",
+				"54",
+				"169",
+				"21",
+				"111",
+				"195",
+				"9",
+				"139",
+				"182",
+				"56",
+				"141"
+			]);
+		});
+
+		await t.test("4", () => {
+			deepEqual(legPack(4), [
+				"263",
+				"286",
+				"95",
+				"262",
+				"100",
+				"58",
+				"103",
+				"214",
+				"40",
+				"93",
+				"33",
+				"134",
+				"184",
+				"2",
+				"204"
+			]);
+		});
+
+		await t.test("127", () => {
+			deepEqual(legPack(127), [
+				"71",
+				"131",
+				"299",
+				"62",
+				"20",
+				"100",
+				"58",
+				"149",
+				"40",
+				"93",
+				"175",
+				"184",
+				"2",
+				"137",
+				"169"
+			]);
+		});
+
+		await t.test("15099494", () => {
+			deepEqual(legPack(15099494), [
+				"194",
+				"291",
+				"208",
+				"266",
+				"111",
+				"84",
+				"9",
+				"114",
+				"182",
+				"3",
+				"141",
+				"186",
+				"86",
+				"167",
+				"45"
+			]);
+		});
+
+		await t.test("15099584", () => {
+			deepEqual(legPack(15099584), [
+				"278",
+				"251",
+				"69",
+				"207",
+				"177",
+				"72",
+				"130",
+				"118",
+				"50",
+				"6",
+				"99",
+				"176",
+				"146",
+				"125",
+				"86"
+			]);
+		});
+	});
+});
+
 void describe("x2edPack", () => {
 	void it("should return the correct output", async (t) => {
-		// Lowest mode 2 seed.
 		await t.test("0", () => {
 			deepEqual(x2edPack(0), [
 				"259",
@@ -320,7 +584,6 @@ void describe("x2edPack", () => {
 			]);
 		});
 
-		// Lowest mode 1 seed.
 		await t.test("15099494", () => {
 			deepEqual(x2edPack(15099494), [
 				"156",
@@ -449,7 +712,6 @@ void describe("x3edPack", () => {
 
 void describe("x4edPack", () => {
 	void it("should return the correct output", async (t) => {
-		// Lowest mode 2 seed.
 		await t.test("0", () => {
 			deepEqual(x4edPack(0), [
 				"10",
@@ -550,7 +812,6 @@ void describe("x4edPack", () => {
 			]);
 		});
 
-		// Lowest mode 1 seed.
 		await t.test("15099494", () => {
 			deepEqual(x4edPack(15099494), [
 				"314",
@@ -568,112 +829,6 @@ void describe("x4edPack", () => {
 				"135",
 				"128",
 				"244"
-			]);
-		});
-	});
-});
-
-void describe("arnPack", () => {
-	void it("should return the correct output", async (t) => {
-		// Lowest mode 2 seed with stripe width 5 not possible.
-		await t.test("0", () => {
-			deepEqual(arnPack(0), ["38", "40", "23", "51", "39", "52†", "28", "21"]);
-		});
-
-		await t.test("1", () => {
-			deepEqual(arnPack(1), ["55", "53", "38", "23", "51", "39", "76", "35"]);
-		});
-
-		await t.test("2", () => {
-			deepEqual(arnPack(2), ["31", "12", "3", "72", "13", "8", "4", "17"]);
-		});
-
-		await t.test("3", () => {
-			deepEqual(arnPack(3), [
-				"33†",
-				"37†",
-				"27†",
-				"14",
-				"31†",
-				"12",
-				"42",
-				"45"
-			]);
-		});
-
-		await t.test("4", () => {
-			deepEqual(arnPack(4), ["22", "7", "3", "72", "72", "52", "78", "5"]);
-		});
-
-		// Lowest mode 2 seed with stripe width 5 possible.
-		await t.test("253", () => {
-			deepEqual(arnPack(253), ["15", "14", "7", "2", "40", "25†", "76", "35"]);
-		});
-
-		// Lowest mode 1 seed with stripe width 5 not possible.
-		await t.test("8388608", () => {
-			deepEqual(arnPack(8388608), [
-				"4",
-				"10",
-				"38",
-				"25",
-				"11",
-				"55",
-				"53",
-				"25†"
-			]);
-		});
-
-		// Lowest mode 1 seed with stripe width 5 possible.
-		await t.test("8388733", () => {
-			deepEqual(arnPack(8388733), [
-				"46",
-				"57",
-				"49",
-				"43",
-				"37",
-				"27",
-				"31",
-				"12"
-			]);
-		});
-	});
-});
-
-void describe("atqPack", () => {
-	void it("should return the correct output", async (t) => {
-		// Lowest mode 2 seed.
-		await t.test("0", () => {
-			deepEqual(atqPack(0), ["80a", "79", "22", "27", "41", "15", "77", "63"]);
-		});
-
-		await t.test("1", () => {
-			deepEqual(atqPack(1), ["23", "7", "82a", "13", "65", "7", "59", "68"]);
-		});
-
-		await t.test("2", () => {
-			deepEqual(atqPack(2), ["3", "12", "83d", "52", "75", "12", "55", "34"]);
-		});
-
-		await t.test("3", () => {
-			deepEqual(atqPack(3), ["84d", "65", "7", "65", "7", "80a", "72", "11"]);
-		});
-
-		await t.test("4", () => {
-			deepEqual(atqPack(4), ["32", "22", "49", "13", "85a", "67", "72", "25"]);
-		});
-
-		// Lowest mode 1 seed.
-		await t.test("8388608", () => {
-			deepEqual(atqPack(8388608), [
-				"40",
-				"61",
-				"27",
-				"8",
-				"2",
-				"49",
-				"60",
-				"3"
 			]);
 		});
 	});

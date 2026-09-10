@@ -18,6 +18,8 @@ const uniformIntPure = purify(uniformInt);
  * @param prng - The PRNG instance to use.
  * @param min - The minimum possible stripe width.
  * @param max - The maximum possible stripe width.
+ * @param top - The index of the top row.
+ * @param height - The number of rows.
  * @returns The next collector number and the next PRNG.
  * @see {@link https://www.lethe.xyz/mtg/collation/striped-collation.html | Striped Collation}
  * @internal
@@ -27,15 +29,21 @@ export default function* striped(
 	sheet: number,
 	prng?: Readonly<RandomGenerator>,
 	min = 2,
-	max = 5
+	max = 5,
+	top = 0,
+	height = set.height
 ): Generator<[string, RandomGenerator], [string, RandomGenerator], never> {
+	if (top + height > set.height || height < max) {
+		throw new Error("Invalid bounds.");
+	}
+
 	const initStripeRng = prng ?? xoroshiro128plus(defaultSeed());
 	const [initStripe, initProgRng] = uniformIntPure(initStripeRng, min, max);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const [initProg, initXRng] = uniformIntPure(initProgRng, 0, initStripe - 1);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const [initX, initYRng] = uniformIntPure(initXRng, 0, set.width - 1);
-	const [initY, initRng] = uniformIntPure(initYRng, 0, set.height - 1);
+	const [initY, initRng] = uniformIntPure(initYRng, top, height - 1);
 
 	let rng = initRng;
 	let stripe = initStripe; // Stripe width.
@@ -47,13 +55,13 @@ export default function* striped(
 	while (true) {
 		yield [getCard(set, sheet, x, y), rng];
 
+		y--;
+		if (y < top) {
+			y += height;
+		}
+
 		prog++;
 		if (prog < stripe) {
-			y--;
-			if (y < 0) {
-				y += set.height;
-			}
-
 			continue;
 		}
 
@@ -61,10 +69,6 @@ export default function* striped(
 		x--;
 		if (x < 0) {
 			x += set.width;
-			y--;
-			if (y < 0) {
-				y += set.height;
-			}
 
 			const [nextStripe, nextRng] = uniformIntPure(rng, min, max);
 			rng = nextRng;
@@ -72,9 +76,9 @@ export default function* striped(
 			continue;
 		}
 
-		y += stripe - 1;
-		if (y >= set.height) {
-			y -= set.height;
+		y += stripe;
+		if (y >= height) {
+			y -= height;
 		}
 	}
 }

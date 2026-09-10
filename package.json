@@ -45,6 +45,7 @@
 	"scripts": {
 		"build": "tsc",
 		"deleteGlobalCommand": "node ./dist/deleteGlobalCommand.js",
+		"findSeed": "node ./dist/findSeed.js",
 		"fix": "eslint --fix",
 		"getGlobalCommands": "node ./dist/getGlobalCommands.js",
 		"lint": "eslint",

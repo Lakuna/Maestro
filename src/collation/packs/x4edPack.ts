@@ -1,14 +1,11 @@
 import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
-import { uniformFloat32 } from "pure-rand/distribution/uniformFloat32";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
-import { purify } from "pure-rand/utils/purify";
 
 import striped from "../algorithms/striped.js";
 import x4edSet from "../sets/x4edSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
-
-const uniformFloat32Pure = purify(uniformFloat32);
+import getMode from "../utility/getMode.js";
 
 /**
  * Generate the collector numbers of the cards in a Fourth Edition pack.
@@ -22,7 +19,9 @@ export default function x4edPack(seed?: number): readonly string[] {
 	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
 	const out = [];
 
-	const [mode, nextRng0] = uniformFloat32Pure(rng);
+	// Common sheet 1 versus common sheet 2. Arbitrarily assigned a 10% chance to appear here.
+	const [commonSheetMode, nextRng0] = getMode(0.1, rng);
+	const commonSheet = commonSheetMode ? 0 : 1;
 	rng = nextRng0;
 
 	const uGen = striped(x4edSet, 2, rng);
@@ -37,9 +36,7 @@ export default function x4edPack(seed?: number): readonly string[] {
 	out.push(rare);
 	rng = nextRng1;
 
-	// Mode 1: common sheet 1. Arbitrarily assigned a 10% chance to appear here.
-	// Mode 2: common sheet 2.
-	const cGen = striped(x4edSet, mode < 0.1 ? 0 : 1, rng);
+	const cGen = striped(x4edSet, commonSheet, rng);
 	for (let i = 0; i < 11; i++) {
 		const [common] = cGen.next().value;
 		out.push(common);
