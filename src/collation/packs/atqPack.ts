@@ -7,6 +7,9 @@ import atqSet from "../sets/atqSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 import getMode from "../utility/getMode.js";
 
+const COMMONS = 6;
+const UNCOMMONS = 2;
+
 /**
  * Generate the collector numbers of the cards in an Antiquities pack.
  * @param seed - The seed to use to generate the pack.
@@ -15,8 +18,7 @@ import getMode from "../utility/getMode.js";
  * @public
  */
 export default function atqPack(seed?: number): readonly string[] {
-	const actualSeed = seed ?? defaultSeed();
-	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
+	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
 	const out = [];
 
 	// Ordering (uncommons first versus commons first). Arbitrarily assigned a 50% chance to appear here.
@@ -25,14 +27,14 @@ export default function atqPack(seed?: number): readonly string[] {
 
 	if (uncommonsFirst) {
 		const uGen = striped(atqSet, 1, rng);
-		for (let i = 0; i < 2; i++) {
+		for (let i = 0; i < UNCOMMONS; i++) {
 			const [uncommon, nextRng] = uGen.next().value;
 			out.push(uncommon);
 			rng = nextRng;
 		}
 
 		const cGen = striped(atqSet, 0, rng);
-		for (let i = 0; i < 6; i++) {
+		for (let i = 0; i < COMMONS; i++) {
 			const [common] = cGen.next().value;
 			out.push(common);
 		}
@@ -41,14 +43,14 @@ export default function atqPack(seed?: number): readonly string[] {
 	}
 
 	const cGen = striped(atqSet, 0, rng);
-	for (let i = 0; i < 6; i++) {
+	for (let i = 0; i < COMMONS; i++) {
 		const [common, nextRng] = cGen.next().value;
 		out.push(common);
 		rng = nextRng;
 	}
 
 	const uGen = striped(atqSet, 1, rng);
-	for (let i = 0; i < 2; i++) {
+	for (let i = 0; i < UNCOMMONS; i++) {
 		const [uncommon] = uGen.next().value;
 		out.push(uncommon);
 	}

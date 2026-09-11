@@ -77,7 +77,7 @@ export default function* striped(
 		}
 
 		y += stripe;
-		if (y >= height) {
+		if (y >= top + height) {
 			y -= height;
 		}
 	}

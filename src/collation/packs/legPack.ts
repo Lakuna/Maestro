@@ -7,6 +7,9 @@ import legSet from "../sets/legSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 import getMode from "../utility/getMode.js";
 
+const COMMONS = 11;
+const UNCOMMONS = 3;
+
 /**
  * Generate the collector numbers of the cards in a Legends pack.
  * @param seed - The seed to use to generate the pack.
@@ -15,8 +18,7 @@ import getMode from "../utility/getMode.js";
  * @public
  */
 export default function legPack(seed?: number): readonly string[] {
-	const actualSeed = seed ?? defaultSeed();
-	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
+	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
 	const out = [];
 
 	// Ordering (rare-uncommon-common versus uncommon-rare-common). Arbitrarily assigned a 10% chance to appear here.
@@ -35,14 +37,14 @@ export default function legPack(seed?: number): readonly string[] {
 		rng = nextRng2;
 
 		const uGen = striped(legSet, 1, rng, 2, 4, top, height);
-		for (let i = 0; i < 3; i++) {
+		for (let i = 0; i < UNCOMMONS; i++) {
 			const [uncommon, nextRng] = uGen.next().value;
 			out.push(uncommon);
 			rng = nextRng;
 		}
 
 		const cGen = striped(legSet, 0, rng);
-		for (let i = 0; i < 11; i++) {
+		for (let i = 0; i < COMMONS; i++) {
 			const [common] = cGen.next().value;
 			out.push(common);
 		}
@@ -51,7 +53,7 @@ export default function legPack(seed?: number): readonly string[] {
 	}
 
 	const uGen = striped(legSet, 1, rng, 2, 4, top, height);
-	for (let i = 0; i < 3; i++) {
+	for (let i = 0; i < UNCOMMONS; i++) {
 		const [uncommon, nextRng] = uGen.next().value;
 		out.push(uncommon);
 		rng = nextRng;
@@ -63,7 +65,7 @@ export default function legPack(seed?: number): readonly string[] {
 	rng = nextRng2;
 
 	const cGen = striped(legSet, 0, rng);
-	for (let i = 0; i < 11; i++) {
+	for (let i = 0; i < COMMONS; i++) {
 		const [common] = cGen.next().value;
 		out.push(common);
 	}

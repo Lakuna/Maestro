@@ -15,8 +15,7 @@ import getMode from "../utility/getMode.js";
  * @public
  */
 export default function x4edPack(seed?: number): readonly string[] {
-	const actualSeed = seed ?? defaultSeed();
-	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
+	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
 	const out = [];
 
 	// Common sheet 1 versus common sheet 2. Arbitrarily assigned a 10% chance to appear here.

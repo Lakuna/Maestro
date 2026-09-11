@@ -14,8 +14,7 @@ import defaultSeed from "../utility/defaultSeed.js";
  * @public
  */
 export default function lebPack(seed?: number): readonly string[] {
-	const actualSeed = seed ?? defaultSeed();
-	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
+	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
 	const out = [];
 
 	const cGen = striped(lebSet, 0, rng);

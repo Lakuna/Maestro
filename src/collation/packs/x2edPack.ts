@@ -7,6 +7,9 @@ import x2edSet from "../sets/x2edSet.js";
 import defaultSeed from "../utility/defaultSeed.js";
 import getMode from "../utility/getMode.js";
 
+const COMMONS = 11;
+const UNCOMMONS = 3;
+
 /**
  * Generate the collector numbers of the cards in an Unlimited Edition pack.
  * @param seed - The seed to use to generate the pack.
@@ -15,8 +18,7 @@ import getMode from "../utility/getMode.js";
  * @public
  */
 export default function x2edPack(seed?: number): readonly string[] {
-	const actualSeed = seed ?? defaultSeed();
-	let rng: RandomGenerator = xoroshiro128plus(actualSeed);
+	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
 	const out = [];
 
 	// Ordering (rare-uncommon-common versus uncommon-rare-common). Arbitrarily assigned a 10% chance to appear here.
@@ -31,14 +33,14 @@ export default function x2edPack(seed?: number): readonly string[] {
 		rng = nextRng1;
 
 		const uGen = striped(x2edSet, 1, rng);
-		for (let i = 0; i < 3; i++) {
+		for (let i = 0; i < UNCOMMONS; i++) {
 			const [uncommon, nextRng] = uGen.next().value;
 			out.push(uncommon);
 			rng = nextRng;
 		}
 
 		const cGen = striped(x2edSet, 0, rng);
-		for (let i = 0; i < 11; i++) {
+		for (let i = 0; i < COMMONS; i++) {
 			const [common] = cGen.next().value;
 			out.push(common);
 		}
@@ -47,7 +49,7 @@ export default function x2edPack(seed?: number): readonly string[] {
 	}
 
 	const uGen = striped(x2edSet, 1, rng);
-	for (let i = 0; i < 3; i++) {
+	for (let i = 0; i < UNCOMMONS; i++) {
 		const [uncommon, nextRng] = uGen.next().value;
 		out.push(uncommon);
 		rng = nextRng;
@@ -59,7 +61,7 @@ export default function x2edPack(seed?: number): readonly string[] {
 	rng = nextRng1;
 
 	const cGen = striped(x2edSet, 0, rng);
-	for (let i = 0; i < 11; i++) {
+	for (let i = 0; i < COMMONS; i++) {
 		const [common] = cGen.next().value;
 		out.push(common);
 	}

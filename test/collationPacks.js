@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 
 import arnPack from "../dist/collation/packs/arnPack.js";
 import atqPack from "../dist/collation/packs/atqPack.js";
+import drkPack from "../dist/collation/packs/drkPack.js";
 import leaPack from "../dist/collation/packs/leaPack.js";
 import lebPack from "../dist/collation/packs/lebPack.js";
 import legPack from "../dist/collation/packs/legPack.js";
@@ -38,7 +39,7 @@ void describe("arnPack", () => {
 		});
 
 		await t.test("4", () => {
-			deepEqual(arnPack(4), ["22", "7", "3", "72", "72", "52", "78", "5"]);
+			deepEqual(arnPack(4), ["22", "7", "3", "72", "72", "52", "78", "67"]);
 		});
 
 		await t.test("253", () => {
@@ -106,6 +107,66 @@ void describe("atqPack", () => {
 				"60",
 				"3"
 			]);
+		});
+	});
+});
+
+void describe("drkPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(drkPack(0), ["50", "78", "23", "39", "24", "64", "90", "41"]);
+		});
+
+		await t.test("1", () => {
+			deepEqual(drkPack(1), ["11", "108", "68", "38", "49", "95", "13", "28"]);
+		});
+
+		await t.test("2", () => {
+			deepEqual(drkPack(2), ["80", "34", "5", "35", "42", "8", "29", "63"]);
+		});
+
+		await t.test("4", () => {
+			deepEqual(drkPack(4), ["76", "105", "41", "10", "68", "63", "87", "47"]);
+		});
+
+		await t.test("6", () => {
+			deepEqual(drkPack(6), ["114", "18", "35", "75", "8", "42", "3", "66"]);
+		});
+
+		await t.test("7", () => {
+			deepEqual(drkPack(7), ["18", "54", "24", "90", "41", "63", "87", "48"]);
+		});
+
+		await t.test("29", () => {
+			deepEqual(drkPack(29), ["12", "74", "29", "48", "5", "81", "75", "8"]);
+		});
+
+		await t.test("83", () => {
+			deepEqual(drkPack(83), ["109", "50", "70", "84", "55", "66", "15", "49"]);
+		});
+
+		await t.test("98", () => {
+			deepEqual(drkPack(98), ["51", "110", "77", "65", "64", "24", "41", "23"]);
+		});
+
+		await t.test("127", () => {
+			deepEqual(drkPack(127), ["9", "100", "95", "13", "70", "84", "23", "39"]);
+		});
+
+		await t.test("128", () => {
+			deepEqual(drkPack(128), ["18", "82", "3", "67", "48", "26", "79", "84"]);
+		});
+
+		await t.test("131", () => {
+			deepEqual(drkPack(131), ["30", "40", "41", "15", "63", "87", "29", "48"]);
+		});
+
+		await t.test("132", () => {
+			deepEqual(drkPack(132), ["88", "102", "5", "81", "28", "8", "94", "26"]);
+		});
+
+		await t.test("138", () => {
+			deepEqual(drkPack(138), ["12", "74", "28", "64", "94", "93", "55", "95"]);
 		});
 	});
 });
