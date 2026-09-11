@@ -4,6 +4,7 @@ import { describe, it } from "node:test";
 import arnPack from "../dist/collation/packs/arnPack.js";
 import atqPack from "../dist/collation/packs/atqPack.js";
 import drkPack from "../dist/collation/packs/drkPack.js";
+import femPack from "../dist/collation/packs/femPack.js";
 import leaPack from "../dist/collation/packs/leaPack.js";
 import lebPack from "../dist/collation/packs/lebPack.js";
 import legPack from "../dist/collation/packs/legPack.js";
@@ -167,6 +168,114 @@ void describe("drkPack", () => {
 
 		await t.test("138", () => {
 			deepEqual(drkPack(138), ["12", "74", "28", "64", "94", "93", "55", "95"]);
+		});
+	});
+});
+
+void describe("femPack", () => {
+	void it("should return the correct output", async (t) => {
+		await t.test("0", () => {
+			deepEqual(femPack(0), [
+				"68a",
+				"30b",
+				"1c",
+				"7d",
+				"67a",
+				"34d",
+				"21",
+				"99"
+			]);
+		});
+
+		await t.test("2", () => {
+			deepEqual(femPack(2), [
+				"41a",
+				"38c",
+				"22a",
+				"13d",
+				"58b",
+				"19b",
+				"78",
+				"57"
+			]);
+		});
+
+		await t.test("127", () => {
+			deepEqual(femPack(127), [
+				"1a",
+				"49b",
+				"8a",
+				"42c",
+				"58d",
+				"65d",
+				"70",
+				"47"
+			]);
+		});
+
+		await t.test("128", () => {
+			deepEqual(femPack(128), [
+				"56b",
+				"27a",
+				"3a",
+				"74b",
+				"80d",
+				"1d",
+				"64",
+				"93"
+			]);
+		});
+
+		await t.test("8388608", () => {
+			deepEqual(femPack(8388608), [
+				"70",
+				"94",
+				"13d",
+				"58b",
+				"41c",
+				"68c",
+				"56c",
+				"71a"
+			]);
+		});
+
+		await t.test("8388610", () => {
+			deepEqual(femPack(8388610), [
+				"21",
+				"5",
+				"58d",
+				"7a",
+				"13b",
+				"41a",
+				"38c",
+				"22a"
+			]);
+		});
+
+		await t.test("8388735", () => {
+			deepEqual(femPack(8388735), [
+				"92",
+				"75",
+				"58d",
+				"65d",
+				"7a",
+				"13b",
+				"33a",
+				"41a"
+			]);
+		});
+
+		await t.test("8388736", () => {
+			deepEqual(femPack(8388736), [
+				"76",
+				"45",
+				"72c",
+				"40b",
+				"61a",
+				"30b",
+				"56b",
+				"27a"
+			]);
 		});
 	});
 });
