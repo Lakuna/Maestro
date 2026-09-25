@@ -16,7 +16,7 @@ export default function weightOfCourse(course: Course): number {
 	const lengthType = distanceOfLength(course.length);
 	switch (lengthType) {
 		case Distance.LONG:
-			weight *= 2;
+			weight *= 3; // There are fewer long courses so a weight of 3 results in ~33% less generated longs than miles.
 			break;
 		case Distance.MEDIUM:
 			weight *= 4;
@@ -29,7 +29,7 @@ export default function weightOfCourse(course: Course): number {
 
 	switch (course.track) {
 		case Track.TURF:
-			weight *= 10;
+			weight *= 5; // There are fewer dirt courses so a weight of 5 results in ~90% less generated dirts than turfs.
 			break;
 		default:
 	}
