@@ -12,6 +12,7 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 import defaultSeed from "../../collation/utility/defaultSeed.js";
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
+import EmbedType from "../../discord/resources/message/EmbedType.js";
 
 const uniformIntPure = purify(uniformInt);
 
@@ -555,30 +556,14 @@ export default function randcmHandler(
 				{
 					description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}`,
 					fields: [
-						{
-							inline: true,
-							name: "Inner/Outer Track",
-							value: course.innerOuterTrack ?? "`undefined`"
-						},
-						{
-							inline: true,
-							name: "Length",
-							value: `${course.length.toString()}m`
-						},
-						{
-							inline: true,
-							name: "Distance",
-							value: distanceOfLength(course.length)
-						},
-						{ inline: true, name: "Location", value: course.location },
-						{ inline: true, name: "Track", value: course.track },
 						{ inline: true, name: "Season", value: season },
 						{ inline: true, name: "Weather", value: weather },
 						{ inline: true, name: "Ground Condition", value: condition },
 						{ inline: true, name: "Time", value: time },
 						{ inline: true, name: "Seed", value: `\`${seed.toString()}\`` }
 					],
-					title: "Champions Meeting"
+					title: "Champions Meeting",
+					type: EmbedType.RICH
 				}
 			]
 		},
