@@ -7,7 +7,9 @@ import type { DeepReadonly } from "../utility/DeepReadonly.js";
 import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import MessageFlag from "../discord/resources/message/MessageFlag.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
+import randcmDefinition from "./definitions/randcmDefinition.js";
 import openpackHandler from "./handlers/openpackHandler.js";
+import randcmHandler from "./handlers/randcmHandler.js";
 
 /**
  * Respond to an application command.
@@ -22,6 +24,8 @@ export default async function handleApplicationCommand(
 		switch (data.name) {
 			case openpackDefinition.name:
 				return await openpackHandler(data);
+			case randcmDefinition.name:
+				return randcmHandler(data);
 			default:
 				throw new Error("Invalid command name.");
 		}
