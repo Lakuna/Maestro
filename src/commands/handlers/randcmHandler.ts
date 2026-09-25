@@ -555,17 +555,22 @@ export default function randcmHandler(
 				{
 					fields: [
 						{
+							inline: true,
 							name: "Inner/Outer Track",
 							value: course.innerOuterTrack ?? "`undefined`"
 						},
-						{ name: "Length", value: `${course.length.toString()}m` },
-						{ name: "Location", value: course.location },
-						{ name: "Track", value: course.track },
-						{ name: "Season", value: season },
-						{ name: "Weather", value: weather },
-						{ name: "Ground Condition", value: condition },
-						{ name: "Time", value: time },
-						{ name: "Seed", value: `\`${seed.toString()}\`` }
+						{
+							inline: true,
+							name: "Length",
+							value: `${course.length.toString()}m`
+						},
+						{ inline: true, name: "Location", value: course.location },
+						{ inline: true, name: "Track", value: course.track },
+						{ inline: true, name: "Season", value: season },
+						{ inline: true, name: "Weather", value: weather },
+						{ inline: true, name: "Ground Condition", value: condition },
+						{ inline: true, name: "Time", value: time },
+						{ inline: true, name: "Seed", value: `\`${seed.toString()}\`` }
 					],
 					title: "Champions Meeting"
 				}
