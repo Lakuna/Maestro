@@ -6,7 +6,7 @@ import { purify } from "pure-rand/utils/purify";
 
 import type CollationSet from "../CollationSet.js";
 
-import defaultSeed from "../utility/defaultSeed.js";
+import defaultSeed from "../../utility/defaultSeed.js";
 import getCard from "../utility/getCard.js";
 
 const uniformIntPure = purify(uniformInt);

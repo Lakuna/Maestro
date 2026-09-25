@@ -2,9 +2,9 @@ import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
+import defaultSeed from "../../utility/defaultSeed.js";
 import striped from "../algorithms/striped.js";
 import lebSet from "../sets/lebSet.js";
-import defaultSeed from "../utility/defaultSeed.js";
 
 /**
  * Generate the collector numbers of the cards in a Limited Edition Beta pack.

@@ -4,12 +4,12 @@ import type applicationCommandData from "../../discord/interactions/receivingAnd
 import type interactionResponse from "../../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
-import defaultSeed from "../../collation/utility/defaultSeed.js";
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 import randomChampionsMeeting from "../../uma/randomChampionsMeeting.js";
 import Track from "../../uma/Track.js";
+import defaultSeed from "../../utility/defaultSeed.js";
 
 /**
  * Handle the `randcm` command.

@@ -4,9 +4,9 @@ import { uniformInt } from "pure-rand/distribution/uniformInt";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 import { purify } from "pure-rand/utils/purify";
 
+import defaultSeed from "../../utility/defaultSeed.js";
 import striped from "../algorithms/striped.js";
 import drkSet from "../sets/drkSet.js";
-import defaultSeed from "../utility/defaultSeed.js";
 import getMode from "../utility/getMode.js";
 
 const uniformIntPure = purify(uniformInt);

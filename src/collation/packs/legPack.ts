@@ -2,9 +2,9 @@ import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
+import defaultSeed from "../../utility/defaultSeed.js";
 import striped from "../algorithms/striped.js";
 import legSet from "../sets/legSet.js";
-import defaultSeed from "../utility/defaultSeed.js";
 import getMode from "../utility/getMode.js";
 
 const COMMONS = 11;

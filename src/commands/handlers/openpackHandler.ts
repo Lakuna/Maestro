@@ -5,11 +5,11 @@ import type interactionResponse from "../../discord/interactions/receivingAndRes
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import setMap from "../../collation/setMap.js";
-import defaultSeed from "../../collation/utility/defaultSeed.js";
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 import getCardCollection from "../../scryfall/getCardCollection.js";
+import defaultSeed from "../../utility/defaultSeed.js";
 
 /**
  * Handle the `openpack` command.
