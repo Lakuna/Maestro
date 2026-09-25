@@ -553,6 +553,7 @@ export default function randcmHandler(
 		data: {
 			embeds: [
 				{
+					description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}`,
 					fields: [
 						{
 							inline: true,
@@ -563,6 +564,11 @@ export default function randcmHandler(
 							inline: true,
 							name: "Length",
 							value: `${course.length.toString()}m`
+						},
+						{
+							inline: true,
+							name: "Distance",
+							value: distanceOfLength(course.length)
 						},
 						{ inline: true, name: "Location", value: course.location },
 						{ inline: true, name: "Track", value: course.track },
