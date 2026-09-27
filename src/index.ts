@@ -15,16 +15,25 @@ import InteractionType from "./discord/interactions/receivingAndResponding/Inter
 const app: Hono = new Hono();
 
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(1); // TODO: Delete.
+
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
 		return c.json(void 0, 500);
 	}
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(2); // TODO: Delete.
 
 	const signature = c.req.header("X-Signature-Ed25519");
 	const timestamp = c.req.header("X-Signature-Timestamp");
 	if (!signature || !timestamp) {
 		return c.json(void 0, 401);
 	}
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(3); // TODO: Delete.
 
 	// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 	const body = await c.req.text();
@@ -37,9 +46,15 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		return c.json(void 0, 401);
 	}
 
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(4); // TODO: Delete.
+
 	const data = c.req.valid("json");
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND:
+			// eslint-disable-next-line no-console, no-warning-comments
+			console.info(5); // TODO: Delete.
+
 			return c.json(await handleApplicationCommand(data.data), 200);
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests

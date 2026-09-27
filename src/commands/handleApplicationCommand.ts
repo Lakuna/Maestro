@@ -20,9 +20,15 @@ import randcmHandler from "./handlers/randcmHandler.js";
 export default async function handleApplicationCommand(
 	data: DeepReadonly<infer_<typeof applicationCommandData>>
 ): Promise<infer_<typeof interactionResponse>> {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(6); // TODO: Delete.
+
 	try {
 		switch (data.name) {
 			case openpackDefinition.name:
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info(7); // TODO: Delete.
+
 				return await openpackHandler(data);
 			case randcmDefinition.name:
 				return randcmHandler(data);
@@ -30,6 +36,9 @@ export default async function handleApplicationCommand(
 				throw new Error("Invalid command name.");
 		}
 	} catch (e) {
+		// eslint-disable-next-line no-console, no-warning-comments
+		console.error(e); // TODO: Delete.
+
 		return {
 			data: {
 				embeds: [

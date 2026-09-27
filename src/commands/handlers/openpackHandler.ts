@@ -20,6 +20,9 @@ import defaultSeed from "../../utility/defaultSeed.js";
 export default async function openpackHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
 ): Promise<infer_<typeof interactionResponse>> {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(8); // TODO: Delete.
+
 	const setOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "set" && type === ApplicationCommandOptionType.STRING
@@ -32,6 +35,9 @@ export default async function openpackHandler(
 		throw new Error("No set code was given.");
 	}
 
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(9); // TODO: Delete.
+
 	const setResult = Array.from(setMap.entries())
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 		.find(([{ code }]) => code === setCode);
@@ -43,7 +49,13 @@ export default async function openpackHandler(
 		);
 	}
 
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(10); // TODO: Delete.
+
 	const [set, packFn] = setResult;
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(11); // TODO: Delete.
 
 	const seedOption = commandData.options?.find(
 		({ name, type }) =>
@@ -52,7 +64,14 @@ export default async function openpackHandler(
 	const seed =
 		typeof seedOption?.value === "number" ? seedOption.value : defaultSeed();
 
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(12); // TODO: Delete.
+
 	const cards = packFn(seed);
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(13); // TODO: Delete.
+
 	const collection = await getCardCollection({
 		identifiers: cards.map((cn) => ({
 			// eslint-disable-next-line @typescript-eslint/naming-convention
@@ -60,6 +79,10 @@ export default async function openpackHandler(
 			set: set.code
 		}))
 	});
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(14); // TODO: Delete.
+
 	return {
 		data: {
 			embeds: [
