@@ -79,5 +79,5 @@ export default async function handleApplicationCommand(
 	);
 
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(response.status, JSON.stringify(response.text())); // TODO: Delete.
+	console.info(response.status, JSON.stringify(await response.text())); // TODO: Delete.
 }
