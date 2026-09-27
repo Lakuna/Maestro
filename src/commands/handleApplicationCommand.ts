@@ -12,14 +12,21 @@ import randcmDefinition from "./definitions/randcmDefinition.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
 
-const embedForError = (e: unknown): infer_<typeof embed> => ({
-	color: 0xff0000,
-	description:
+const embedForError = (e: unknown): infer_<typeof embed> => {
+	let description =
 		typeof e === "string" ? e
 		: e instanceof Error ? e.message
-		: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
-	title: "Error"
-});
+		: JSON.stringify(e);
+
+	try {
+		JSON.parse(description);
+		description = `\`\`\`json\n${description}\n\`\`\``;
+	} catch {
+		// `description` is not JSON, display it as-is.
+	}
+
+	return { color: 0xff0000, description, title: "Error" };
+};
 
 /**
  * Respond to an application command.
