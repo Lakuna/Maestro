@@ -20,18 +20,6 @@ import randcmHandler from "./handlers/randcmHandler.js";
 export default async function handleApplicationCommand(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(3); // TODO: Delete.
-
-	await new Promise<void>((resolve) => {
-		setTimeout(() => {
-			resolve();
-		}, 3000);
-	});
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(3.5); // TODO: Delete.
-
 	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.APPLICATION_COMMAND) {
@@ -64,10 +52,6 @@ export default async function handleApplicationCommand(
 			]
 		};
 	}
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(4); // TODO: Delete.
-
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
 	void fetch(
 		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
@@ -81,11 +65,5 @@ export default async function handleApplicationCommand(
 			},
 			method: "PATCH"
 		}
-	).then(() => {
-		// eslint-disable-next-line no-console, no-warning-comments
-		console.info(6); // TODO: Delete.
-	});
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(5); // TODO: Delete.
+	);
 }
