@@ -1,6 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
+import type embed from "../discord/resources/message/embed.js";
 import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
@@ -11,6 +12,15 @@ import randcmDefinition from "./definitions/randcmDefinition.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
 
+const embedForError = (e: unknown): infer_<typeof embed> => ({
+	color: 0xff0000,
+	description:
+		typeof e === "string" ? e
+		: e instanceof Error ? e.message
+		: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
+	title: "Error"
+});
+
 /**
  * Respond to an application command.
  * @param data - The application command data.
@@ -20,9 +30,6 @@ import randcmHandler from "./handlers/randcmHandler.js";
 export default async function handleApplicationCommand(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info("Handling application command..."); // TODO: Delete.
-
 	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.APPLICATION_COMMAND) {
@@ -33,8 +40,6 @@ export default async function handleApplicationCommand(
 
 		switch (data.data.name) {
 			case openpackDefinition.name:
-				// eslint-disable-next-line no-console, no-warning-comments
-				console.info("Handling `openpack` command..."); // TODO: Delete.
 				body ??= await openpackHandler(data.data);
 				break;
 			case randcmDefinition.name:
@@ -44,40 +49,37 @@ export default async function handleApplicationCommand(
 				throw new Error("Invalid command name.");
 		}
 	} catch (e) {
-		body ??= {
-			embeds: [
-				{
-					color: 0xff0000,
-					description:
-						typeof e === "string" ? e
-						: e instanceof Error ? e.message
-						: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
-					title: "Error"
-				}
-			]
-		};
+		body ??= { embeds: [embedForError(e)] };
 	}
 
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(`Built body: ${JSON.stringify(body)}`); // TODO: Delete.
-
-	const url = `https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`;
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(`Sending body to URL: ${url}`); // TODO: Delete.
-
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
-	await fetch(url, {
-		body: JSON.stringify(body),
-		headers: {
-			/* eslint-disable @typescript-eslint/naming-convention */
-			"Content-Type": "application/json",
-			"User-Agent": userAgent
-			/* eslint-enable @typescript-eslint/naming-convention */
-		},
-		method: "PATCH"
-	});
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info("Handled application command."); // TODO: Delete.
+	const url = `https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`;
+	try {
+		const response = await fetch(url, {
+			body: JSON.stringify(body),
+			headers: {
+				/* eslint-disable @typescript-eslint/naming-convention */
+				"Content-Type": "application/json",
+				"User-Agent": userAgent
+				/* eslint-enable @typescript-eslint/naming-convention */
+			},
+			method: "PATCH"
+		});
+		if (!response.ok) {
+			throw new Error(await response.text());
+		}
+	} catch (e) {
+		await fetch(url, {
+			body: JSON.stringify({ embeds: [embedForError(e)] } satisfies infer_<
+				typeof editWebhookMessage
+			>),
+			headers: {
+				/* eslint-disable @typescript-eslint/naming-convention */
+				"Content-Type": "application/json",
+				"User-Agent": userAgent
+				/* eslint-enable @typescript-eslint/naming-convention */
+			},
+			method: "PATCH"
+		});
+	}
 }
