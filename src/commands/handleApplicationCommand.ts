@@ -60,7 +60,7 @@ export default async function handleApplicationCommand(
 	console.info(JSON.stringify(body)); // TODO: Delete.
 
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
-	await fetch(
+	const response = await fetch(
 		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
 		{
 			body: JSON.stringify(body),
@@ -73,4 +73,7 @@ export default async function handleApplicationCommand(
 			method: "PATCH"
 		}
 	);
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(response.status, JSON.stringify(response.text())); // TODO: Delete.
 }
