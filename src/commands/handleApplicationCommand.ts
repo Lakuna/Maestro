@@ -23,6 +23,15 @@ export default async function handleApplicationCommand(
 	// eslint-disable-next-line no-console, no-warning-comments
 	console.info(3); // TODO: Delete.
 
+	await new Promise<void>((resolve) => {
+		setTimeout(() => {
+			resolve();
+		}, 3000);
+	});
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(3.5); // TODO: Delete.
+
 	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.APPLICATION_COMMAND) {
