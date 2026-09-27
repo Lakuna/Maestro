@@ -21,7 +21,7 @@ export default async function handleApplicationCommand(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(JSON.stringify(data)); // TODO: Delete.
+	console.info(3); // TODO: Delete.
 
 	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
@@ -56,17 +56,11 @@ export default async function handleApplicationCommand(
 		};
 	}
 
-	// eslint-disable-next-line no-console
-	console.info(
-		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`
-		// eslint-disable-next-line no-warning-comments
-	); // TODO: Delete.
-
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(JSON.stringify(body)); // TODO: Delete.
+	console.info(4); // TODO: Delete.
 
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
-	const response = await fetch(
+	void fetch(
 		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
 		{
 			body: JSON.stringify(body),
@@ -78,11 +72,11 @@ export default async function handleApplicationCommand(
 			},
 			method: "PATCH"
 		}
-	);
+	).then(() => {
+		// eslint-disable-next-line no-console, no-warning-comments
+		console.info(6); // TODO: Delete.
+	});
 
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(response.status); // TODO: Delete.
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(await response.text()); // TODO: Delete.
+	console.info(5); // TODO: Delete.
 }

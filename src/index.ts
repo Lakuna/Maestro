@@ -40,7 +40,11 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	const data = c.req.valid("json");
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND:
+			// eslint-disable-next-line no-console, no-warning-comments
+			console.info(1); // TODO: Delete.
 			void handleApplicationCommand(data);
+			// eslint-disable-next-line no-console, no-warning-comments
+			console.info(2); // TODO: Delete.
 			return c.json(
 				{ type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE },
 				200
