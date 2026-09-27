@@ -1,5 +1,6 @@
 import type { infer as infer_ } from "zod";
 
+import userAgent from "../../../utility/userAgent.js";
 import applicationCommand from "./applicationCommand.js";
 
 /**
@@ -24,7 +25,8 @@ export default async function getGlobalApplicationCommands(): Promise<
 	const response = await fetch(url, {
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */
-			Authorization: `Bot ${botToken}`
+			Authorization: `Bot ${botToken}`,
+			"User-Agent": userAgent
 			/* eslint-enable @typescript-eslint/naming-convention */
 		},
 		method: "GET"

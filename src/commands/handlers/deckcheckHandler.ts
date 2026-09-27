@@ -1,13 +1,11 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type interactionResponse from "../../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
 import type deckSchema from "../../moxfield/deck.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
-import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
-import MessageFlag from "../../discord/resources/message/MessageFlag.js";
 import getDeck from "../../moxfield/getDeck.js";
 import getCatalogCreatureTypes from "../../scryfall/getCatalogCreatureTypes.js";
 import makeMarkdownList from "../../utility/makeMarkdownList.js";
@@ -22,7 +20,7 @@ import parseTypeLine from "../../utility/parseTypeLine.js";
  */
 const handleClassicMagic = (
 	deck: DeepReadonly<infer_<typeof deckSchema>>
-): infer_<typeof interactionResponse> => {
+): infer_<typeof editWebhookMessage> => {
 	const problems = [];
 	const infos = [];
 	if (deck.boards.mainboard.count < 60) {
@@ -200,32 +198,24 @@ const handleClassicMagic = (
 
 	if (problems.length) {
 		return {
-			data: {
-				embeds: [
-					{
-						color: 0xff0000,
-						description: `[${deck.name}](${deck.publicUrl}) is not a legal Classic Magic deck.\n${makeMarkdownList(problems)}`,
-						title: "Illegal Deck"
-					}
-				],
-				flags: MessageFlag.EPHEMERAL
-			},
-			type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+			embeds: [
+				{
+					color: 0xff0000,
+					description: `[${deck.name}](${deck.publicUrl}) is not a legal Classic Magic deck.\n${makeMarkdownList(problems)}`,
+					title: "Illegal Deck"
+				}
+			]
 		};
 	}
 
 	return {
-		data: {
-			embeds: [
-				{
-					color: 0x00ff00,
-					description: `[${deck.name}](${deck.publicUrl}) is a legal Classic Magic deck.${infos.length ? ` Note the following:\n${makeMarkdownList(infos)}` : ""}`,
-					title: "Legal Deck"
-				}
-			],
-			flags: MessageFlag.EPHEMERAL
-		},
-		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+		embeds: [
+			{
+				color: 0x00ff00,
+				description: `[${deck.name}](${deck.publicUrl}) is a legal Classic Magic deck.${infos.length ? ` Note the following:\n${makeMarkdownList(infos)}` : ""}`,
+				title: "Legal Deck"
+			}
+		]
 	};
 };
 
@@ -237,7 +227,7 @@ const handleClassicMagic = (
  */
 const handleTribalWars = async (
 	deck: DeepReadonly<infer_<typeof deckSchema>>
-): Promise<infer_<typeof interactionResponse>> => {
+): Promise<infer_<typeof editWebhookMessage>> => {
 	const subtypeMap = new Map<string, number>();
 	for (const creatureType of (await getCatalogCreatureTypes()).data) {
 		subtypeMap.set(creatureType, 0);
@@ -265,32 +255,24 @@ const handleTribalWars = async (
 		.map(([subtype]) => subtype);
 	if (legalSubtypes.length < 1) {
 		return {
-			data: {
-				embeds: [
-					{
-						color: 0xff0000,
-						description: `[${deck.name}](${deck.publicUrl}) is not a legal Tribal Wars deck.`,
-						title: "Illegal Deck"
-					}
-				],
-				flags: MessageFlag.EPHEMERAL
-			},
-			type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+			embeds: [
+				{
+					color: 0xff0000,
+					description: `[${deck.name}](${deck.publicUrl}) is not a legal Tribal Wars deck.`,
+					title: "Illegal Deck"
+				}
+			]
 		};
 	}
 
 	return {
-		data: {
-			embeds: [
-				{
-					color: 0x00ff00,
-					description: `[${deck.name}](${deck.publicUrl}) is a legal Tribal Wars deck for the following tribes:\n${makeMarkdownList(legalSubtypes)}`,
-					title: "Legal Deck"
-				}
-			],
-			flags: MessageFlag.EPHEMERAL
-		},
-		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+		embeds: [
+			{
+				color: 0x00ff00,
+				description: `[${deck.name}](${deck.publicUrl}) is a legal Tribal Wars deck for the following tribes:\n${makeMarkdownList(legalSubtypes)}`,
+				title: "Legal Deck"
+			}
+		]
 	};
 };
 
@@ -302,7 +284,7 @@ const handleTribalWars = async (
  */
 export default async function deckcheckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): Promise<infer_<typeof interactionResponse>> {
+): Promise<infer_<typeof editWebhookMessage>> {
 	const subcommandOption = commandData.options?.find(
 		({ type }) => type === ApplicationCommandOptionType.SUB_COMMAND
 	);

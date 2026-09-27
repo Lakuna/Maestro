@@ -1,11 +1,10 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type interactionResponse from "../../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
-import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 import g1Name from "../../uma/g1Name.js";
 import randomChampionsMeeting from "../../uma/randomChampionsMeeting.js";
@@ -20,7 +19,7 @@ import defaultSeed from "../../utility/defaultSeed.js";
  */
 export default function randcmHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): infer_<typeof interactionResponse> {
+): infer_<typeof editWebhookMessage> {
 	const seedOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "seed" && type === ApplicationCommandOptionType.INTEGER
@@ -34,22 +33,19 @@ export default function randcmHandler(
 	const g1 = g1Name(course, season);
 
 	return {
-		data: {
-			embeds: [
-				{
-					description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}${g1 ? ` - ${g1}` : ""}`,
-					fields: [
-						{ inline: true, name: "Season", value: season },
-						{ inline: true, name: "Weather", value: weather },
-						{ inline: true, name: "Ground Condition", value: condition },
-						{ inline: true, name: "Time", value: time },
-						{ inline: true, name: "Seed", value: `\`${seed.toString()}\`` }
-					],
-					title: "Champions Meeting",
-					type: EmbedType.RICH
-				}
-			]
-		},
-		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+		embeds: [
+			{
+				description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}${g1 ? ` - ${g1}` : ""}`,
+				fields: [
+					{ inline: true, name: "Season", value: season },
+					{ inline: true, name: "Weather", value: weather },
+					{ inline: true, name: "Ground Condition", value: condition },
+					{ inline: true, name: "Time", value: time },
+					{ inline: true, name: "Seed", value: `\`${seed.toString()}\`` }
+				],
+				title: "Champions Meeting",
+				type: EmbedType.RICH
+			}
+		]
 	};
 }

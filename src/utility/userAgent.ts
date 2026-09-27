@@ -4,6 +4,6 @@
  * @see {@link https://docs.discord.com/developers/reference#user-agent}
  * @internal
  */
-const userAgent = "Maestro/0.1.0";
+const userAgent = "Maestro/1.0.0";
 
 export default userAgent;

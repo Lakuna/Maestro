@@ -1,11 +1,11 @@
 import type { infer as infer_ } from "zod";
 
-import type applicationCommandData from "../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
+import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
-import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
-import MessageFlag from "../discord/resources/message/MessageFlag.js";
+import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
+import userAgent from "../utility/userAgent.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
 import openpackHandler from "./handlers/openpackHandler.js";
@@ -18,42 +18,53 @@ import randcmHandler from "./handlers/randcmHandler.js";
  * @internal
  */
 export default async function handleApplicationCommand(
-	data: DeepReadonly<infer_<typeof applicationCommandData>>
-): Promise<infer_<typeof interactionResponse>> {
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(6); // TODO: Delete.
-
+	data: DeepReadonly<infer_<typeof interaction>>
+): Promise<void> {
+	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
-		switch (data.name) {
-			case openpackDefinition.name:
-				// eslint-disable-next-line no-console, no-warning-comments
-				console.info(7); // TODO: Delete.
+		if (data.type !== InteractionType.APPLICATION_COMMAND) {
+			throw new Error(
+				"Attempted to handle a non-application command as an application command."
+			);
+		}
 
-				return await openpackHandler(data);
+		switch (data.data.name) {
+			case openpackDefinition.name:
+				body ??= await openpackHandler(data.data);
+				break;
 			case randcmDefinition.name:
-				return randcmHandler(data);
+				body ??= randcmHandler(data.data);
+				break;
 			default:
 				throw new Error("Invalid command name.");
 		}
 	} catch (e) {
-		// eslint-disable-next-line no-console, no-warning-comments
-		console.error(e); // TODO: Delete.
-
-		return {
-			data: {
-				embeds: [
-					{
-						color: 0xff0000,
-						description:
-							typeof e === "string" ? e
-							: e instanceof Error ? e.message
-							: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
-						title: "Error"
-					}
-				],
-				flags: MessageFlag.EPHEMERAL
-			},
-			type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+		body ??= {
+			embeds: [
+				{
+					color: 0xff0000,
+					description:
+						typeof e === "string" ? e
+						: e instanceof Error ? e.message
+						: `\`\`\`json\n${JSON.stringify(e)}\n\`\`\``,
+					title: "Error"
+				}
+			]
 		};
 	}
+
+	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
+	await fetch(
+		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
+		{
+			body: JSON.stringify(body),
+			headers: {
+				/* eslint-disable @typescript-eslint/naming-convention */
+				"Content-Type": "application/json",
+				"User-Agent": userAgent
+				/* eslint-enable @typescript-eslint/naming-convention */
+			},
+			method: "PATCH"
+		}
+	);
 }
