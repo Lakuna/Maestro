@@ -15,6 +15,9 @@ import InteractionType from "./discord/interactions/receivingAndResponding/Inter
 const app: Hono = new Hono();
 
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(1); // TODO: Delete.
+
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
 		return c.json(void 0, 500);
@@ -41,11 +44,21 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND:
 			try {
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info(2); // TODO: Delete.
 				c.executionCtx.waitUntil(handleApplicationCommand(data));
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info(3); // TODO: Delete.
 			} catch {
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info(2.1); // TODO: Delete.
 				void handleApplicationCommand(data);
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info(3.1); // TODO: Delete.
 			}
 
+			// eslint-disable-next-line no-console, no-warning-comments
+			console.info(4); // TODO: Delete.
 			return c.json(
 				{ type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE },
 				200
