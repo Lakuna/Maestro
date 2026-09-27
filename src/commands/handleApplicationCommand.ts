@@ -69,7 +69,7 @@ export default async function handleApplicationCommand(
 	console.info(7); // TODO: Delete.
 
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
-	void fetch(
+	await fetch(
 		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
 		{
 			body: JSON.stringify(body),
@@ -81,10 +81,7 @@ export default async function handleApplicationCommand(
 			},
 			method: "PATCH"
 		}
-	).then(() => {
-		// eslint-disable-next-line no-console, no-warning-comments
-		console.info(9); // TODO: Delete.
-	});
+	);
 
 	// eslint-disable-next-line no-console, no-warning-comments
 	console.info(8); // TODO: Delete.
