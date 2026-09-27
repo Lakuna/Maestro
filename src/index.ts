@@ -2,6 +2,7 @@
 import type { infer as infer_ } from "zod";
 
 import { zValidator } from "@hono/zod-validator";
+import { waitUntil } from "@vercel/functions";
 import { Hono } from "hono";
 import nacl from "tweetnacl";
 
@@ -46,15 +47,23 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			try {
 				// eslint-disable-next-line no-console, no-warning-comments
 				console.info(2); // TODO: Delete.
-				c.executionCtx.waitUntil(handleApplicationCommand(data));
+				waitUntil(handleApplicationCommand(data));
 				// eslint-disable-next-line no-console, no-warning-comments
 				console.info(3); // TODO: Delete.
 			} catch {
-				// eslint-disable-next-line no-console, no-warning-comments
-				console.info(2.1); // TODO: Delete.
-				void handleApplicationCommand(data);
-				// eslint-disable-next-line no-console, no-warning-comments
-				console.info(3.1); // TODO: Delete.
+				try {
+					// eslint-disable-next-line no-console, no-warning-comments
+					console.info(2.1); // TODO: Delete.
+					c.executionCtx.waitUntil(handleApplicationCommand(data));
+					// eslint-disable-next-line no-console, no-warning-comments
+					console.info(3.1); // TODO: Delete.
+				} catch {
+					// eslint-disable-next-line no-console, no-warning-comments
+					console.info(2.2); // TODO: Delete.
+					void handleApplicationCommand(data);
+					// eslint-disable-next-line no-console, no-warning-comments
+					console.info(3.2); // TODO: Delete.
+				}
 			}
 
 			// eslint-disable-next-line no-console, no-warning-comments
