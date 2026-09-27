@@ -20,6 +20,9 @@ import randcmHandler from "./handlers/randcmHandler.js";
 export default async function handleApplicationCommand(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info("Handling application command..."); // TODO: Delete.
+
 	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.APPLICATION_COMMAND) {
@@ -30,6 +33,8 @@ export default async function handleApplicationCommand(
 
 		switch (data.data.name) {
 			case openpackDefinition.name:
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info("Handling `openpack` command..."); // TODO: Delete.
 				body ??= await openpackHandler(data.data);
 				break;
 			case randcmDefinition.name:
@@ -53,18 +58,26 @@ export default async function handleApplicationCommand(
 		};
 	}
 
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(`Built body: ${JSON.stringify(body)}`); // TODO: Delete.
+
+	const url = `https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`;
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(`Sending body to URL: ${url}`); // TODO: Delete.
+
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
-	await fetch(
-		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
-		{
-			body: JSON.stringify(body),
-			headers: {
-				/* eslint-disable @typescript-eslint/naming-convention */
-				"Content-Type": "application/json",
-				"User-Agent": userAgent
-				/* eslint-enable @typescript-eslint/naming-convention */
-			},
-			method: "PATCH"
-		}
-	);
+	await fetch(url, {
+		body: JSON.stringify(body),
+		headers: {
+			/* eslint-disable @typescript-eslint/naming-convention */
+			"Content-Type": "application/json",
+			"User-Agent": userAgent
+			/* eslint-enable @typescript-eslint/naming-convention */
+		},
+		method: "PATCH"
+	});
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info("Handled application command."); // TODO: Delete.
 }
