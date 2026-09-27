@@ -63,19 +63,14 @@ export default async function openpackHandler(
 	return {
 		embeds: [
 			{
-				fields: [
-					{ name: "Seed", value: `\`${seed.toString()}\`` },
-					{
-						name: "Cards",
-						value: cards
-							.map(
-								(cn) =>
-									// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
-									`[${collection.data.find(({ collector_number }) => collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${cn}?format=image)`
-							)
-							.join("\n")
-					}
-				],
+				description: cards
+					.map(
+						(cn) =>
+							// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
+							`[${collection.data.find(({ collector_number }) => collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${cn}?format=image)`
+					)
+					.join("\n"),
+				fields: [{ name: "Seed", value: `\`${seed.toString()}\`` }],
 				title: `${collection.data[0]?.set_name ?? `\`${set.code}\``} Pack`,
 				type: EmbedType.RICH
 			}
