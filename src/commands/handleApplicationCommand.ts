@@ -26,7 +26,7 @@ export default async function handleApplicationCommand(
 	await new Promise<void>((resolve) => {
 		setTimeout(() => {
 			resolve();
-		}, 3000);
+		}, 50);
 	});
 
 	// eslint-disable-next-line no-console, no-warning-comments
