@@ -20,6 +20,9 @@ import randcmHandler from "./handlers/randcmHandler.js";
 export default async function handleApplicationCommand(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(JSON.stringify(data)); // TODO: Delete.
+
 	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.APPLICATION_COMMAND) {
@@ -52,6 +55,9 @@ export default async function handleApplicationCommand(
 			]
 		};
 	}
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(JSON.stringify(body)); // TODO: Delete.
 
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
 	await fetch(
