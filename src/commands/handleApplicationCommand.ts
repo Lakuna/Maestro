@@ -58,10 +58,12 @@ export default async function handleApplicationCommand(
 
 	// eslint-disable-next-line no-console
 	console.info(
-		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`,
-		JSON.stringify(body)
+		`https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`
 		// eslint-disable-next-line no-warning-comments
 	); // TODO: Delete.
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(JSON.stringify(body)); // TODO: Delete.
 
 	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
 	const response = await fetch(
@@ -79,5 +81,8 @@ export default async function handleApplicationCommand(
 	);
 
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(response.status, JSON.stringify(await response.text())); // TODO: Delete.
+	console.info(response.status); // TODO: Delete.
+
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(await response.text()); // TODO: Delete.
 }
