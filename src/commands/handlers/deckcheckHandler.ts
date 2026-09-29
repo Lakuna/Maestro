@@ -101,7 +101,7 @@ const handleClassicMagic = (
 				"Amulet of Quoz",
 				"Bronze Tablet",
 				"Chaos Orb",
-				"Contact from Below",
+				"Contract from Below",
 				"Darkpact",
 				"Demonic Attorney",
 				"Falling Star",
