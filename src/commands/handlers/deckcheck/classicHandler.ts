@@ -1,11 +1,121 @@
 import type { infer as infer_ } from "zod";
 
 import type editWebhookMessage from "../../../discord/resources/webhook/editWebhookMessage.js";
-import type deckSchema from "../../../moxfield/deck.js";
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
+import type simpleDeck from "../../../utility/simpleDeck.js";
 
 import makeMarkdownList from "../../../utility/makeMarkdownList.js";
 import parseTypeLine from "../../../utility/parseTypeLine.js";
+
+const legalSets = [
+	"2ed",
+	"3ed",
+	"4ed",
+	"5ed",
+	"6ed",
+	"7ed",
+	"all",
+	"apc",
+	"arn",
+	"atq",
+	"ced",
+	"cei",
+	"chr",
+	"drk",
+	"exo",
+	"fem",
+	"hml",
+	"ice",
+	"inv",
+	"jud",
+	"lea",
+	"leb",
+	"leg",
+	"lgn",
+	"mir",
+	"mmq",
+	"nem",
+	"ody",
+	"ons",
+	"pcy",
+	"pls",
+	"po2",
+	"por",
+	"ptk",
+	"ren",
+	"s00",
+	"s99",
+	"scg",
+	"sth",
+	"tmp",
+	"tor",
+	"uds",
+	"ulg",
+	"usg",
+	"vis",
+	"wth"
+];
+
+const bannedCards = [
+	"Amulet of Quoz",
+	"Bronze Tablet",
+	"Chaos Orb",
+	"Contract from Below",
+	"Darkpact",
+	"Demonic Attorney",
+	"Falling Star",
+	"Jeweled Bird",
+	"Rebirth",
+	"Tempest Efreet",
+	"Timmerian Fiends"
+];
+
+const restrictedCards = [
+	"Ancestral Recall",
+	"Balance",
+	"Black Lotus",
+	"Black Vise",
+	"Braingeyser",
+	"Burning Wish",
+	"Channel",
+	"Demonic Consultation",
+	"Demonic Tutor",
+	"Fact or Fiction",
+	"Fastbond",
+	"Flash",
+	"Gush",
+	"Imperial Seal",
+	"Library of Alexandria",
+	"Lion's Eye Diamond",
+	"Lotus Petal",
+	"Mana Crypt",
+	"Mana Vault",
+	"Maze of Ith",
+	"Memory Jar",
+	"Merchant Scroll",
+	"Mind's Desire",
+	"Mind Twist",
+	"Mox Emerald",
+	"Mox Jet",
+	"Mox Pearl",
+	"Mox Ruby",
+	"Mox Sapphire",
+	"Mystical Tutor",
+	"Necropotence",
+	"Regrowth",
+	"Shahrazad",
+	"Sol Ring",
+	"Strip Mine",
+	"Stroke of Genius",
+	"Timetwister",
+	"Time Walk",
+	"Tolarian Academy",
+	"Vampiric Tutor",
+	"Wheel of Fortune",
+	"Windfall",
+	"Yawgmoth's Bargain",
+	"Yawgmoth's Will"
+];
 
 /**
  * Deck check for Classic Magic.
@@ -15,167 +125,84 @@ import parseTypeLine from "../../../utility/parseTypeLine.js";
  * @internal
  */
 export default function classicHandler(
-	deck: DeepReadonly<infer_<typeof deckSchema>>
+	deck: DeepReadonly<infer_<typeof simpleDeck>>
 ): infer_<typeof editWebhookMessage> {
+	const mainboard = deck.boards["mainboard"] ?? [];
+	const sideboard = deck.boards["sideboard"] ?? [];
+
 	const problems = [];
 	const infos = [];
-	if (deck.boards.mainboard.count < 60) {
+
+	const mainboardSize = mainboard.reduce(
+		(total, { count }) => total + count,
+		0
+	);
+	if (mainboardSize < 60) {
 		problems.push(
-			`Mainboard too small (has ${deck.boards.mainboard.count.toString()}, needs at least 60).`
-		);
-	}
-	if (deck.boards.sideboard.count > 15) {
-		problems.push(
-			`Sideboard too large (has ${deck.boards.sideboard.count.toString()}, needs at most 15).`
+			`Mainboard too small (has ${mainboardSize.toString()}, needs at least 60).`
 		);
 	}
 
-	for (const cards of Object.values(deck.boards.mainboard.cards).concat(
-		Object.values(deck.boards.sideboard.cards)
-	)) {
+	const sideboardSize = sideboard.reduce(
+		(total, { count }) => total + count,
+		0
+	);
+	if (sideboardSize > 15) {
+		problems.push(
+			`Sideboard too large (has ${sideboardSize.toString()}, needs at most 15).`
+		);
+	}
+
+	const cardss = sideboard.reduce(
+		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+		(out, { card, count }) => {
+			const cards2 = out.find(({ card: card2 }) => card2.name === card.name);
+			if (cards2) {
+				const { count: count2 } = cards2;
+				// @ts-expect-error We are creating a new instance of `simpleDeck` here.
+				cards2.count = count2 + count;
+			} else {
+				out.push(structuredClone({ card, count }));
+			}
+
+			return out;
+		},
+		mainboard.map((value) => structuredClone(value))
+	);
+	for (const cards of cardss) {
 		const { card } = cards;
+		const name = card.name ?? "`undefined`";
+		const set = card.set ?? "`unefined`";
+		const typeLine = card.typeLine ?? "`undefined`";
 
 		// Legal sets.
-		if (
-			![
-				"2ed",
-				"3ed",
-				"4ed",
-				"5ed",
-				"6ed",
-				"7ed",
-				"all",
-				"apc",
-				"arn",
-				"atq",
-				"ced",
-				"cei",
-				"chr",
-				"drk",
-				"exo",
-				"fem",
-				"hml",
-				"ice",
-				"inv",
-				"jud",
-				"lea",
-				"leb",
-				"leg",
-				"lgn",
-				"mir",
-				"mmq",
-				"nem",
-				"ody",
-				"ons",
-				"pcy",
-				"pls",
-				"po2",
-				"por",
-				"ptk",
-				"ren",
-				"s00",
-				"s99",
-				"scg",
-				"sth",
-				"tmp",
-				"tor",
-				"uds",
-				"ulg",
-				"usg",
-				"vis",
-				"wth"
-			].includes(card.set)
-		) {
-			problems.push(
-				`${card.name} is from an illegal set (${card.set.toUpperCase()}).`
-			);
+		if (!legalSets.includes(set)) {
+			problems.push(`${name} is from an illegal set (${set.toUpperCase()}).`);
 		}
 
 		// Banned cards.
-		if (
-			[
-				"Amulet of Quoz",
-				"Bronze Tablet",
-				"Chaos Orb",
-				"Contract from Below",
-				"Darkpact",
-				"Demonic Attorney",
-				"Falling Star",
-				"Jeweled Bird",
-				"Rebirth",
-				"Tempest Efreet",
-				"Timmerian Fiends"
-			].includes(card.name)
-		) {
-			problems.push(`${card.name} is banned.`);
+		if (bannedCards.includes(name)) {
+			problems.push(`${name} is banned.`);
 		}
 
 		const mainboardCount =
-			deck.boards.mainboard.cards[card.uniqueCardId]?.quantity ?? 0;
+			mainboard.find((value) => value.card.name === card.name)?.count ?? 0;
 		const sideboardCount =
-			deck.boards.sideboard.cards[card.uniqueCardId]?.quantity ?? 0;
-		if (
-			(mainboardCount > 0 && cards.boardType === "sideboard") ||
-			parseTypeLine(card.type_line ?? "")[0].includes("Basic")
-		) {
-			// Prevent printing these warnings twice or for basic lands.
+			sideboard.find((value) => value.card.name === card.name)?.count ?? 0;
+		if (parseTypeLine(typeLine)[0].includes("Basic")) {
+			// Prevent printing these warnings for basic lands.
 		} else if (
-			[
-				"Ancestral Recall",
-				"Balance",
-				"Black Lotus",
-				"Black Vise",
-				"Braingeyser",
-				"Burning Wish",
-				"Channel",
-				"Demonic Consultation",
-				"Demonic Tutor",
-				"Fact or Fiction",
-				"Fastbond",
-				"Flash",
-				"Gush",
-				"Imperial Seal",
-				"Library of Alexandria",
-				"Lion's Eye Diamond",
-				"Lotus Petal",
-				"Mana Crypt",
-				"Mana Vault",
-				"Maze of Ith",
-				"Memory Jar",
-				"Merchant Scroll",
-				"Mind's Desire",
-				"Mind Twist",
-				"Mox Emerald",
-				"Mox Jet",
-				"Mox Pearl",
-				"Mox Ruby",
-				"Mox Sapphire",
-				"Mystical Tutor",
-				"Necropotence",
-				"Regrowth",
-				"Shahrazad",
-				"Sol Ring",
-				"Strip Mine",
-				"Stroke of Genius",
-				"Timetwister",
-				"Time Walk",
-				"Tolarian Academy",
-				"Vampiric Tutor",
-				"Wheel of Fortune",
-				"Windfall",
-				"Yawgmoth's Bargain",
-				"Yawgmoth's Will"
-			].includes(card.name) &&
+			restrictedCards.includes(name) &&
 			mainboardCount + sideboardCount > 1
 		) {
 			// Restricted cards.
 			problems.push(
-				`Too many copies of ${cards.card.name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be at most 1 total).`
+				`Too many copies of ${name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be at most 1 total).`
 			);
 		} else if (mainboardCount + sideboardCount > 4) {
 			// Maximum copies.
 			problems.push(
-				`Too many copies of ${cards.card.name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be at most 4 total).`
+				`Too many copies of ${name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be at most 4 total).`
 			);
 		}
 
@@ -192,12 +219,19 @@ export default function classicHandler(
 		}
 	}
 
+	const nameString =
+		deck.name ?
+			deck.url ?
+				`[${deck.name}](${deck.url})`
+			:	deck.name
+		:	"`undefined`";
+
 	if (problems.length) {
 		return {
 			embeds: [
 				{
 					color: 0xff0000,
-					description: `[${deck.name}](${deck.publicUrl}) is not a legal Classic Magic deck.\n${makeMarkdownList(problems)}`,
+					description: `${nameString} is not a legal Classic Magic deck.\n${makeMarkdownList(problems)}`,
 					title: "Illegal Deck"
 				}
 			]
@@ -208,7 +242,7 @@ export default function classicHandler(
 		embeds: [
 			{
 				color: 0x00ff00,
-				description: `[${deck.name}](${deck.publicUrl}) is a legal Classic Magic deck.${infos.length ? ` Note the following:\n${makeMarkdownList(infos)}` : ""}`,
+				description: `${nameString} is a legal Classic Magic deck.${infos.length ? ` Note the following:\n${makeMarkdownList(infos)}` : ""}`,
 				title: "Legal Deck"
 			}
 		]

@@ -6,6 +6,7 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import getDeck from "../../moxfield/getDeck.js";
+import simplifyDeck from "../../utility/simplifyDeck.js";
 import classicHandler from "./deckcheck/classicHandler.js";
 import tribalHandler from "./deckcheck/tribalHandler.js";
 
@@ -39,12 +40,12 @@ export default async function deckcheckHandler(
 		throw new Error("Invalid URL.");
 	}
 
-	const deck = await getDeck(id);
+	const deck = simplifyDeck(await getDeck(id));
 	switch (subcommandOption.name) {
-		case "classicmagic":
+		case "classic":
 			return classicHandler(deck);
-		case "tribalwars":
-			return tribalHandler(deck);
+		case "tribal":
+			return await tribalHandler(deck);
 		default:
 			throw new Error(
 				`Unhandled subcommand ${subcommandOption.name ?? "undefined"}`
