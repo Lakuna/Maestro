@@ -12,7 +12,7 @@ const deckcheckDefinition = {
 	options: [
 		{
 			description: "Check a deck for Tribal Wars.",
-			name: "tribalwars",
+			name: "tribal",
 			options: [
 				{
 					description: "The link to the deck on Moxfield.",
@@ -25,7 +25,20 @@ const deckcheckDefinition = {
 		},
 		{
 			description: "Check a deck for Classic Magic.",
-			name: "classicmagic",
+			name: "classic",
+			options: [
+				{
+					description: "The link to the deck on Moxfield.",
+					name: "url",
+					required: true,
+					type: ApplicationCommandOptionType.STRING
+				}
+			],
+			type: ApplicationCommandOptionType.SUB_COMMAND
+		},
+		{
+			description: "Check a deck for Sealed Deck.",
+			name: "sealed",
 			options: [
 				{
 					description: "The link to the deck on Moxfield.",
