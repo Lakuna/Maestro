@@ -13,17 +13,19 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 export default function checkTribalWarsDeckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
 ): infer_<typeof editWebhookMessage> {
-	if (!commandData.target_id) {
+	const messageId = commandData.target_id;
+	if (!messageId) {
 		throw new Error("Missing target ID.");
 	}
 
-	if (!commandData.resolved?.messages) {
+	const messages = commandData.resolved?.messages;
+	if (!messages) {
 		throw new Error("Missing resolved messages.");
 	}
 
-	const message = commandData.resolved.messages[commandData.target_id];
+	const message = messages[messageId];
 	if (!message) {
-		throw new Error(`Failed to resolve message \`${commandData.target_id}\`.`);
+		throw new Error(`Failed to resolve message \`${messageId}\`.`);
 	}
 
 	const lines = message.content?.split("\n") ?? [];
@@ -49,18 +51,6 @@ export default function checkTribalWarsDeckHandler(
 			{
 				description: "Hello, message command!",
 				fields: [
-					{
-						inline: true,
-						name: "Message ID",
-						value: `\`${commandData.target_id}\``
-					},
-					{
-						inline: true,
-						name: "Resolved Messages",
-						value: Object.keys(commandData.resolved.messages)
-							.map((key) => `\`${key}\``)
-							.join(", ")
-					},
 					{
 						inline: true,
 						name: "Lines",
