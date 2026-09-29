@@ -20,6 +20,8 @@ export default async function getDeck(
 		}
 	});
 	if (!response.ok) {
+		// eslint-disable-next-line no-console, no-warning-comments
+		console.error(response.status); // TODO: Delete.
 		throw new Error(await response.text());
 	}
 
