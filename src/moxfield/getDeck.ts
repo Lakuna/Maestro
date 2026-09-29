@@ -20,8 +20,11 @@ export default async function getDeck(
 		}
 	});
 	if (!response.ok) {
-		// eslint-disable-next-line no-console, no-warning-comments
-		console.error(response.status); // TODO: Delete.
+		// Log a special message instead of the Cloudflare page HTML if the request is forbidden.
+		if (response.status === 403) {
+			throw new Error("Moxfield has blocked this interaction.");
+		}
+
 		throw new Error(await response.text());
 	}
 
