@@ -7,10 +7,12 @@ import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import userAgent from "../utility/userAgent.js";
+import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeckDefinition.js";
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
+import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
@@ -58,6 +60,9 @@ export default async function handleApplicationCommand(
 		}
 
 		switch (data.data.name) {
+			case checkClassicMagicDeckDefinition.name:
+				body ??= await checkClassicMagicDeckHandler(data.data);
+				break;
 			case checkTribalWarsDeckDefinition.name:
 				body ??= await checkTribalWarsDeckHandler(data.data);
 				break;
