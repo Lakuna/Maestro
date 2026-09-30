@@ -21,10 +21,11 @@ export default function checkTribalWarsDeckHandler(
 		throw new Error("Missing resolved messages.");
 	}
 
+	// eslint-disable-next-line capitalized-comments
+	// prettier-ignore
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore TypeScript struggles with circular type references. This directive is required in some environments and not others (hence ts-ignore over ts-expect-error).
-	const message: undefined | { content?: string | undefined } =
-		commandData.resolved.messages[commandData.target_id];
+	const message: undefined | { content?: string | undefined } = commandData.resolved.messages[commandData.target_id];
 	if (!message) {
 		throw new Error(`Failed to resolve message \`${commandData.target_id}\`.`);
 	}
