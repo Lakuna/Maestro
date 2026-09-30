@@ -18,7 +18,17 @@ import tribalHandler from "./deckcheck/tribalHandler.js";
 export default async function checkTribalWarsDeckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
 ): Promise<infer_<typeof editWebhookMessage>> {
-	return await tribalHandler(
-		await informDeck(parseDeckList(getMessageContent(commandData)))
-	);
+	const content = getMessageContent(commandData);
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(content); // TODO: Delete.
+
+	const simpleDeck = parseDeckList(content);
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(simpleDeck); // TODO: Delete.
+
+	const deck = await informDeck(simpleDeck);
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(deck); // TODO: Delete.
+
+	return await tribalHandler(deck);
 }
