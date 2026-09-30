@@ -13,19 +13,19 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 export default function checkTribalWarsDeckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
 ): infer_<typeof editWebhookMessage> {
-	const messageId = commandData.target_id;
-	if (!messageId) {
+	if (!commandData.target_id) {
 		throw new Error("Missing target ID.");
 	}
 
-	const messages = commandData.resolved?.messages;
-	if (!messages) {
+	if (!commandData.resolved?.messages) {
 		throw new Error("Missing resolved messages.");
 	}
 
-	const message = messages[messageId];
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore TypeScript struggles with circular type references. This directive is required in some environments and not others (hence ts-ignore over ts-expect-error).
+	const message = commandData.resolved.messages[commandData.target_id];
 	if (!message) {
-		throw new Error(`Failed to resolve message \`${messageId}\`.`);
+		throw new Error(`Failed to resolve message \`${commandData.target_id}\`.`);
 	}
 
 	const lines = message.content?.split("\n") ?? [];
