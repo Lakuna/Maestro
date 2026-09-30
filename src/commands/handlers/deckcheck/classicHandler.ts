@@ -172,7 +172,7 @@ export default function classicHandler(
 	for (const cards of cardss) {
 		const { card } = cards;
 		const name = card.name ?? "`undefined`";
-		const set = card.set ?? "`unefined`";
+		const set = card.set ?? "`undefined`";
 		const typeLine = card.typeLine ?? "`undefined`";
 
 		// Legal sets.

@@ -32,7 +32,7 @@ export default function parseCardsLine(
 		card: {
 			collectorNumber: matches.groups?.["collectorNumber"],
 			name,
-			set: matches.groups?.["set"]
+			set: matches.groups?.["set"]?.toLowerCase()
 		},
 		count
 	};
