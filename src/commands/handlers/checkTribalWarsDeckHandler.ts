@@ -20,15 +20,15 @@ export default async function checkTribalWarsDeckHandler(
 ): Promise<infer_<typeof editWebhookMessage>> {
 	const content = getMessageContent(commandData);
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(content); // TODO: Delete.
+	console.info(JSON.stringify(content)); // TODO: Delete.
 
 	const simpleDeck = parseDeckList(content);
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(simpleDeck); // TODO: Delete.
+	console.info(JSON.stringify(simpleDeck)); // TODO: Delete.
 
 	const deck = await informDeck(simpleDeck);
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(deck); // TODO: Delete.
+	console.info(JSON.stringify(deck)); // TODO: Delete.
 
 	return await tribalHandler(deck);
 }
