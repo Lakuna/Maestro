@@ -51,14 +51,8 @@ export default async function informDeck<T extends _infer<typeof simpleDeck>>(
 		}
 	}
 
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(JSON.stringify(identifiers)); // TODO: Delete.
-
 	// Fetch full card data from Scryfall.
 	const collection = await getCardCollection({ identifiers });
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(JSON.stringify(collection)); // TODO: Delete.
 
 	// Information-filling loop.
 	for (const boardName of ["mainboard", "sideboard"]) {
@@ -70,14 +64,10 @@ export default async function informDeck<T extends _infer<typeof simpleDeck>>(
 				// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 				(value) =>
 					(!card.collectorNumber ||
-						!value.collector_number ||
 						card.collectorNumber === value.collector_number) &&
-					(!card.name || !value.name || card.name === value.name) &&
-					(!card.set || !value.set || card.set === value.set)
+					(!card.name || card.name === value.name) &&
+					(!card.set || card.set.toLowerCase() === value.set.toLowerCase())
 			);
-			if (!data) {
-				continue;
-			}
 
 			// Add data where missing.
 			card.collectorNumber ??= data.collector_number;
