@@ -4,15 +4,19 @@ import type applicationCommandData from "../../discord/interactions/receivingAnd
 import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
+import informDeck from "../../utility/informDeck.js";
+import parseDeckList from "../../utility/parseDecklist.js";
+import tribalHandler from "./deckcheck/tribalHandler.js";
+
 /**
  * Handle the `Check Tribal Wars Deck` message command.
  * @param commandData - The Discord application command data.
  * @returns The Discord interaction response.
  * @internal
  */
-export default function checkTribalWarsDeckHandler(
+export default async function checkTribalWarsDeckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): infer_<typeof editWebhookMessage> {
+): Promise<infer_<typeof editWebhookMessage>> {
 	if (!commandData.target_id) {
 		throw new Error("Missing target ID.");
 	}
@@ -30,46 +34,7 @@ export default function checkTribalWarsDeckHandler(
 		throw new Error(`Failed to resolve message \`${commandData.target_id}\`.`);
 	}
 
-	const lines = message.content?.split("\n") ?? [];
-	const mainboardHeaderIndex = lines.findIndex((line) =>
-		/^deck:?$/iu.test(line)
+	return await tribalHandler(
+		await informDeck(parseDeckList(message.content ?? ""))
 	);
-	const sideboardHeaderIndex = lines.findIndex((line) =>
-		/^sideboard:?$/iu.test(line)
-	);
-	const mainboardLines = lines
-		.slice(
-			mainboardHeaderIndex + 1,
-			sideboardHeaderIndex < 0 ? void 0 : sideboardHeaderIndex
-		)
-		.filter((line) => line.length);
-	const sideboardLines =
-		sideboardHeaderIndex < 0 ?
-			[]
-		:	lines.slice(sideboardHeaderIndex + 1).filter((line) => line.length);
-
-	return {
-		embeds: [
-			{
-				description: "Hello, message command!",
-				fields: [
-					{
-						inline: true,
-						name: "Lines",
-						value: `\`${lines.length.toString()}\``
-					},
-					{
-						inline: true,
-						name: "Mainboard Lines",
-						value: `\`${mainboardLines.length.toString()}\``
-					},
-					{
-						inline: true,
-						name: "Sideboard Lines",
-						value: `\`${sideboardLines.length.toString()}\``
-					}
-				]
-			}
-		]
-	};
 }
