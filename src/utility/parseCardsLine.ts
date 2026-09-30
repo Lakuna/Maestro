@@ -10,7 +10,7 @@ export default function parseCardsLine(
 	line: string
 ): _infer<typeof simpleCards> {
 	const matches =
-		/^(?<count>\d+) (?<name>.+) \((?<set>[^)]+)\) (?<collectorNumber>[^\s]+)$/iu.exec(
+		/^(?<count>\d+) (?<name>.+?)(?: \((?<set>[^)\s]+)\) (?<collectorNumber>[^\s]+))?$/iu.exec(
 			line
 		);
 
