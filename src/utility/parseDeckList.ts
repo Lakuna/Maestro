@@ -31,8 +31,9 @@ export default function parseDeckList(
 	const out: _infer<typeof simpleDeck> = {
 		boards: { mainboard: [], sideboard: [] },
 		name:
-			/^name $/iu.exec(aboutLines.find((line) => /^name/iu.test(line)) ?? "")
-				?.groups?.["name"] ?? "Unnamed Deck"
+			/^name (?<name>.*)$/iu.exec(
+				aboutLines.find((line) => /^name/iu.test(line)) ?? ""
+			)?.groups?.["name"] ?? "Unnamed Deck"
 	};
 
 	const mainboardLines = lines

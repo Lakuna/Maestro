@@ -70,9 +70,10 @@ export default async function informDeck<T extends _infer<typeof simpleDeck>>(
 				// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 				(value) =>
 					(!card.collectorNumber ||
+						!value.collector_number ||
 						card.collectorNumber === value.collector_number) &&
-					(!card.name || card.name === value.name) &&
-					(!card.set || card.set === value.set)
+					(!card.name || !value.name || card.name === value.name) &&
+					(!card.set || !value.set || card.set === value.set)
 			);
 			if (!data) {
 				continue;
