@@ -68,6 +68,9 @@ export default async function informDeck<T extends _infer<typeof simpleDeck>>(
 					(!card.name || card.name === value.name) &&
 					(!card.set || card.set.toLowerCase() === value.set.toLowerCase())
 			);
+			if (!data) {
+				continue;
+			}
 
 			// Add data where missing.
 			card.collectorNumber ??= data.collector_number;
