@@ -5,7 +5,7 @@ import type editWebhookMessage from "../../discord/resources/webhook/editWebhook
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import informDeck from "../../utility/informDeck.js";
-import parseDeckList from "../../utility/parseDecklist.js";
+import parseDeckList from "../../utility/parseDeckList.js";
 import tribalHandler from "./deckcheck/tribalHandler.js";
 
 /**

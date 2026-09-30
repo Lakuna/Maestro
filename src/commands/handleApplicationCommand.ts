@@ -59,7 +59,7 @@ export default async function handleApplicationCommand(
 
 		switch (data.data.name) {
 			case checkTribalWarsDeckDefinition.name:
-				body ??= checkTribalWarsDeckHandler(data.data);
+				body ??= await checkTribalWarsDeckHandler(data.data);
 				break;
 			case deckcheckDefinition.name:
 				body ??= await deckcheckHandler(data.data);
