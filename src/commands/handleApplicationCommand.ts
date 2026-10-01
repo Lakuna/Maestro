@@ -1,11 +1,11 @@
 import type { infer as infer_ } from "zod";
 
 import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
-import type embed from "../discord/resources/message/embed.js";
 import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
+import embedForError from "../utility/embedForError.js";
 import userAgent from "../utility/userAgent.js";
 import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeckDefinition.js";
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
@@ -17,30 +17,6 @@ import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
-
-const embedForError = (e: unknown): infer_<typeof embed> => {
-	let description =
-		typeof e === "string" ? e
-		: e instanceof Error ? e.message
-		: JSON.stringify(e);
-
-	try {
-		JSON.parse(description);
-		description = `\`\`\`json\n${description}\n\`\`\``;
-	} catch {
-		// `description` is not JSON, display it as-is.
-	}
-
-	if (description.length > 4096) {
-		// There isn't an easy way to display longer messages than this within Discord, so fall back to the console.
-		// eslint-disable-next-line no-console
-		console.error(description);
-
-		description = "Error description too long to display (check console).";
-	}
-
-	return { color: 0xff0000, description, title: "Error" };
-};
 
 /**
  * Respond to an application command.

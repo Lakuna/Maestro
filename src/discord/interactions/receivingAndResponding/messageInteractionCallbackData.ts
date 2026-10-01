@@ -11,7 +11,7 @@ import pollCreateRequest from "../../resources/poll/pollCreateRequest.js";
  * @see {@link https://docs.discord.com/developers/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure}
  * @internal
  */
-const interactionCallbackData = object({
+const messageInteractionCallbackData = object({
 	/* eslint-disable @typescript-eslint/naming-convention */
 	allowed_mentions: optional(allowedMentions),
 	attachments: optional(array(attachment.partial())),
@@ -24,4 +24,4 @@ const interactionCallbackData = object({
 	/* eslint-enable @typescript-eslint/naming-convention */
 });
 
-export default interactionCallbackData;
+export default messageInteractionCallbackData;

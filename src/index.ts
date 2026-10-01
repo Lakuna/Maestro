@@ -9,9 +9,11 @@ import nacl from "tweetnacl";
 import type interactionResponse from "./discord/interactions/receivingAndResponding/interactionResponse.js";
 
 import handleApplicationCommand from "./commands/handleApplicationCommand.js";
+import preHandleApplicationCommand from "./commands/preHandleApplicationCommand.js";
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
+import embedForError from "./utility/embedForError.js";
 
 const app: Hono = new Hono();
 
@@ -40,7 +42,23 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 
 	const data = c.req.valid("json");
 	switch (data.type) {
-		case InteractionType.APPLICATION_COMMAND:
+		case InteractionType.APPLICATION_COMMAND: {
+			// Handle special cases.
+			try {
+				const pre = preHandleApplicationCommand(data);
+				if (pre) {
+					return c.json(pre, 200);
+				}
+			} catch (e) {
+				return c.json(
+					{
+						data: { embeds: [embedForError(e)] },
+						type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+					} satisfies infer_<typeof interactionResponse>,
+					200
+				);
+			}
+
 			// Set up the asynchronous work to be done.
 			try {
 				// Vercel
@@ -57,9 +75,12 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 
 			// Immediately return a deferred ("loading") message.
 			return c.json(
-				{ type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE },
+				{
+					type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
+				} satisfies infer_<typeof interactionResponse>,
 				200
 			);
+		}
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json({ type: InteractionCallbackType.PONG } satisfies infer_<
