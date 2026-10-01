@@ -45,12 +45,12 @@
 	},
 	"scripts": {
 		"build": "tsc",
+		"createGlobalCommand": "node ./dist/createGlobalCommand.js",
 		"deleteGlobalCommand": "node ./dist/deleteGlobalCommand.js",
 		"findSeed": "node ./dist/findSeed.js",
 		"fix": "eslint --fix",
 		"getGlobalCommands": "node ./dist/getGlobalCommands.js",
 		"lint": "eslint",
-		"makeGlobalCommands": "node ./dist/makeGlobalCommands.js",
 		"start": "node .",
 		"test": "node --test"
 	},

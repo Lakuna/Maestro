@@ -81,6 +81,8 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 				200
 			);
 		}
+		case InteractionType.MODAL_SUBMIT:
+			return c.json(void 0, 400);
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json({ type: InteractionCallbackType.PONG } satisfies infer_<
