@@ -1,4 +1,4 @@
-import type { infer as _infer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type deck from "../moxfield/deck.js";
 import type { DeepReadonly } from "./DeepReadonly.js";
@@ -9,9 +9,9 @@ import type simpleDeck from "./simpleDeck.js";
  * @internal
  */
 export default function simplifyDeck(
-	inn: DeepReadonly<_infer<typeof deck>>
-): _infer<typeof simpleDeck> {
-	const out: _infer<typeof simpleDeck> = {
+	inn: DeepReadonly<infer_<typeof deck>>
+): infer_<typeof simpleDeck> {
+	const out: infer_<typeof simpleDeck> = {
 		boards: {},
 		name: inn.name,
 		url: inn.publicUrl

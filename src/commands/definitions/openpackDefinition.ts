@@ -12,7 +12,7 @@ const openpackDefinition = {
 	name: "openpack",
 	options: [
 		{
-			description: "The set code of the set.",
+			description: "The code of the set.",
 			max_length: 3,
 			min_length: 3,
 			name: "set",

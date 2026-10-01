@@ -1,4 +1,4 @@
-import type { infer as _infer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type simpleDeck from "./simpleDeck.js";
 
@@ -10,7 +10,7 @@ import parseCardsLine from "./parseCardsLine.js";
  */
 export default function parseDeckList(
 	message: string
-): _infer<typeof simpleDeck> {
+): infer_<typeof simpleDeck> {
 	const lines = message.split("\n");
 
 	const aboutHeaderIndex = lines.findIndex((line) => /^about:?$/iu.test(line));
@@ -28,7 +28,7 @@ export default function parseDeckList(
 		)
 		.filter((line) => line.length);
 
-	const out: _infer<typeof simpleDeck> = {
+	const out: infer_<typeof simpleDeck> = {
 		boards: { mainboard: [], sideboard: [] },
 		name:
 			/^name (?<name>.*)$/iu.exec(

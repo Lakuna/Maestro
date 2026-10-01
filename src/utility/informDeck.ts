@@ -1,4 +1,4 @@
-import type { infer as _infer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type { CardIdentifier } from "../scryfall/CardIdentifier.js";
 import type simpleDeck from "./simpleDeck.js";
@@ -11,7 +11,7 @@ import getCardCollection from "../scryfall/getCardCollection.js";
  * @returns The filled out deck.
  * @internal
  */
-export default async function informDeck<T extends _infer<typeof simpleDeck>>(
+export default async function informDeck<T extends infer_<typeof simpleDeck>>(
 	deck: T
 ): Promise<T> {
 	// Make a deep copy of `deck` so that it is not modified in-place.

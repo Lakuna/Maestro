@@ -7,6 +7,7 @@ import ApplicationCommandOptionType from "../../discord/interactions/application
  * @internal
  */
 const deckcheckDefinition = {
+	/* eslint-disable @typescript-eslint/naming-convention */
 	description: "Check a deck for a specific format.",
 	name: "deckcheck",
 	options: [
@@ -45,11 +46,27 @@ const deckcheckDefinition = {
 					name: "url",
 					required: true,
 					type: ApplicationCommandOptionType.STRING
+				},
+				{
+					description: "The code of the set.",
+					max_length: 3,
+					min_length: 3,
+					name: "set",
+					required: true,
+					type: ApplicationCommandOptionType.STRING
+				},
+				{
+					description:
+						"The comma- and/or whitespace-separated seeds to use in the PRNG.",
+					name: "seeds",
+					required: false,
+					type: ApplicationCommandOptionType.STRING
 				}
 			],
 			type: ApplicationCommandOptionType.SUB_COMMAND
 		}
 	]
+	/* eslint-enable @typescript-eslint/naming-convention */
 } satisfies CreateGlobalApplicationCommandParams;
 
 export default deckcheckDefinition;

@@ -4,6 +4,7 @@ import type editWebhookMessage from "../../../discord/resources/webhook/editWebh
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 import type simpleDeck from "../../../utility/simpleDeck.js";
 
+import combineBoards from "../../../utility/combineBoards.js";
 import makeMarkdownList from "../../../utility/makeMarkdownList.js";
 import parseTypeLine from "../../../utility/parseTypeLine.js";
 
@@ -153,23 +154,7 @@ export default function classicHandler(
 		);
 	}
 
-	const cardss = sideboard.reduce(
-		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-		(out, { card, count }) => {
-			const cards2 = out.find(({ card: card2 }) => card2.name === card.name);
-			if (cards2) {
-				const { count: count2 } = cards2;
-				// @ts-expect-error We are creating a new instance of `simpleDeck` here.
-				cards2.count = count2 + count;
-			} else {
-				out.push(structuredClone({ card, count }));
-			}
-
-			return out;
-		},
-		mainboard.map((value) => structuredClone(value))
-	);
-	for (const cards of cardss) {
+	for (const cards of combineBoards(mainboard, sideboard)) {
 		const { card } = cards;
 		const name = card.name ?? "`undefined`";
 		const set = card.set ?? "`undefined`";

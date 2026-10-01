@@ -8,6 +8,7 @@ import ApplicationCommandOptionType from "../../discord/interactions/application
 import getDeck from "../../moxfield/getDeck.js";
 import simplifyDeck from "../../utility/simplifyDeck.js";
 import classicHandler from "./deckcheck/classicHandler.js";
+import sealedHandler from "./deckcheck/sealedHandler.js";
 import tribalHandler from "./deckcheck/tribalHandler.js";
 
 /**
@@ -44,6 +45,25 @@ export default async function deckcheckHandler(
 	switch (subcommandOption.name) {
 		case "classic":
 			return classicHandler(deck);
+		case "sealed": {
+			const setOption = subcommandOption.options?.find(
+				({ name, type }) =>
+					name === "set" && type === ApplicationCommandOptionType.STRING
+			);
+			if (typeof setOption?.value !== "string") {
+				throw new Error("Invalid set value.");
+			}
+
+			const seedsOption = subcommandOption.options?.find(
+				({ name, type }) =>
+					name === "seeds" && type === ApplicationCommandOptionType.STRING
+			);
+			if (typeof seedsOption?.value !== "string") {
+				throw new Error("Invalid set value.");
+			}
+
+			return sealedHandler(deck, setOption.value, seedsOption.value);
+		}
 		case "tribal":
 			return await tribalHandler(deck);
 		default:

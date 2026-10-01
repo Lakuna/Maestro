@@ -1,4 +1,4 @@
-import type { infer as _infer } from "zod";
+import type { infer as infer_ } from "zod";
 
 import type simpleCards from "./simpleCards.js";
 
@@ -8,7 +8,7 @@ import type simpleCards from "./simpleCards.js";
  */
 export default function parseCardsLine(
 	line: string
-): _infer<typeof simpleCards> {
+): infer_<typeof simpleCards> {
 	const matches =
 		/^(?<count>\d+) (?<name>.+?)(?: \((?<set>[^)\s]+)\) (?<collectorNumber>[^\s]+))?$/iu.exec(
 			line
