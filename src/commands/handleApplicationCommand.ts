@@ -4,9 +4,9 @@ import type interaction from "../discord/interactions/receivingAndResponding/int
 import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
+import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import embedForError from "../utility/embedForError.js";
-import userAgent from "../utility/userAgent.js";
 import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeckDefinition.js";
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
@@ -58,34 +58,15 @@ export default async function handleApplicationCommand(
 		body ??= { embeds: [embedForError(e)] };
 	}
 
-	// https://docs.discord.com/developers/interactions/receiving-and-responding#edit-original-interaction-response
-	const url = `https://discord.com/api/v10/webhooks/${data.application_id}/${data.token}/messages/@original`;
 	try {
-		const response = await fetch(url, {
-			body: JSON.stringify(body),
-			headers: {
-				/* eslint-disable @typescript-eslint/naming-convention */
-				"Content-Type": "application/json",
-				"User-Agent": userAgent
-				/* eslint-enable @typescript-eslint/naming-convention */
-			},
-			method: "PATCH"
-		});
-		if (!response.ok) {
-			throw new Error(await response.text());
-		}
+		await editOriginalInteractionResponse(
+			data.application_id,
+			data.token,
+			body
+		);
 	} catch (e) {
-		await fetch(url, {
-			body: JSON.stringify({ embeds: [embedForError(e)] } satisfies infer_<
-				typeof editWebhookMessage
-			>),
-			headers: {
-				/* eslint-disable @typescript-eslint/naming-convention */
-				"Content-Type": "application/json",
-				"User-Agent": userAgent
-				/* eslint-enable @typescript-eslint/naming-convention */
-			},
-			method: "PATCH"
+		await editOriginalInteractionResponse(data.application_id, data.token, {
+			embeds: [embedForError(e)]
 		});
 	}
 }
