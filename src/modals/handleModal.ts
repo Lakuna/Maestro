@@ -29,7 +29,7 @@ export default async function handleModal(
 
 		switch (data.data.custom_id) {
 			case CSDMODAL_ID:
-				body ??= csdmodalHandler(data.data);
+				body ??= await csdmodalHandler(data.data);
 				break;
 			default:
 				throw new Error("Invalid modal ID.");
