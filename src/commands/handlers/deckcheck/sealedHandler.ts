@@ -46,7 +46,7 @@ export default function sealedHandler(
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 		(pool, seed) => {
 			for (const collectorNumber of packFn(seed)) {
-				pool.set(collectorNumber, pool.getOrInsert(collectorNumber, 0) + 1);
+				pool.set(collectorNumber, (pool.get(collectorNumber) ?? 0) + 1);
 			}
 
 			return pool;
