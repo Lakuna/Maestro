@@ -13,6 +13,7 @@ import preHandleApplicationCommand from "./commands/preHandleApplicationCommand.
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
+import handleModal from "./modals/handleModal.js";
 import embedForError from "./utility/embedForError.js";
 
 const app: Hono = new Hono();
@@ -82,7 +83,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			);
 		}
 		case InteractionType.MODAL_SUBMIT:
-			return c.json(void 0, 400);
+			return c.json(handleModal(data), 200);
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json({ type: InteractionCallbackType.PONG } satisfies infer_<

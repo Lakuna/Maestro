@@ -7,8 +7,12 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 import ComponentType from "../../discord/components/ComponentType.js";
 import TextInputStyle from "../../discord/components/TextInputStyle.js";
 import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
+import {
+	CSDMODAL_ID,
+	CSDMODAL_SEEDS_ID,
+	CSDMODAL_SET_ID
+} from "../../modals/definitions/csdmodalDefinition.js";
 import getMessageContent from "../../utility/getMessageContent.js";
-import checkSealedDeckDefinition from "../definitions/checkSealedDeck.js";
 
 /**
  * Handle the `Check Sealed Deck` message command.
@@ -25,7 +29,7 @@ export default function checkSealedDeckHandler(
 			components: [
 				{
 					component: {
-						custom_id: "set",
+						custom_id: CSDMODAL_SET_ID,
 						max_length: 3,
 						min_length: 3,
 						style: TextInputStyle.SHORT,
@@ -37,7 +41,7 @@ export default function checkSealedDeckHandler(
 				},
 				{
 					component: {
-						custom_id: "seeds",
+						custom_id: CSDMODAL_SEEDS_ID,
 						style: TextInputStyle.SHORT,
 						type: ComponentType.TEXT_INPUT
 					},
@@ -51,8 +55,8 @@ export default function checkSealedDeckHandler(
 					type: ComponentType.TEXT_DISPLAY
 				}
 			],
-			custom_id: "checksealeddeck",
-			title: checkSealedDeckDefinition.name
+			custom_id: CSDMODAL_ID,
+			title: "Check Sealed Deck"
 		},
 		type: InteractionCallbackType.MODAL
 		/* eslint-enable @typescript-eslint/naming-convention */
