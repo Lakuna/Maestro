@@ -61,7 +61,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			}
 
 			// Set up the asynchronous work to be done.
-			waitUntil(c.executionCtx, handleApplicationCommand(data));
+			waitUntil(c, handleApplicationCommand(data));
 
 			// Immediately return a deferred ("loading") message.
 			return c.json(
@@ -73,7 +73,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		}
 		case InteractionType.MODAL_SUBMIT:
 			// Set up the asynchronous work to be done.
-			waitUntil(c.executionCtx, handleModal(data));
+			waitUntil(c, handleModal(data));
 
 			// Immediately return a deferred ("loading") message.
 			return c.json(

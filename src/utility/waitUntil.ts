@@ -1,4 +1,4 @@
-import type { ExecutionContext } from "hono";
+import type { Context } from "hono";
 
 import { waitUntil as waitUntilVercel } from "@vercel/functions";
 
@@ -8,15 +8,13 @@ import { waitUntil as waitUntilVercel } from "@vercel/functions";
  * @param promise - The promise.
  * @internal
  */
-export default function waitUntil(
-	c: Readonly<ExecutionContext>,
-	promise: Readonly<Promise<unknown>>
-): void {
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+export default function waitUntil(c: Context, promise: Promise<unknown>): void {
 	try {
 		waitUntilVercel(promise); // Vercel
 	} catch {
 		try {
-			c.waitUntil(promise); // Cloudflare Worker
+			c.executionCtx.waitUntil(promise); // Cloudflare Worker
 		} catch {
 			void promise; // Other
 		}
