@@ -6,6 +6,7 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import sealedHandler from "../../commands/handlers/deckcheck/sealedHandler.js";
 import ComponentType from "../../discord/components/ComponentType.js";
+import findComponent from "../../utility/findComponent.js";
 import informDeck from "../../utility/informDeck.js";
 import parseDeckList from "../../utility/parseDeckList.js";
 import {
@@ -17,21 +18,16 @@ import {
 export default async function csdmodalHandler(
 	commandData: DeepReadonly<infer_<typeof modalSubmitData>>
 ): Promise<infer_<typeof editWebhookMessage>> {
-	const setComponent = commandData.components.find(
-		(component) =>
-			component.type === ComponentType.TEXT_INPUT &&
-			component.custom_id === CSDMODAL_SET_ID
-	);
+	const setComponent = findComponent(commandData.components, CSDMODAL_SET_ID);
 	if (setComponent?.type !== ComponentType.TEXT_INPUT) {
 		throw new Error(
 			`Unexpected type \`${setComponent?.type?.toString() ?? "undefined"}\` for \`${CSDMODAL_SET_ID}\` component.`
 		);
 	}
 
-	const seedsComponent = commandData.components.find(
-		(component) =>
-			component.type === ComponentType.TEXT_INPUT &&
-			component.custom_id === CSDMODAL_SEEDS_ID
+	const seedsComponent = findComponent(
+		commandData.components,
+		CSDMODAL_SEEDS_ID
 	);
 	if (seedsComponent?.type !== ComponentType.TEXT_INPUT) {
 		throw new Error(
@@ -39,10 +35,9 @@ export default async function csdmodalHandler(
 		);
 	}
 
-	const decklistComponent = commandData.components.find(
-		(component) =>
-			component.type === ComponentType.TEXT_INPUT &&
-			component.custom_id === CSDMODAL_DECKLIST_ID
+	const decklistComponent = findComponent(
+		commandData.components,
+		CSDMODAL_DECKLIST_ID
 	);
 	if (decklistComponent?.type !== ComponentType.TEXT_INPUT) {
 		throw new Error(

@@ -29,7 +29,7 @@ const channelSelect = object({
 	min_values: optional(int()),
 	placeholder: optional(string()),
 	required: optional(boolean()),
-	type: literal(ComponentType.MENTIONABLE_SELECT)
+	type: literal(ComponentType.CHANNEL_SELECT)
 	/* eslint-enable @typescript-eslint/naming-convention */
 });
 
