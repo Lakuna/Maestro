@@ -8,6 +8,7 @@ import ComponentType from "../../discord/components/ComponentType.js";
 import TextInputStyle from "../../discord/components/TextInputStyle.js";
 import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import {
+	CSDMODAL_DECKLIST_ID,
 	CSDMODAL_ID,
 	CSDMODAL_SEEDS_ID,
 	CSDMODAL_SET_ID
@@ -51,8 +52,16 @@ export default function checkSealedDeckHandler(
 					type: ComponentType.LABEL
 				},
 				{
-					content: getMessageContent(commandData),
-					type: ComponentType.TEXT_DISPLAY
+					component: {
+						custom_id: CSDMODAL_DECKLIST_ID,
+						style: TextInputStyle.PARAGRAPH,
+						type: ComponentType.TEXT_INPUT,
+						value: getMessageContent(commandData)
+					},
+					description:
+						"The deck list in Moxfield, Arena, MTGO, or plain text format.",
+					label: "Deck List",
+					type: ComponentType.LABEL
 				}
 			],
 			custom_id: CSDMODAL_ID,

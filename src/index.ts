@@ -2,7 +2,6 @@
 import type { infer as infer_ } from "zod";
 
 import { zValidator } from "@hono/zod-validator";
-import { waitUntil } from "@vercel/functions";
 import { Hono } from "hono";
 import nacl from "tweetnacl";
 
@@ -15,6 +14,7 @@ import InteractionCallbackType from "./discord/interactions/receivingAndRespondi
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
 import handleModal from "./modals/handleModal.js";
 import embedForError from "./utility/embedForError.js";
+import waitUntil from "./utility/waitUntil.js";
 
 const app: Hono = new Hono();
 
@@ -61,18 +61,7 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			}
 
 			// Set up the asynchronous work to be done.
-			try {
-				// Vercel
-				waitUntil(handleApplicationCommand(data));
-			} catch {
-				try {
-					// Cloudflare Worker
-					c.executionCtx.waitUntil(handleApplicationCommand(data));
-				} catch {
-					// Other
-					void handleApplicationCommand(data);
-				}
-			}
+			waitUntil(c.executionCtx, handleApplicationCommand(data));
 
 			// Immediately return a deferred ("loading") message.
 			return c.json(
@@ -83,7 +72,16 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 			);
 		}
 		case InteractionType.MODAL_SUBMIT:
-			return c.json(handleModal(data), 200);
+			// Set up the asynchronous work to be done.
+			waitUntil(c.executionCtx, handleModal(data));
+
+			// Immediately return a deferred ("loading") message.
+			return c.json(
+				{
+					type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
+				} satisfies infer_<typeof interactionResponse>,
+				200
+			);
 		case InteractionType.PING:
 			// https://docs.discord.com/developers/interactions/overview#acknowledging-ping-requests
 			return c.json({ type: InteractionCallbackType.PONG } satisfies infer_<

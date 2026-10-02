@@ -1,11 +1,14 @@
 import type { infer as infer_ } from "zod";
 
 import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
-import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
+import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
-import InteractionCallbackType from "../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
+import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
+import embedForError from "../utility/embedForError.js";
+import { CSDMODAL_ID } from "./definitions/csdmodalDefinition.js";
+import csdmodalHandler from "./handlers/csdmodalHandler.js";
 
 /**
  * Handle a Discord modal submit interaction.
@@ -13,20 +16,37 @@ import InteractionType from "../discord/interactions/receivingAndResponding/Inte
  * @returns The interaction response to return, or `undefined` to continue to normal handling behavior.
  * @internal
  */
-export default function handleModal(
+export default async function handleModal(
 	data: DeepReadonly<infer_<typeof interaction>>
-): infer_<typeof interactionResponse> | undefined {
-	if (data.type !== InteractionType.MODAL_SUBMIT) {
-		throw new Error(
-			"Attempted to handle a non-application command as an application command."
-		);
+): Promise<void> {
+	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
+	try {
+		if (data.type !== InteractionType.MODAL_SUBMIT) {
+			throw new Error(
+				"Attempted to handle a non-application command as an application command."
+			);
+		}
+
+		switch (data.data.custom_id) {
+			case CSDMODAL_ID:
+				body ??= csdmodalHandler(data.data);
+				break;
+			default:
+				throw new Error("Invalid modal ID.");
+		}
+	} catch (e) {
+		body ??= { embeds: [embedForError(e)] };
 	}
 
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(JSON.stringify(data)); // TODO: Delete.
-
-	return {
-		data: {},
-		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-	};
+	try {
+		await editOriginalInteractionResponse(
+			data.application_id,
+			data.token,
+			body
+		);
+	} catch (e) {
+		await editOriginalInteractionResponse(data.application_id, data.token, {
+			embeds: [embedForError(e)]
+		});
+	}
 }
