@@ -1,6 +1,7 @@
 import type { CollationPackFunction } from "./CollationPackFunction.js";
 import type CollationSet from "./CollationSet.js";
 
+import akhPack from "./packs/akhPack.js";
 import arnPack from "./packs/arnPack.js";
 import atqPack from "./packs/atqPack.js";
 import drkPack from "./packs/drkPack.js";
@@ -11,6 +12,7 @@ import legPack from "./packs/legPack.js";
 import x2edPack from "./packs/x2edPack.js";
 import x3edPack from "./packs/x3edPack.js";
 import x4edPack from "./packs/x4edPack.js";
+import akhSet from "./sets/akhSet.js";
 import arnSet from "./sets/arnSet.js";
 import atqSet from "./sets/atqSet.js";
 import drkSet from "./sets/drkSet.js";
@@ -30,6 +32,7 @@ const setMap: Map<CollationSet, CollationPackFunction> = new Map<
 	CollationSet,
 	CollationPackFunction
 >([
+	[akhSet, akhPack],
 	[arnSet, arnPack],
 	[atqSet, atqPack],
 	[drkSet, drkPack],

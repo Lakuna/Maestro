@@ -74,6 +74,7 @@ export default async function informDeck<T extends infer_<typeof simpleDeck>>(
 
 			// Add data where missing.
 			card.collectorNumber ??= data.collector_number;
+			card.foil ??= false;
 			card.name ??= data.name;
 			card.set ??= data.set;
 			card.typeLine ??= data.type_line ?? void 0;

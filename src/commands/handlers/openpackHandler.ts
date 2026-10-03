@@ -53,23 +53,25 @@ export default async function openpackHandler(
 
 	const cards = packFn(seed);
 	const collection = await getCardCollection({
-		identifiers: cards.map((cn) => ({
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			collector_number: cn,
-			set: set.code
-		}))
+		identifiers: cards
+			// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+			.filter(([, cn]) => cn !== "NaN")
+			// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
+			.map(([sc, cn]) => ({ collector_number: cn, set: sc }))
 	});
 
 	return {
 		embeds: [
 			{
+				/* eslint-disable @typescript-eslint/prefer-readonly-parameter-types */
 				description: cards
-					.map(
-						(cn) =>
-							// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/naming-convention
-							`[${collection.data.find(({ collector_number }) => collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${set.code}/${cn}?format=image)`
+					.map(([sc, cn, f]) =>
+						cn === "NaN" ? "Marketing card" : (
+							`[${collection.data.find((c) => c.collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${sc}/${cn}?format=image)${f ? " *F*" : ""}`
+						)
 					)
 					.join("\n"),
+				/* eslint-enable @typescript-eslint/prefer-readonly-parameter-types */
 				fields: [{ name: "Seed", value: `\`${seed.toString()}\`` }],
 				title: `${collection.data[0]?.set_name ?? `\`${set.code}\``} Pack`,
 				type: EmbedType.RICH

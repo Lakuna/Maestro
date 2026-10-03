@@ -10,7 +10,7 @@ export default function parseCardsLine(
 	line: string
 ): infer_<typeof simpleCards> {
 	const matches =
-		/^(?<count>\d+) (?<name>.+?)(?: \((?<set>[^)\s]+)\) (?<collectorNumber>[^\s]+))?$/iu.exec(
+		/^(?<count>\d+) (?<name>.+?)(?: \((?<set>[^)\s]+)\) (?<collectorNumber>[^\s]+)(?<foil> \*F\*)?)?$/u.exec(
 			line
 		);
 
@@ -28,12 +28,9 @@ export default function parseCardsLine(
 		);
 	}
 
-	return {
-		card: {
-			collectorNumber: matches.groups?.["collectorNumber"],
-			name,
-			set: matches.groups?.["set"]?.toLowerCase()
-		},
-		count
-	};
+	const collectorNumber = matches.groups?.["collectorNumber"];
+	const set = matches.groups?.["set"]?.toLowerCase();
+	const foil = collectorNumber ? matches.groups?.["foil"] === " *F*" : void 0;
+
+	return { card: { collectorNumber, foil, name, set }, count };
 }

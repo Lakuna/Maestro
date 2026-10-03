@@ -9,31 +9,33 @@ import leaSet from "../sets/leaSet.js";
 /**
  * Generate the collector numbers of the cards in a Limited Edition Alpha pack.
  * @param seed - The seed to use to generate the pack.
- * @returns The collector numbers of the cards in the pack in order.
+ * @returns The set codes, collector numbers, and foil statuses of the cards in the pack in order.
  * @see {@link https://www.lethe.xyz/mtg/collation/lea.html}
  * @public
  */
-export default function leaPack(seed?: number): readonly string[] {
+export default function leaPack(
+	seed?: number
+): readonly [string, string, boolean][] {
 	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
-	const out = [];
+	const out: [string, string, boolean][] = [];
 
 	const cGen = striped(leaSet, 0, rng);
 	for (let i = 0; i < 11; i++) {
 		const [common, nextRng] = cGen.next().value;
-		out.push(common);
+		out.push([leaSet.code, common, false]);
 		rng = nextRng;
 	}
 
 	const uGen = striped(leaSet, 1, rng);
 	for (let i = 0; i < 3; i++) {
 		const [uncommon, nextRng] = uGen.next().value;
-		out.push(uncommon);
+		out.push([leaSet.code, uncommon, false]);
 		rng = nextRng;
 	}
 
 	const rGen = striped(leaSet, 2, rng);
 	const [rare] = rGen.next().value;
-	out.push(rare);
+	out.push([leaSet.code, rare, false]);
 
 	return out;
 }

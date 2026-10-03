@@ -13,30 +13,32 @@ const UNCOMMONS = 2;
 /**
  * Generate the collector numbers of the cards in an Antiquities pack.
  * @param seed - The seed to use to generate the pack.
- * @returns The collector numbers of the cards in the pack in order.
+ * @returns The set codes, collector numbers, and foil statuses of the cards in the pack in order.
  * @see {@link https://www.lethe.xyz/mtg/collation/atq.html}
  * @public
  */
-export default function atqPack(seed?: number): readonly string[] {
+export default function atqPack(
+	seed?: number
+): readonly [string, string, boolean][] {
 	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
-	const out = [];
+	const out: [string, string, boolean][] = [];
 
-	// Ordering (uncommons first versus commons first). Arbitrarily assigned a 50% chance to appear here.
-	const [uncommonsFirst, nextRng0] = getMode(0.5, rng);
+	// Ordering (uncommons first versus commons first). Arbitrarily assigned a 1 in 2 chance to appear here.
+	const [uncommonsFirst, nextRng0] = getMode(1 / 2, rng);
 	rng = nextRng0;
 
 	if (uncommonsFirst) {
 		const uGen = striped(atqSet, 1, rng);
 		for (let i = 0; i < UNCOMMONS; i++) {
 			const [uncommon, nextRng] = uGen.next().value;
-			out.push(uncommon);
+			out.push([atqSet.code, uncommon, false]);
 			rng = nextRng;
 		}
 
 		const cGen = striped(atqSet, 0, rng);
 		for (let i = 0; i < COMMONS; i++) {
 			const [common] = cGen.next().value;
-			out.push(common);
+			out.push([atqSet.code, common, false]);
 		}
 
 		return out;
@@ -45,14 +47,14 @@ export default function atqPack(seed?: number): readonly string[] {
 	const cGen = striped(atqSet, 0, rng);
 	for (let i = 0; i < COMMONS; i++) {
 		const [common, nextRng] = cGen.next().value;
-		out.push(common);
+		out.push([atqSet.code, common, false]);
 		rng = nextRng;
 	}
 
 	const uGen = striped(atqSet, 1, rng);
 	for (let i = 0; i < UNCOMMONS; i++) {
 		const [uncommon] = uGen.next().value;
-		out.push(uncommon);
+		out.push([atqSet.code, uncommon, false]);
 	}
 
 	return out;

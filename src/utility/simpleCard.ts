@@ -1,4 +1,4 @@
-import { object, optional, string } from "zod";
+import { boolean, object, optional, string } from "zod";
 
 /**
  * A simplified representation of a Magic card.
@@ -6,6 +6,7 @@ import { object, optional, string } from "zod";
  */
 const simpleCard = object({
 	collectorNumber: optional(string()),
+	foil: optional(boolean()),
 	name: optional(string()),
 	set: optional(string()),
 	typeLine: optional(string())

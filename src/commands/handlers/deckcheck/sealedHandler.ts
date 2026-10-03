@@ -4,10 +4,11 @@ import type editWebhookMessage from "../../../discord/resources/webhook/editWebh
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 import type simpleDeck from "../../../utility/simpleDeck.js";
 
-import setMap from "../../../collation/setMap.js";
 import combineBoards from "../../../utility/combineBoards.js";
 import makeMarkdownList from "../../../utility/makeMarkdownList.js";
 import parseTypeLine from "../../../utility/parseTypeLine.js";
+import poolFromPacks from "../../../utility/poolFromPacks.js";
+import stringifyCard from "../../../utility/stringifyCard.js";
 
 /**
  * Deck check for Sealed Deck.
@@ -22,56 +23,27 @@ export default function sealedHandler(
 	setCode: string,
 	seeds: readonly number[] | string
 ): infer_<typeof editWebhookMessage> {
-	const actualSeeds =
-		typeof seeds === "string" ?
-			seeds.split(/[,\s]+/u).map((seed) => parseInt(seed, 10))
-		:	seeds;
+	const pool = poolFromPacks(setCode, seeds);
 
-	// Get the collation details for the specified set.
-	const setResult = Array.from(setMap.entries()).find(
-		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-		([{ code }]) => code === setCode
-	);
-	if (!setResult) {
-		throw new Error(
-			`Invalid set code. The valid set codes are: ${Array.from(setMap.keys())
-				.map(({ code }) => `\`${code}\``)
-				.join(", ")}.`
-		);
-	}
-
-	// Get the full list of cards in the player's card pool.
-	const [set, packFn] = setResult;
-	const collectorNumbersPool = actualSeeds.reduce<Map<string, number>>(
-		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-		(pool, seed) => {
-			for (const collectorNumber of packFn(seed)) {
-				pool.set(collectorNumber, (pool.get(collectorNumber) ?? 0) + 1);
-			}
-
-			return pool;
-		},
-		new Map()
-	);
-
-	const mainboard = deck.boards["mainboard"] ?? [];
-	const sideboard = deck.boards["sideboard"] ?? [];
+	const { mainboard, sideboard } = deck.boards;
 
 	const problems = [];
 
-	const mainboardSize = mainboard.reduce(
-		(total, { count }) => total + count,
-		0
-	);
+	const mainboardSize =
+		mainboard?.reduce((total, { count }) => total + count, 0) ?? 0;
 	if (mainboardSize < 40) {
 		problems.push(
 			`Mainboard too small (has ${mainboardSize.toString()}, needs at least 40).`
 		);
 	}
 
-	for (const cards of combineBoards(mainboard, sideboard)) {
+	for (const cards of combineBoards(mainboard ?? [], sideboard ?? [])) {
 		const { card } = cards;
-		const name = card.name ?? "`undefined`";
+
+		// Ignore marketing cards.
+		if (card.collectorNumber === "NaN") {
+			continue;
+		}
 
 		// Allow unlimited of any basic land.
 		const [supertypes] = parseTypeLine(card.typeLine ?? "");
@@ -79,36 +51,55 @@ export default function sealedHandler(
 			continue;
 		}
 
-		if (card.set !== set.code) {
+		const cardStr = stringifyCard(card);
+
+		if (card.set !== setCode) {
 			problems.push(
-				`Invalid set for ${name} (is \`${card.set ?? "undefined"}\`), expected \`${set.code}\`).`
+				`Invalid set for ${cardStr} (is \`${card.set ?? "undefined"}\`), expected \`${setCode}\`).`
 			);
 			continue;
 		}
 
 		if (!card.collectorNumber) {
-			problems.push(`Missing collector number for ${name}.`);
+			problems.push(`Missing collector number for ${cardStr}.`);
 			continue;
 		}
 
 		const mainboardCount =
-			mainboard.find((value) => value.card.name === card.name)?.count ?? 0;
+			mainboard?.find(
+				(value) =>
+					value.card.set === card.set &&
+					value.card.collectorNumber === card.collectorNumber &&
+					value.card.foil === card.foil
+			)?.count ?? 0;
 		const sideboardCount =
-			sideboard.find((value) => value.card.name === card.name)?.count ?? 0;
-		const poolCount = collectorNumbersPool.get(card.collectorNumber) ?? 0;
+			sideboard?.find(
+				(value) =>
+					value.card.set === card.set &&
+					value.card.collectorNumber === card.collectorNumber &&
+					value.card.foil === card.foil
+			)?.count ?? 0;
+		const poolCount =
+			pool.find(
+				// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+				(value) =>
+					value.card.set === card.set &&
+					value.card.collectorNumber === card.collectorNumber &&
+					value.card.foil === card.foil
+			)?.count ?? 0;
 		if (mainboardCount + sideboardCount > poolCount) {
 			// Maximum copies.
 			problems.push(
-				`Too many copies of ${name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be ${poolCount.toString()} total).`
+				`Too many copies of ${cardStr} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be ${poolCount.toString()} total).`
 			);
 		} else if (mainboardCount + sideboardCount < poolCount) {
 			problems.push(
-				`Too few copies of ${name} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be ${poolCount.toString()} total).`
+				`Too few copies of ${cardStr} (${mainboardCount.toString()} mainboard, ${sideboardCount.toString()} sideboard; must be ${poolCount.toString()} total).`
 			);
 		}
 	}
 
-	const nameString =
+	const deckNameStr =
 		deck.name ?
 			deck.url ?
 				`[${deck.name}](${deck.url})`
@@ -120,7 +111,7 @@ export default function sealedHandler(
 			embeds: [
 				{
 					color: 0xff0000,
-					description: `${nameString} is not a legal Sealed Deck deck.\n${makeMarkdownList(problems)}`,
+					description: `${deckNameStr} is not a legal Sealed Deck deck.\n${makeMarkdownList(problems)}`,
 					title: "Illegal Deck"
 				}
 			]
@@ -131,7 +122,7 @@ export default function sealedHandler(
 		embeds: [
 			{
 				color: 0x00ff00,
-				description: `${nameString} is a legal Sealed Deck deck.`,
+				description: `${deckNameStr} is a legal Sealed Deck deck.`,
 				title: "Legal Deck"
 			}
 		]

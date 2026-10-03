@@ -14,7 +14,7 @@ const uniformIntPure = purify(uniformInt);
 /**
  * Generate a sequence of collector numbers from the given sheet using striped collation.
  * @param set - The set that contains the sheet.
- * @param sheet - The sheet.
+ * @param sheet - The index of the sheet.
  * @param prng - The PRNG instance to use.
  * @param min - The minimum possible stripe width.
  * @param max - The maximum possible stripe width.

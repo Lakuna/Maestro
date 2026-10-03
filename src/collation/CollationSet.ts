@@ -12,6 +12,9 @@ export default interface CollationSet {
 	/** The number of cards in each column on each sheet. */
 	readonly height: number;
 
+	/** The start and end indices (inclusive) of each run. */
+	readonly runs?: readonly (readonly [number, number])[];
+
 	/** The number of cards in each row on each sheet. */
 	readonly width: number;
 }

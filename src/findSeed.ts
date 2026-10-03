@@ -13,6 +13,24 @@ for (let i = 2; i < process.argv.length; i++) {
 		continue;
 	}
 
+	const matches = /^(?<numerator>\d+)\/(?<denominator>\d+)$/u.exec(arg);
+	if (matches) {
+		const numerator = parseInt(matches.groups?.["numerator"] ?? "", 10);
+		if (isNaN(numerator)) {
+			console.warn(`Rejected odd ${arg} (invalid numerator).`);
+			continue;
+		}
+
+		const denominator = parseInt(matches.groups?.["denominator"] ?? "", 10);
+		if (isNaN(denominator)) {
+			console.warn(`Rejected odd ${arg} (invalid denominator).`);
+			continue;
+		}
+
+		odds.push(numerator / denominator);
+		continue;
+	}
+
 	const odd = parseFloat(arg);
 	if (isNaN(odd)) {
 		console.warn(`Rejected odd ${arg} (not a number).`);
@@ -28,7 +46,7 @@ for (let i = 2; i < process.argv.length; i++) {
 }
 
 let i = -1;
-const seeds = new Map();
+const seeds = new Map<number, number>();
 while (seeds.size < 2 ** odds.length) {
 	let rng: RandomGenerator = xoroshiro128plus(++i);
 	const modes = [];
@@ -38,10 +56,9 @@ while (seeds.size < 2 ** odds.length) {
 		rng = nextRng;
 	}
 
-	const modeBitfield = modes.reduce(
-		(bitfield, mode) => (bitfield << 1) | Number(mode),
-		0
-	);
+	const modeBitfield = modes
+		.toReversed() // Reverse the list so that the first odds entered corresponds to the lowest bit.
+		.reduce((bitfield, mode) => (bitfield << 1) | Number(mode), 0);
 	if (seeds.has(modeBitfield)) {
 		continue;
 	}
@@ -49,4 +66,9 @@ while (seeds.size < 2 ** odds.length) {
 	seeds.set(modeBitfield, i);
 }
 
-console.info(seeds);
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+for (const [a, b] of Array.from(seeds.entries()).sort(([c], [d]) => c - d)) {
+	console.info(
+		`${a.toString(2).padStart(process.argv.length - 2, "0")}: ${b.toString()}`
+	);
+}
