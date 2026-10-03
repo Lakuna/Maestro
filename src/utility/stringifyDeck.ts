@@ -15,5 +15,5 @@ export default function stringifyDeck(
 	deck: DeepReadonly<infer_<typeof simpleDeck>>
 ): string {
 	const { mainboard, sideboard } = deck.boards;
-	return `${mainboard?.map((cards) => stringifyCards(cards)).join("\n") ?? ""}${sideboard ? `\n\nSIDEBOARD:\n${sideboard.map((cards) => stringifyCards(cards)).join("\n")}` : ""}`.trim();
+	return `${mainboard?.map((cards) => stringifyCards(cards)).join("\n") ?? ""}${sideboard?.length ? `\n\nSIDEBOARD:\n${sideboard.map((cards) => stringifyCards(cards)).join("\n")}` : ""}`.trim();
 }
