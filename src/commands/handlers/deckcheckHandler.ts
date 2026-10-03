@@ -7,6 +7,7 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import getDeck from "../../moxfield/getDeck.js";
 import simplifyDeck from "../../utility/simplifyDeck.js";
+import stringToSeeds from "../../utility/stringToSeeds.js";
 import classicHandler from "./deckcheck/classicHandler.js";
 import sealedHandler from "./deckcheck/sealedHandler.js";
 import tribalHandler from "./deckcheck/tribalHandler.js";
@@ -62,7 +63,11 @@ export default async function deckcheckHandler(
 				throw new Error("Invalid set value.");
 			}
 
-			return sealedHandler(deck, setOption.value, seedsOption.value);
+			return sealedHandler(
+				deck,
+				setOption.value,
+				stringToSeeds(seedsOption.value)
+			);
 		}
 		case "tribal":
 			return await tribalHandler(deck);

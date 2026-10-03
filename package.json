@@ -10,9 +10,9 @@
 	},
 	"dependencies": {
 		"@hono/zod-validator": "^0.9.1",
-		"@vercel/functions": "^3.9.9",
-		"dotenv": "^18.0.4",
-		"hono": "^4.13.11",
+		"@vercel/functions": "^3.9.11",
+		"dotenv": "^18.0.5",
+		"hono": "^4.13.12",
 		"pure-rand": "^8.4.2",
 		"tweetnacl": "^1.0.3",
 		"zod": "^4.6.5"
@@ -20,8 +20,8 @@
 	"description": "The Discord bot for the Magical Maestros Discord server.",
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
-		"@types/node": "^26.6.3",
-		"eslint": "^10.11.0",
+		"@types/node": "^26.6.4",
+		"eslint": "^10.12.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-perfectionist": "^5.12.1",
 		"eslint-plugin-prettier": "^5.5.6",

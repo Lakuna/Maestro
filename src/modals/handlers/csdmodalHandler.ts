@@ -9,6 +9,7 @@ import ComponentType from "../../discord/components/ComponentType.js";
 import findComponent from "../../utility/findComponent.js";
 import informDeck from "../../utility/informDeck.js";
 import parseDeckList from "../../utility/parseDeckList.js";
+import stringToSeeds from "../../utility/stringToSeeds.js";
 import {
 	CSDMODAL_DECKLIST_ID,
 	CSDMODAL_SEEDS_ID,
@@ -48,6 +49,6 @@ export default async function csdmodalHandler(
 	return sealedHandler(
 		await informDeck(parseDeckList(decklistComponent.value)),
 		setComponent.value,
-		seedsComponent.value
+		stringToSeeds(seedsComponent.value)
 	);
 }
