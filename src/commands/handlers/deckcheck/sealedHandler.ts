@@ -106,12 +106,22 @@ export default function sealedHandler(
 			:	deck.name
 		:	"`undefined`";
 
+	const fields = [
+		{ inline: true, name: "Set", value: setCode },
+		{
+			inline: true,
+			name: "Seeds",
+			value: typeof seeds === "string" ? seeds : seeds.join(", ")
+		}
+	];
+
 	if (problems.length) {
 		return {
 			embeds: [
 				{
 					color: 0xff0000,
 					description: `${deckNameStr} is not a legal Sealed Deck deck.\n${makeMarkdownList(problems)}`,
+					fields,
 					title: "Illegal Deck"
 				}
 			]
@@ -123,6 +133,7 @@ export default function sealedHandler(
 			{
 				color: 0x00ff00,
 				description: `${deckNameStr} is a legal Sealed Deck deck.`,
+				fields,
 				title: "Legal Deck"
 			}
 		]

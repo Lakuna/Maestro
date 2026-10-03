@@ -67,7 +67,7 @@ export default async function openpackHandler(
 				description: cards
 					.map(([sc, cn, f]) =>
 						cn === "NaN" ? "Marketing card" : (
-							`[${collection.data.find((c) => c.collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${sc}/${cn}?format=image)${f ? " *F*" : ""}`
+							`[${collection.data.find((c) => c.collector_number === cn)?.name ?? "undefined"}](https://api.scryfall.com/cards/${sc}/${cn}?format=image)${f ? " (foil)" : ""}`
 						)
 					)
 					.join("\n"),
