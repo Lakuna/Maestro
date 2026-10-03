@@ -56,7 +56,7 @@ export default async function sealedpoolHandler(
 	return {
 		embeds: [
 			{
-				description: stringifyDeck(deck),
+				description: `\`\`\`\n${stringifyDeck(deck)}\n\`\`\``,
 				fields: [
 					{
 						inline: true,
