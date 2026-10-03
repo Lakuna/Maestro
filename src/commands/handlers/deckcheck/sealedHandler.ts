@@ -51,17 +51,12 @@ export default function sealedHandler(
 			continue;
 		}
 
-		const cardStr = stringifyCard(card);
+		const cardStr = `\`${stringifyCard(card)}\``;
 
-		if (card.set !== setCode) {
+		if (/^t...$/u.test(card.set ?? "")) {
 			problems.push(
-				`Invalid set for ${cardStr} (is \`${card.set ?? "undefined"}\`), expected \`${setCode}\`).`
+				`${cardStr} is a token, it shouldn't be included in your deck.`
 			);
-			continue;
-		}
-
-		if (!card.collectorNumber) {
-			problems.push(`Missing collector number for ${cardStr}.`);
 			continue;
 		}
 
