@@ -107,11 +107,14 @@ export default function sealedHandler(
 		:	"`undefined`";
 
 	const fields = [
-		{ inline: true, name: "Set", value: setCode },
+		{ inline: true, name: "Set", value: `\`${setCode}\`` },
 		{
 			inline: true,
 			name: "Seeds",
-			value: typeof seeds === "string" ? seeds : seeds.join(", ")
+			value:
+				typeof seeds === "string" ? seeds : (
+					seeds.map((seed) => `\`${seed.toString()}\``).join(", ")
+				)
 		}
 	];
 
