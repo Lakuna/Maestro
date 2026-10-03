@@ -3,7 +3,7 @@ import type { infer as infer_ } from "zod";
 import type { CardIdentifier } from "../scryfall/CardIdentifier.js";
 import type simpleDeck from "./simpleDeck.js";
 
-import getCardCollection from "../scryfall/getCardCollection.js";
+import getCardCollectionBulk from "./getCardCollectionBulk.js";
 
 /**
  * Fills out information in the given `simpleDeck` where possible.
@@ -52,7 +52,7 @@ export default async function informDeck<T extends infer_<typeof simpleDeck>>(
 	}
 
 	// Fetch full card data from Scryfall.
-	const collection = await getCardCollection({ identifiers });
+	const collection = await getCardCollectionBulk({ identifiers });
 
 	// Information-filling loop.
 	for (const boardName of ["mainboard", "sideboard"]) {

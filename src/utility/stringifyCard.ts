@@ -12,5 +12,5 @@ import type simpleCard from "./simpleCard.js";
 export default function stringifyCard(
 	card: DeepReadonly<infer_<typeof simpleCard>>
 ): string {
-	return `${card.name ?? "`undefined`"}${card.set ? ` (${card.set.toUpperCase()})${card.collectorNumber ? ` ${card.collectorNumber}${card.foil ? " *F*" : ""}` : ""}` : ""}`;
+	return `${card.name ?? "`undefined`"}${card.set ? ` (${card.set.toUpperCase()})${card.collectorNumber ? ` ${card.collectorNumber}${card.foil ? " \\*F\\*" : ""}` : ""}` : ""}`;
 }
