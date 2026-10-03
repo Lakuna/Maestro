@@ -12,11 +12,13 @@ import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefi
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
+import sealedpoolDefinition from "./definitions/sealedpool.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
+import sealedpoolHandler from "./handlers/sealedpoolHandler.js";
 
 /**
  * Respond to an application command.
@@ -50,6 +52,9 @@ export default async function handleApplicationCommand(
 				break;
 			case randcmDefinition.name:
 				body ??= randcmHandler(data.data);
+				break;
+			case sealedpoolDefinition.name:
+				body ??= await sealedpoolHandler(data.data);
 				break;
 			default:
 				throw new Error("Invalid command name.");

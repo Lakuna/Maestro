@@ -13,13 +13,8 @@ import setMap from "../collation/setMap.js";
  */
 export default function poolFromPacks(
 	setCode: string,
-	seeds: readonly number[] | string
+	seeds: readonly number[]
 ): infer_<typeof simpleCards>[] {
-	const actualSeeds =
-		typeof seeds === "string" ?
-			seeds.split(/[,\s]+/u).map((seed) => parseInt(seed, 10))
-		:	seeds;
-
 	// Get the collation details for the specified set.
 	const setResult = Array.from(setMap.entries()).find(
 		// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
@@ -35,7 +30,7 @@ export default function poolFromPacks(
 
 	const [, packFn] = setResult;
 	const pool: infer_<typeof simpleCards>[] = [];
-	for (const seed of actualSeeds) {
+	for (const seed of seeds) {
 		for (const [sc, cn, foil] of packFn(seed)) {
 			const entry = pool.find(
 				// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types

@@ -21,7 +21,7 @@ import stringifyCard from "../../../utility/stringifyCard.js";
 export default function sealedHandler(
 	deck: DeepReadonly<infer_<typeof simpleDeck>>,
 	setCode: string,
-	seeds: readonly number[] | string
+	seeds: readonly number[]
 ): infer_<typeof editWebhookMessage> {
 	const pool = poolFromPacks(setCode, seeds);
 
@@ -111,12 +111,7 @@ export default function sealedHandler(
 		{
 			inline: true,
 			name: "Seeds",
-			value: (typeof seeds === "string" ?
-				seeds.split(/[,\s]+/u).map((seed) => parseInt(seed, 10))
-			:	seeds
-			)
-				.map((seed) => `\`${seed.toString()}\``)
-				.join(", ")
+			value: seeds.map((seed) => `\`${seed.toString()}\``).join(", ")
 		}
 	];
 
