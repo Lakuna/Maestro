@@ -32,6 +32,11 @@ export default function poolFromPacks(
 	const pool: infer_<typeof simpleCards>[] = [];
 	for (const seed of seeds) {
 		for (const [sc, cn, foil] of packFn(seed)) {
+			// Skip marketing cards.
+			if (cn === "NaN") {
+				continue;
+			}
+
 			const entry = pool.find(
 				// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 				({ card }) =>
