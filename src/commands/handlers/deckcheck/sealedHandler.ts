@@ -111,10 +111,12 @@ export default function sealedHandler(
 		{
 			inline: true,
 			name: "Seeds",
-			value:
-				typeof seeds === "string" ? seeds : (
-					seeds.map((seed) => `\`${seed.toString()}\``).join(", ")
-				)
+			value: (typeof seeds === "string" ?
+				seeds.split(/[,\s]+/u).map((seed) => parseInt(seed, 10))
+			:	seeds
+			)
+				.map((seed) => `\`${seed.toString()}\``)
+				.join(", ")
 		}
 	];
 
