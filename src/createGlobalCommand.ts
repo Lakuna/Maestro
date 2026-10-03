@@ -6,6 +6,7 @@ import checkTribalWarsDeckDefinition from "./commands/definitions/checkTribalWar
 import deckcheckDefinition from "./commands/definitions/deckcheckDefinition.js";
 import openpackDefinition from "./commands/definitions/openpackDefinition.js";
 import randcmDefinition from "./commands/definitions/randcmDefinition.js";
+import sealedpoolDefinition from "./commands/definitions/sealedpool.js";
 import createGlobalApplicationCommand from "./discord/interactions/applicationCommands/createGlobalApplicationCommand.js";
 
 const [, , ...nameParts] = process.argv;
@@ -20,7 +21,8 @@ const definitions = [
 	checkTribalWarsDeckDefinition,
 	deckcheckDefinition,
 	openpackDefinition,
-	randcmDefinition
+	randcmDefinition,
+	sealedpoolDefinition
 ];
 // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 const definition = definitions.find((value) => value.name === name);
