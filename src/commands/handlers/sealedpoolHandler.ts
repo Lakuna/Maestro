@@ -34,7 +34,7 @@ export default async function sealedpoolHandler(
 
 	const seedsOption = commandData.options?.find(
 		({ name, type }) =>
-			name === "seed" && type === ApplicationCommandOptionType.STRING
+			name === "seeds" && type === ApplicationCommandOptionType.STRING
 	);
 	const seedsStr =
 		typeof seedsOption?.value === "string" ? seedsOption.value : void 0;
