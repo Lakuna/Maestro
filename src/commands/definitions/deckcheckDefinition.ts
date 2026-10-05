@@ -59,7 +59,7 @@ const deckcheckDefinition = {
 					description:
 						"The comma- and/or whitespace-separated seeds to use in the PRNG.",
 					name: "seeds",
-					required: false,
+					required: true,
 					type: ApplicationCommandOptionType.STRING
 				}
 			],
