@@ -21,7 +21,8 @@ const sealedpoolDefinition = {
 			type: ApplicationCommandOptionType.STRING
 		},
 		{
-			description: "The seeds to use in the PRNG.",
+			description:
+				"The comma- and/or whitespace-separated seeds to use in the PRNG.",
 			name: "seeds",
 			required: true,
 			type: ApplicationCommandOptionType.STRING
