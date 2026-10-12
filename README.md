@@ -19,3 +19,4 @@ Collation details for booster pack simulations come from [The Collation Project]
 | `DISCORD_PUBLIC_KEY`     | The Discord application's public key, taken from the [Discord Developer Portal](https://discord.com/developers/home).     |
 | `DISCORD_BOT_TOKEN`      | The Discord application's bot token, taken from the [Discord Developer Portal](https://discord.com/developers/home).      |
 | `DISCORD_APPLICATION_ID` | The Discord application's application ID, taken from the [Discord Developer Portal](https://discord.com/developers/home). |
+| `DATABASE_URL`           | The PostgreSQL database URL.                                                                                              |

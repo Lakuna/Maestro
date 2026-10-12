@@ -171,7 +171,9 @@ export default defineConfig(
 	{
 		languageOptions: {
 			parserOptions: {
-				projectService: { allowDefaultProject: ["eslint.config.js"] }
+				projectService: {
+					allowDefaultProject: ["drizzle.config.ts", "eslint.config.js"]
+				}
 			}
 		},
 		name: "Lint with Type Information"
