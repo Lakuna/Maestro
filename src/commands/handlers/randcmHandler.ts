@@ -30,12 +30,12 @@ export default function randcmHandler(
 	const [course, season, weather, condition, time] =
 		randomChampionsMeeting(seed);
 
-	const g1 = g1Name(course, season);
+	const g1 = g1Name(course);
 
 	return {
 		embeds: [
 			{
-				description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}${g1 ? ` - ${g1}` : ""}`,
+				description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}${g1 ? ` - ${g1.join("/")}` : ""}`,
 				fields: [
 					{ inline: true, name: "Season", value: season },
 					{ inline: true, name: "Weather", value: weather },
