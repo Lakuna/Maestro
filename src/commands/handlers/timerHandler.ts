@@ -38,11 +38,23 @@ export default function timerHandler(
 	}
 
 	const url = new URL("https://www.lakuna.pw/timer");
-	url.searchParams.set("time", time.toString());
+	url.searchParams.set("time", time.toFixed());
 
 	return {
 		embeds: [
 			{
+				fields: [
+					{
+						inline: true,
+						name: "Discord Timestamp",
+						value: `<t:${(time / 1000).toFixed()}:R>`
+					},
+					{
+						inline: true,
+						name: "Unix Timestamp",
+						value: `\`${time.toFixed()}\``
+					}
+				],
 				title: `Countdown Timer to <t:${(time / 1000).toFixed()}:f>`,
 				type: EmbedType.RICH,
 				url: url.href
