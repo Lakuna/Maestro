@@ -18,7 +18,7 @@ export default function timerHandler(
 ): infer_<typeof editWebhookMessage> {
 	const timeOption = commandData.options?.find(
 		({ name, type }) =>
-			name === "time" && type === ApplicationCommandOptionType.INTEGER
+			name === "time" && type === ApplicationCommandOptionType.STRING
 	);
 	if (typeof timeOption?.value !== "string") {
 		throw new Error("Missing time option.");
