@@ -25,7 +25,7 @@ export default function timerHandler(
 	}
 
 	const time = Number(
-		/^(?:<t:)?(?<time>\d+)(?::[tTdDfFR]>)?$/u.exec(timeOption.value)?.groups?.[
+		/^(?:<t:)?(?<time>\d+)(?::[dDfFRStT]>)?$/u.exec(timeOption.value)?.groups?.[
 			"time"
 		]
 	);
