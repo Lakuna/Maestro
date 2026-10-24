@@ -43,7 +43,7 @@ export default function timerHandler(
 	return {
 		embeds: [
 			{
-				title: `Countdown Timer to ${new Date(time).toLocaleString()}`,
+				title: `Countdown Timer to <t:${(time / 1000).toFixed()}:f>`,
 				type: EmbedType.RICH,
 				url: url.href
 			}
