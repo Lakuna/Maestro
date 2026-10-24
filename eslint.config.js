@@ -16,6 +16,10 @@ export default defineConfig(
 		name: "Implied Strict"
 	},
 	{
+		languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+		name: "Enable JSX"
+	},
+	{
 		linterOptions: {
 			reportUnusedDisableDirectives: "error",
 			reportUnusedInlineConfigs: "error"
@@ -199,6 +203,10 @@ export default defineConfig(
 				{ format: ["strictCamelCase"], selector: "default" },
 				{ format: ["StrictPascalCase"], selector: "typeLike" },
 				{ format: ["UPPER_CASE"], selector: "enumMember" },
+				{
+					format: ["strictCamelCase", "StrictPascalCase"],
+					selector: "function"
+				}, // `"StrictPascalCase"` for React components.
 				{ format: ["strictCamelCase", "StrictPascalCase"], selector: "import" },
 				{
 					format: ["strictCamelCase", "UPPER_CASE"],
