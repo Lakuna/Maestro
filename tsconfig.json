@@ -6,8 +6,6 @@
 		"declarationMap": true,
 		"exactOptionalPropertyTypes": true,
 		"isolatedDeclarations": true,
-		"jsx": "react-jsx",
-		"jsxImportSource": "hono/jsx",
 		"module": "nodenext",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
