@@ -24,11 +24,13 @@ export default function timerHandler(
 		throw new Error("Missing time option.");
 	}
 
-	const time = Number(
-		/^(?:<t:)?(?<time>\d+)(?::[dDfFRStT]>)?$/u.exec(timeOption.value)?.groups?.[
-			"time"
-		]
-	);
+	const time =
+		isNaN(Number(timeOption.value)) ?
+			Number(
+				/^(?:<t:)?(?<time>\d+)(?::[dDfFRStT]>)?$/u.exec(timeOption.value)
+					?.groups?.["time"]
+			) * 1000 // Discord timestamps use seconds.
+		:	Number(timeOption.value); // Unix timestamps use milliseconds.
 	if (isNaN(time)) {
 		throw new Error(
 			"Time was not a valid timestamp. Input a Unix timestamp or a Discord timestamp (can be generated with `@time`)."
@@ -36,7 +38,7 @@ export default function timerHandler(
 	}
 
 	const url = new URL("https://www.lakuna.pw/timer");
-	url.searchParams.set("timer", time.toString());
+	url.searchParams.set("time", time.toString());
 
 	return {
 		embeds: [
