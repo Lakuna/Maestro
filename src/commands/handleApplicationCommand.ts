@@ -14,6 +14,7 @@ import openpackDefinition from "./definitions/openpackDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
 import sealedpoolDefinition from "./definitions/sealedpool.js";
 import seedgenDefinition from "./definitions/seedgen.js";
+import timerDefinition from "./definitions/timerDefinition.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
@@ -21,6 +22,7 @@ import openpackHandler from "./handlers/openpackHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
 import sealedpoolHandler from "./handlers/sealedpoolHandler.js";
 import seedgenHandler from "./handlers/seedgenHandler.js";
+import timerHandler from "./handlers/timerHandler.js";
 
 /**
  * Respond to an application command.
@@ -60,6 +62,9 @@ export default async function handleApplicationCommand(
 				break;
 			case seedgenDefinition.name:
 				body ??= seedgenHandler(data.data);
+				break;
+			case timerDefinition.name:
+				body ??= timerHandler(data.data);
 				break;
 			default:
 				throw new Error("Invalid command name.");
