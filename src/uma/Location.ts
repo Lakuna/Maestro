@@ -3,20 +3,23 @@
  * @internal
  */
 enum Location {
-	CHUKYO = "Chukyo",
-	FUKUSHIMA = "Fukushima",
-	FUNABASHI = "Funabashi",
-	HAKODATE = "Hakodate",
-	HANSHIN = "Hanshin",
-	KAWASAKI = "Kawasaki",
-	KOKURA = "Kokura",
-	KYOTO = "Kyoto",
-	MORIOKA = "Morioka",
-	NAKAYAMA = "Nakayama",
-	NIIGATA = "Niigata",
-	OI = "Oi",
-	SAPPORO = "Sapporo",
-	TOKYO = "Tokyo"
+	SAPPORO = 10001,
+	HAKODATE = 10002,
+	NIIGATA = 10003,
+	FUKUSHIMA = 10004,
+	NAKAYAMA = 10005,
+	TOKYO = 10006,
+	CHUKYO = 10007,
+	KYOTO = 10008,
+	HANSHIN = 10009,
+	KOKURA = 10010,
+	OI = 10101,
+	KAWASAKI = 10103,
+	FUNABASHI = 10104,
+	MORIOKA = 10105,
+	LONGCHAMP = 10201,
+	SANTA_ANITA_PARK = 10202,
+	DEL_MAR = 10203
 }
 
 export default Location;

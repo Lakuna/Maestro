@@ -6,7 +6,9 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
+import courseImage from "../../uma/courseImage.js";
 import g1Name from "../../uma/g1Name.js";
+import locationName from "../../uma/locationName.js";
 import randomChampionsMeeting from "../../uma/randomChampionsMeeting.js";
 import Track from "../../uma/Track.js";
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -35,7 +37,7 @@ export default function randcmHandler(
 	return {
 		embeds: [
 			{
-				description: `${course.location} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}${g1 ? ` - ${g1.join("/")}` : ""}`,
+				description: `${locationName(course.location)} ${course.length.toString()}m${course.track === Track.TURF ? "" : ` ${course.track}`}${course.innerOuterTrack ? ` (${course.innerOuterTrack})` : ""}${g1 ? ` - ${g1.join("/")}` : ""}`,
 				fields: [
 					{ inline: true, name: "Season", value: season },
 					{ inline: true, name: "Weather", value: weather },
@@ -43,6 +45,7 @@ export default function randcmHandler(
 					{ inline: true, name: "Time", value: time },
 					{ inline: true, name: "Seed", value: `\`${seed.toString()}\`` }
 				],
+				image: { url: courseImage(course) },
 				title: "Champions Meeting",
 				type: EmbedType.RICH
 			}

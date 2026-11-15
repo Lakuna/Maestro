@@ -7,6 +7,7 @@ import type Track from "./Track.js";
  * @internal
  */
 export default interface Course {
+	readonly id: number;
 	readonly innerOuterTrack?: InnerOuterTrack;
 	readonly length: number;
 	readonly location: Location;
