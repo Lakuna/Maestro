@@ -13,8 +13,8 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 export default function balanceHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
 ): infer_<typeof editWebhookMessage> {
-	// eslint-disable-next-line no-console
-	console.info(commandData);
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(commandData); // TODO: Delete.
 
 	return { embeds: [{ description: "WIP" }] };
 }

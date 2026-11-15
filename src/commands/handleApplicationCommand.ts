@@ -45,6 +45,8 @@ export default async function handleApplicationCommand(
 
 		switch (data.data.name) {
 			case balanceDefinition.name:
+				// eslint-disable-next-line no-console, no-warning-comments
+				console.info(data); // TODO: Delete.
 				body ??= balanceHandler(data.data);
 				break;
 			case checkClassicMagicDeckDefinition.name:
