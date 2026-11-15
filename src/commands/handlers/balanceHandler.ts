@@ -42,7 +42,7 @@ export default async function balanceHandler(
 		embeds: [
 			{
 				description: `<@${user?.id ?? userId}> has ${(user?.coins ?? 0).toString()} coins.`,
-				title: `<@${user?.id ?? userId}> Coin Balance`,
+				title: "Coin Balance",
 				type: EmbedType.RICH
 			}
 		]
