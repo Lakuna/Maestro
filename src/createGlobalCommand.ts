@@ -1,5 +1,6 @@
 import "dotenv/config";
 
+import balanceDefinition from "./commands/definitions/balanceDefinition.js";
 import checkClassicMagicDeckDefinition from "./commands/definitions/checkClassicMagicDeckDefinition.js";
 import checkSealedDeckDefinition from "./commands/definitions/checkSealedDeck.js";
 import checkTribalWarsDeckDefinition from "./commands/definitions/checkTribalWarsDeckDefinition.js";
@@ -18,6 +19,7 @@ if (!name) {
 }
 
 const definitions = [
+	balanceDefinition,
 	checkClassicMagicDeckDefinition,
 	checkSealedDeckDefinition,
 	checkTribalWarsDeckDefinition,
