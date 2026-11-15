@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import getMode from "./collation/utility/getMode.js";
@@ -48,12 +46,10 @@ for (let i = 2; i < process.argv.length; i++) {
 let i = -1;
 const seeds = new Map<number, number>();
 while (seeds.size < 2 ** odds.length) {
-	let rng: RandomGenerator = xoroshiro128plus(++i);
+	const rng = xoroshiro128plus(++i);
 	const modes = [];
 	for (const odd of odds) {
-		const [mode, nextRng] = getMode(odd, rng);
-		modes.push(mode);
-		rng = nextRng;
+		modes.push(getMode(odd, rng));
 	}
 
 	const modeBitfield = modes

@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -60,27 +58,22 @@ export default function akhPack(
 		59/136 C2 pack without foil (59/68 given C2 pack)
 	*/
 
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
-	const [c1Pack, nextRng0] = getMode(1 / 2, rng);
-	const [highCc, nextRng1] = getMode(1 / 2, nextRng0);
-	const [highUa, nextRng2] = getMode(1 / 2, nextRng1);
-	const [fullLand, nextRng3] = getMode(1 / 4, nextRng2);
-	const [hasFoil, nextRng4] =
-		c1Pack ? getMode(21 / 68, nextRng3) : getMode(9 / 68, nextRng3);
-	const [hasFoilC, nextRng5] =
-		c1Pack && hasFoil ? getMode(17 / 21, nextRng4) : [false, nextRng4];
-	const [hasMasterpiece, nextRng6] =
-		c1Pack && hasFoil && !hasFoilC ?
-			getMode(255 / 968, nextRng5)
-		:	[false, nextRng5];
-	const [hasFoilU, nextRng7] =
-		c1Pack ? [hasFoil && !hasFoilC && !hasMasterpiece, nextRng6]
-		: hasFoil ? getMode(5821 / 8712, nextRng6)
-		: [false, nextRng6];
+	const c1Pack = getMode(1 / 2, rng);
+	const highCc = getMode(1 / 2, rng);
+	const highUa = getMode(1 / 2, rng);
+	const fullLand = getMode(1 / 4, rng);
+	const hasFoil = c1Pack ? getMode(21 / 68, rng) : getMode(9 / 68, rng);
+	const hasFoilC = c1Pack && hasFoil ? getMode(17 / 21, rng) : false;
+	const hasMasterpiece =
+		c1Pack && hasFoil && !hasFoilC ? getMode(255 / 968, rng) : false;
+	const hasFoilU =
+		c1Pack ? hasFoil && !hasFoilC && !hasMasterpiece
+		: hasFoil ? getMode(5821 / 8712, rng)
+		: false;
 	const hasFoilR = !c1Pack && hasFoil && !hasFoilU;
-	rng = nextRng7;
 
 	const caCount = c1Pack ? (highCc ? 2 : 3) - (hasFoilC ? 1 : 0) : 4; // Common foils displace A commons.
 	const cbCount =
@@ -94,66 +87,47 @@ export default function akhPack(
 
 	const caGen = sequential(akhSet, 0, rng);
 	for (let i = 0; i < caCount; i++) {
-		const [common, nextRng] = caGen.next().value;
-		out.push([akhSet.code, common, false]);
-		rng = nextRng;
+		out.push([akhSet.code, caGen.next().value, false]);
 	}
 
 	const cbGen = sequential(akhSet, 2, rng);
 	for (let i = 0; i < cbCount; i++) {
-		const [common, nextRng] = cbGen.next().value;
-		out.push([akhSet.code, common, false]);
-		rng = nextRng;
+		out.push([akhSet.code, cbGen.next().value, false]);
 	}
 
 	const ccGen = sequential(akhSet, c1Pack ? 1 : 3, rng);
 	for (let i = 0; i < ccCount; i++) {
-		const [common, nextRng] = ccGen.next().value;
-		out.push([akhSet.code, common, false]);
-		rng = nextRng;
+		out.push([akhSet.code, ccGen.next().value, false]);
 	}
 
 	const uaGen = sequential(akhSet, 4, rng);
 	for (let i = 0; i < uaCount; i++) {
-		const [uncommon, nextRng] = uaGen.next().value;
-		out.push([akhSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([akhSet.code, uaGen.next().value, false]);
 	}
 
 	const ubGen = sequential(akhSet, 5, rng);
 	for (let i = 0; i < ubCount; i++) {
-		const [uncommon, nextRng] = ubGen.next().value;
-		out.push([akhSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([akhSet.code, ubGen.next().value, false]);
 	}
 
-	const [rare, nextRng8] = sequential(akhSet, 6, rng).next().value;
-	out.push([akhSet.code, rare, false]);
-	rng = nextRng8;
+	out.push([akhSet.code, sequential(akhSet, 6, rng).next().value, false]);
 
 	if (hasFoilC) {
-		const [foil, nextRng] = sequential(akhSet, 9, rng).next().value;
-		out.push([akhSet.code, foil, true]);
-		rng = nextRng;
+		out.push([akhSet.code, sequential(akhSet, 9, rng).next().value, true]);
 	} else if (hasMasterpiece) {
-		const [foil, nextRng] = sequential(mp2Set, 0, rng).next().value;
-		out.push([mp2Set.code, foil, true]);
-		rng = nextRng;
+		out.push([mp2Set.code, sequential(mp2Set, 0, rng).next().value, true]);
 	} else if (hasFoilU) {
-		const [foil, nextRng] = sequential(akhSet, 10, rng).next().value;
-		out.push([akhSet.code, foil, true]);
-		rng = nextRng;
+		out.push([akhSet.code, sequential(akhSet, 10, rng).next().value, true]);
 	} else if (hasFoilR) {
-		const [foil, nextRng] = sequential(akhSet, 11, rng).next().value;
-		out.push([akhSet.code, foil, true]);
-		rng = nextRng;
+		out.push([akhSet.code, sequential(akhSet, 11, rng).next().value, true]);
 	}
 
-	const [land, nextRng9] = sequential(akhSet, fullLand ? 8 : 7, rng).next()
-		.value;
-	out.push([akhSet.code, land, false]);
+	out.push([
+		akhSet.code,
+		sequential(akhSet, fullLand ? 8 : 7, rng).next().value,
+		false
+	]);
 
-	const [token] = sequential(takhSet, 0, nextRng9).next().value;
-	out.push([takhSet.code, token, false]);
+	out.push([takhSet.code, sequential(takhSet, 0, rng).next().value, false]);
 	return out;
 }

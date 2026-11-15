@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -20,25 +18,21 @@ const UNCOMMONS = 2;
 export default function atqPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	// Ordering (uncommons first versus commons first). Arbitrarily assigned a 1 in 2 chance to appear here.
-	const [uncommonsFirst, nextRng0] = getMode(1 / 2, rng);
-	rng = nextRng0;
+	const uncommonsFirst = getMode(1 / 2, rng);
 
 	if (uncommonsFirst) {
 		const uGen = striped(atqSet, 1, rng);
 		for (let i = 0; i < UNCOMMONS; i++) {
-			const [uncommon, nextRng] = uGen.next().value;
-			out.push([atqSet.code, uncommon, false]);
-			rng = nextRng;
+			out.push([atqSet.code, uGen.next().value, false]);
 		}
 
 		const cGen = striped(atqSet, 0, rng);
 		for (let i = 0; i < COMMONS; i++) {
-			const [common] = cGen.next().value;
-			out.push([atqSet.code, common, false]);
+			out.push([atqSet.code, cGen.next().value, false]);
 		}
 
 		return out;
@@ -46,15 +40,12 @@ export default function atqPack(
 
 	const cGen = striped(atqSet, 0, rng);
 	for (let i = 0; i < COMMONS; i++) {
-		const [common, nextRng] = cGen.next().value;
-		out.push([atqSet.code, common, false]);
-		rng = nextRng;
+		out.push([atqSet.code, cGen.next().value, false]);
 	}
 
 	const uGen = striped(atqSet, 1, rng);
 	for (let i = 0; i < UNCOMMONS; i++) {
-		const [uncommon] = uGen.next().value;
-		out.push([atqSet.code, uncommon, false]);
+		out.push([atqSet.code, uGen.next().value, false]);
 	}
 
 	return out;

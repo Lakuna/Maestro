@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -19,17 +17,17 @@ const UNCOMMONS = 2;
 export default function femPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	// Ordering (uncommons first versus commons first). Arbitrarily assigned a 1 in 2 chance to appear here.
-	const [uncommonsFirst, nextRng0] = getMode(1 / 2, rng);
+	const uncommonsFirst = getMode(1 / 2, rng);
 
 	// Uncommons on a split sheet versus a full sheet. Arbitrarily assigned a 1 in 2 chance to appear here.
-	const [splitUncommons, nextRng1] = getMode(1 / 2, nextRng0);
+	const splitUncommons = getMode(1 / 2, rng);
 
 	// Uncommons from the top half versus bottom half of the sheet (no effect for non-split sheets). Arbitrarily assigned a 1 in 2 chance to appear here.
-	const [topUncommons, nextRng2] = getMode(1 / 2, nextRng1);
+	const topUncommons = getMode(1 / 2, rng);
 	const uTop =
 		splitUncommons ?
 			topUncommons ? 0
@@ -40,20 +38,16 @@ export default function femPack(
 			topUncommons ? 5
 			:	6
 		:	femSet.height;
-	rng = nextRng2;
 
 	if (uncommonsFirst) {
 		const uGen = striped(femSet, 1, rng, 2, 5, uTop, uHeight);
 		for (let i = 0; i < UNCOMMONS; i++) {
-			const [uncommon, nextRng] = uGen.next().value;
-			out.push([femSet.code, uncommon, false]);
-			rng = nextRng;
+			out.push([femSet.code, uGen.next().value, false]);
 		}
 
 		const cGen = striped(femSet, 0, rng);
 		for (let i = 0; i < 6; i++) {
-			const [common] = cGen.next().value;
-			out.push([femSet.code, common, false]);
+			out.push([femSet.code, cGen.next().value, false]);
 		}
 
 		return out;
@@ -61,22 +55,17 @@ export default function femPack(
 
 	const cGen0 = striped(femSet, 0, rng);
 	for (let i = 0; i < 3; i++) {
-		const [common, nextRng] = cGen0.next().value;
-		out.push([femSet.code, common, false]);
-		rng = nextRng;
+		out.push([femSet.code, cGen0.next().value, false]);
 	}
 
 	const cGen1 = striped(femSet, 0, rng);
 	for (let i = 0; i < 3; i++) {
-		const [common, nextRng] = cGen1.next().value;
-		out.push([femSet.code, common, false]);
-		rng = nextRng;
+		out.push([femSet.code, cGen1.next().value, false]);
 	}
 
 	const uGen = striped(femSet, 1, rng, 2, 5, uTop, uHeight);
 	for (let i = 0; i < UNCOMMONS; i++) {
-		const [uncommon] = uGen.next().value;
-		out.push([femSet.code, uncommon, false]);
+		out.push([femSet.code, uGen.next().value, false]);
 	}
 
 	return out;

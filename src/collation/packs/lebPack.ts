@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -18,30 +16,27 @@ import getMode from "../utility/getMode.js";
 export default function lebPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	// LEB packs could occasionally contain rares from the LEA rare sheet instead. Arbitrarily assigned a 1 in 10 chance here.
-	const [leaRares, nextRng0] = getMode(1 / 10, rng);
-	rng = nextRng0;
+	const leaRares = getMode(1 / 10, rng);
 
 	const cGen = striped(lebSet, 0, rng);
 	for (let i = 0; i < 11; i++) {
-		const [common, nextRng] = cGen.next().value;
-		out.push([lebSet.code, common, false]);
-		rng = nextRng;
+		out.push([lebSet.code, cGen.next().value, false]);
 	}
 
 	const uGen = striped(lebSet, 1, rng);
 	for (let i = 0; i < 3; i++) {
-		const [uncommon, nextRng] = uGen.next().value;
-		out.push([lebSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([lebSet.code, uGen.next().value, false]);
 	}
 
-	const rGen = striped(leaRares ? leaSet : lebSet, 2, rng);
-	const [rare] = rGen.next().value;
-	out.push([leaRares ? leaSet.code : lebSet.code, rare, false]);
+	out.push([
+		leaRares ? leaSet.code : lebSet.code,
+		striped(leaRares ? leaSet : lebSet, 2, rng).next().value,
+		false
+	]);
 
 	return out;
 }

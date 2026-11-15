@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -16,25 +14,19 @@ import x3edSet from "../sets/x3edSet.js";
 export default function x3edPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	const uGen = striped(x3edSet, 1, rng);
 	for (let i = 0; i < 3; i++) {
-		const [uncommon, nextRng] = uGen.next().value;
-		out.push([x3edSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([x3edSet.code, uGen.next().value, false]);
 	}
 
-	const rGen = striped(x3edSet, 2, rng);
-	const [rare, nextRng0] = rGen.next().value;
-	out.push([x3edSet.code, rare, false]);
-	rng = nextRng0;
+	out.push([x3edSet.code, striped(x3edSet, 2, rng).next().value, false]);
 
 	const cGen = striped(x3edSet, 0, rng);
 	for (let i = 0; i < 11; i++) {
-		const [common] = cGen.next().value;
-		out.push([x3edSet.code, common, false]);
+		out.push([x3edSet.code, cGen.next().value, false]);
 	}
 
 	return out;

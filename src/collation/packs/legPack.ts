@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -20,35 +18,28 @@ const UNCOMMONS = 3;
 export default function legPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	// Ordering (rare-uncommon-common versus uncommon-rare-common). Arbitrarily assigned a 1 in 10 chance to appear here.
-	const [rucOrdering, nextRng0] = getMode(1 / 10, rng);
+	const rucOrdering = getMode(1 / 10, rng);
 
 	// "A boxes" (uncommons from the top 6 rows) versus "B boxes" (uncommons from the bottom 5 rows). Arbitrarily assigned a 1 in 2 chance to appear here.
-	const [aBox, nextRng1] = getMode(1 / 2, nextRng0);
+	const aBox = getMode(1 / 2, rng);
 	const top = aBox ? 0 : 6;
 	const height = aBox ? 6 : 5;
-	rng = nextRng1;
 
 	if (rucOrdering) {
-		const rGen = striped(legSet, 2, rng);
-		const [rare, nextRng2] = rGen.next().value;
-		out.push([legSet.code, rare, false]);
-		rng = nextRng2;
+		out.push([legSet.code, striped(legSet, 2, rng).next().value, false]);
 
 		const uGen = striped(legSet, 1, rng, 2, 4, top, height);
 		for (let i = 0; i < UNCOMMONS; i++) {
-			const [uncommon, nextRng] = uGen.next().value;
-			out.push([legSet.code, uncommon, false]);
-			rng = nextRng;
+			out.push([legSet.code, uGen.next().value, false]);
 		}
 
 		const cGen = striped(legSet, 0, rng);
 		for (let i = 0; i < COMMONS; i++) {
-			const [common] = cGen.next().value;
-			out.push([legSet.code, common, false]);
+			out.push([legSet.code, cGen.next().value, false]);
 		}
 
 		return out;
@@ -56,20 +47,14 @@ export default function legPack(
 
 	const uGen = striped(legSet, 1, rng, 2, 4, top, height);
 	for (let i = 0; i < UNCOMMONS; i++) {
-		const [uncommon, nextRng] = uGen.next().value;
-		out.push([legSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([legSet.code, uGen.next().value, false]);
 	}
 
-	const rGen = striped(legSet, 2, rng);
-	const [rare, nextRng2] = rGen.next().value;
-	out.push([legSet.code, rare, false]);
-	rng = nextRng2;
+	out.push([legSet.code, striped(legSet, 2, rng).next().value, false]);
 
 	const cGen = striped(legSet, 0, rng);
 	for (let i = 0; i < COMMONS; i++) {
-		const [common] = cGen.next().value;
-		out.push([legSet.code, common, false]);
+		out.push([legSet.code, cGen.next().value, false]);
 	}
 
 	return out;

@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -16,26 +14,20 @@ import leaSet from "../sets/leaSet.js";
 export default function leaPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	const cGen = striped(leaSet, 0, rng);
 	for (let i = 0; i < 11; i++) {
-		const [common, nextRng] = cGen.next().value;
-		out.push([leaSet.code, common, false]);
-		rng = nextRng;
+		out.push([leaSet.code, cGen.next().value, false]);
 	}
 
 	const uGen = striped(leaSet, 1, rng);
 	for (let i = 0; i < 3; i++) {
-		const [uncommon, nextRng] = uGen.next().value;
-		out.push([leaSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([leaSet.code, uGen.next().value, false]);
 	}
 
-	const rGen = striped(leaSet, 2, rng);
-	const [rare] = rGen.next().value;
-	out.push([leaSet.code, rare, false]);
+	out.push([leaSet.code, striped(leaSet, 2, rng).next().value, false]);
 
 	return out;
 }

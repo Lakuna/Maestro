@@ -98,32 +98,32 @@ const oiTimeWeights = new Map<Time, number>([
 export default function randomChampionsMeeting(
 	seed: number
 ): [Course, Season, Weather, TrackCondition, Time] {
-	const courseRng = xoroshiro128plus(seed);
+	const rng = xoroshiro128plus(seed);
 
 	// The course (location, distance, and track) are determined together.
-	const [course, seasonRng] = weightedRandom(courseRng, courseWeights);
+	const course = weightedRandom(rng, courseWeights);
 
 	// The season is determined independently.
-	const [season, weatherRng] = weightedRandom(seasonRng, seasonWeights);
+	const season = weightedRandom(rng, seasonWeights);
 
 	// The weather is determined based on the season.
 	const weatherWeights = seasonWeatherWeights.get(season);
 	if (!weatherWeights) {
 		throw new Error(`No weather weights found for season ${season}`);
 	}
-	const [weather, conditionRng] = weightedRandom(weatherRng, weatherWeights);
+	const weather = weightedRandom(rng, weatherWeights);
 
 	// The ground condition is determined based on the weather.
 	const conditionWeights = weatherConditionWeights.get(weather);
 	if (!conditionWeights) {
 		throw new Error(`No ground condition weights found for weather ${weather}`);
 	}
-	const [condition, timeRng] = weightedRandom(conditionRng, conditionWeights);
+	const condition = weightedRandom(rng, conditionWeights);
 
 	// The time of day can only change for courses located at Oi.
 	const time =
 		course.location === Location.OI ?
-			weightedRandom(timeRng, oiTimeWeights)[0]
+			weightedRandom(rng, oiTimeWeights)
 		:	Time.AFTERNOON;
 
 	return [course, season, weather, condition, time];

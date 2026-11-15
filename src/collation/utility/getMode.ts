@@ -1,9 +1,9 @@
 import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
 
 import { uniformFloat32 } from "pure-rand/distribution/uniformFloat32";
-import { purify } from "pure-rand/utils/purify";
+import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
-const uniformFloat32Pure = purify(uniformFloat32);
+import defaultSeed from "../../utility/defaultSeed.js";
 
 /**
  * Determine if a mode should be active.
@@ -14,8 +14,7 @@ const uniformFloat32Pure = purify(uniformFloat32);
  */
 export default function getMode(
 	odds: number,
-	rng: Readonly<RandomGenerator>
-): [boolean, RandomGenerator] {
-	const [out, outRng] = uniformFloat32Pure(rng);
-	return [out < odds, outRng];
+	rng: Readonly<RandomGenerator> = xoroshiro128plus(defaultSeed())
+): boolean {
+	return uniformFloat32(rng) < odds;
 }

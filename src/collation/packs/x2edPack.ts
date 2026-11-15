@@ -1,5 +1,3 @@
-import type { RandomGenerator } from "pure-rand/types/RandomGenerator";
-
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import defaultSeed from "../../utility/defaultSeed.js";
@@ -20,31 +18,24 @@ const UNCOMMONS = 3;
 export default function x2edPack(
 	seed?: number
 ): readonly [string, string, boolean][] {
-	let rng: RandomGenerator = xoroshiro128plus(seed ?? defaultSeed());
+	const rng = xoroshiro128plus(seed ?? defaultSeed());
 	const out: [string, string, boolean][] = [];
 
 	// Ordering (rare-uncommon-common versus uncommon-rare-common). Arbitrarily assigned a 1 in 10 chance to appear here.
-	const [rucOrdering, nextRng0] = getMode(1 / 10, rng);
-	rng = nextRng0;
+	const rucOrdering = getMode(1 / 10, rng);
 
 	// Mode 1: back-facing cards with rare-uncommon-common ordering. Arbitrarily assigned a 10% chance to appear here.
 	if (rucOrdering) {
-		const rGen = striped(x2edSet, 2, rng);
-		const [rare, nextRng1] = rGen.next().value;
-		out.push([x2edSet.code, rare, false]);
-		rng = nextRng1;
+		out.push([x2edSet.code, striped(x2edSet, 2, rng).next().value, false]);
 
 		const uGen = striped(x2edSet, 1, rng);
 		for (let i = 0; i < UNCOMMONS; i++) {
-			const [uncommon, nextRng] = uGen.next().value;
-			out.push([x2edSet.code, uncommon, false]);
-			rng = nextRng;
+			out.push([x2edSet.code, uGen.next().value, false]);
 		}
 
 		const cGen = striped(x2edSet, 0, rng);
 		for (let i = 0; i < COMMONS; i++) {
-			const [common] = cGen.next().value;
-			out.push([x2edSet.code, common, false]);
+			out.push([x2edSet.code, cGen.next().value, false]);
 		}
 
 		return out;
@@ -52,20 +43,14 @@ export default function x2edPack(
 
 	const uGen = striped(x2edSet, 1, rng);
 	for (let i = 0; i < UNCOMMONS; i++) {
-		const [uncommon, nextRng] = uGen.next().value;
-		out.push([x2edSet.code, uncommon, false]);
-		rng = nextRng;
+		out.push([x2edSet.code, uGen.next().value, false]);
 	}
 
-	const rGen = striped(x2edSet, 2, rng);
-	const [rare, nextRng1] = rGen.next().value;
-	out.push([x2edSet.code, rare, false]);
-	rng = nextRng1;
+	out.push([x2edSet.code, striped(x2edSet, 2, rng).next().value, false]);
 
 	const cGen = striped(x2edSet, 0, rng);
 	for (let i = 0; i < COMMONS; i++) {
-		const [common] = cGen.next().value;
-		out.push([x2edSet.code, common, false]);
+		out.push([x2edSet.code, cGen.next().value, false]);
 	}
 
 	return out;
