@@ -9,6 +9,7 @@ import openpackDefinition from "./commands/definitions/openpackDefinition.js";
 import randcmDefinition from "./commands/definitions/randcmDefinition.js";
 import sealedpoolDefinition from "./commands/definitions/sealedpool.js";
 import seedgenDefinition from "./commands/definitions/seedgen.js";
+import setbalDefinition from "./commands/definitions/setbalDefinition.js";
 import timerDefinition from "./commands/definitions/timerDefinition.js";
 import createGlobalApplicationCommand from "./discord/interactions/applicationCommands/createGlobalApplicationCommand.js";
 
@@ -28,6 +29,7 @@ const definitions = [
 	randcmDefinition,
 	sealedpoolDefinition,
 	seedgenDefinition,
+	setbalDefinition,
 	timerDefinition
 ];
 // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types

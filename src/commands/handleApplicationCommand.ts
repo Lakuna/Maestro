@@ -15,6 +15,7 @@ import openpackDefinition from "./definitions/openpackDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
 import sealedpoolDefinition from "./definitions/sealedpool.js";
 import seedgenDefinition from "./definitions/seedgen.js";
+import setbalDefinition from "./definitions/setbalDefinition.js";
 import timerDefinition from "./definitions/timerDefinition.js";
 import balanceHandler from "./handlers/balanceHandler.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
@@ -24,6 +25,7 @@ import openpackHandler from "./handlers/openpackHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
 import sealedpoolHandler from "./handlers/sealedpoolHandler.js";
 import seedgenHandler from "./handlers/seedgenHandler.js";
+import setbalHandler from "./handlers/setbalHandler.js";
 import timerHandler from "./handlers/timerHandler.js";
 
 /**
@@ -70,6 +72,9 @@ export default async function handleApplicationCommand(
 				break;
 			case seedgenDefinition.name:
 				body ??= seedgenHandler(data.data);
+				break;
+			case setbalDefinition.name:
+				body ??= await setbalHandler(data.data, data.member);
 				break;
 			case timerDefinition.name:
 				body ??= timerHandler(data.data);

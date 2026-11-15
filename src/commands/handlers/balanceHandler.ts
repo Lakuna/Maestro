@@ -15,6 +15,7 @@ import EmbedType from "../../discord/resources/message/EmbedType.js";
 /**
  * Handle the `balance` command.
  * @param commandData - The Discord application command data.
+ * @param commandUser - The user that is using the command.
  * @returns The Discord interaction response.
  * @internal
  */
