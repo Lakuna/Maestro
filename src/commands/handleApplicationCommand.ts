@@ -7,6 +7,7 @@ import type { DeepReadonly } from "../utility/DeepReadonly.js";
 import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import embedForError from "../utility/embedForError.js";
+import addbalDefinition from "./definitions/addbalDefinition.js";
 import balanceDefinition from "./definitions/balanceDefinition.js";
 import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeckDefinition.js";
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
@@ -17,6 +18,7 @@ import sealedpoolDefinition from "./definitions/sealedpool.js";
 import seedgenDefinition from "./definitions/seedgen.js";
 import setbalDefinition from "./definitions/setbalDefinition.js";
 import timerDefinition from "./definitions/timerDefinition.js";
+import addbalHandler from "./handlers/addbalHandler.js";
 import balanceHandler from "./handlers/balanceHandler.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
@@ -46,6 +48,9 @@ export default async function handleApplicationCommand(
 		}
 
 		switch (data.data.name) {
+			case addbalDefinition.name:
+				body ??= addbalHandler(data.data, data.member);
+				break;
 			case balanceDefinition.name:
 				body ??= await balanceHandler(
 					data.data,
