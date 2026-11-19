@@ -1,12 +1,12 @@
 import type { infer as infer_ } from "zod";
 
 import type editWebhookMessage from "../../../discord/resources/webhook/editWebhookMessage.js";
+import type simpleDeck from "../../../mtg/simpleDeck.js";
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
-import type simpleDeck from "../../../utility/simpleDeck.js";
 
-import combineBoards from "../../../utility/combineBoards.js";
+import combineBoards from "../../../mtg/combineBoards.js";
+import parseTypeLine from "../../../mtg/parseTypeLine.js";
 import makeMarkdownList from "../../../utility/makeMarkdownList.js";
-import parseTypeLine from "../../../utility/parseTypeLine.js";
 
 const legalSets = [
 	"2ed",

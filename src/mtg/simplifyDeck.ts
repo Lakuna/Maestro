@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type deck from "../moxfield/deck.js";
-import type { DeepReadonly } from "./DeepReadonly.js";
+import type { DeepReadonly } from "../utility/DeepReadonly.js";
 import type simpleDeck from "./simpleDeck.js";
 
 /**

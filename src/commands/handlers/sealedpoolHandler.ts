@@ -6,9 +6,9 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
-import informDeck from "../../utility/informDeck.js";
-import poolFromPacks from "../../utility/poolFromPacks.js";
-import stringifyDeck from "../../utility/stringifyDeck.js";
+import informDeck from "../../mtg/informDeck.js";
+import poolFromPacks from "../../mtg/poolFromPacks.js";
+import stringifyDeck from "../../mtg/stringifyDeck.js";
 import stringToSeeds from "../../utility/stringToSeeds.js";
 
 /**

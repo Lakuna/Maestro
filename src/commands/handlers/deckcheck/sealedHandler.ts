@@ -1,14 +1,14 @@
 import type { infer as infer_ } from "zod";
 
 import type editWebhookMessage from "../../../discord/resources/webhook/editWebhookMessage.js";
+import type simpleDeck from "../../../mtg/simpleDeck.js";
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
-import type simpleDeck from "../../../utility/simpleDeck.js";
 
-import combineBoards from "../../../utility/combineBoards.js";
+import combineBoards from "../../../mtg/combineBoards.js";
+import parseTypeLine from "../../../mtg/parseTypeLine.js";
+import poolFromPacks from "../../../mtg/poolFromPacks.js";
+import stringifyCard from "../../../mtg/stringifyCard.js";
 import makeMarkdownList from "../../../utility/makeMarkdownList.js";
-import parseTypeLine from "../../../utility/parseTypeLine.js";
-import poolFromPacks from "../../../utility/poolFromPacks.js";
-import stringifyCard from "../../../utility/stringifyCard.js";
 
 /**
  * Deck check for Sealed Deck.

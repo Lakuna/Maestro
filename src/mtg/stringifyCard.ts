@@ -1,6 +1,6 @@
 import type { infer as infer_ } from "zod";
 
-import type { DeepReadonly } from "./DeepReadonly.js";
+import type { DeepReadonly } from "../utility/DeepReadonly.js";
 import type simpleCard from "./simpleCard.js";
 
 /**

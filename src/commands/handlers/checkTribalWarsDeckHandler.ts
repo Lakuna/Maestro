@@ -4,9 +4,9 @@ import type applicationCommandData from "../../discord/interactions/receivingAnd
 import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
+import informDeck from "../../mtg/informDeck.js";
+import parseDeckList from "../../mtg/parseDeckList.js";
 import getMessageContent from "../../utility/getMessageContent.js";
-import informDeck from "../../utility/informDeck.js";
-import parseDeckList from "../../utility/parseDeckList.js";
 import tribalHandler from "./deckcheck/tribalHandler.js";
 
 /**

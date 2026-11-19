@@ -6,7 +6,7 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
 import getDeck from "../../moxfield/getDeck.js";
-import simplifyDeck from "../../utility/simplifyDeck.js";
+import simplifyDeck from "../../mtg/simplifyDeck.js";
 import stringToSeeds from "../../utility/stringToSeeds.js";
 import classicHandler from "./deckcheck/classicHandler.js";
 import sealedHandler from "./deckcheck/sealedHandler.js";

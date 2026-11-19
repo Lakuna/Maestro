@@ -6,9 +6,9 @@ import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import sealedHandler from "../../commands/handlers/deckcheck/sealedHandler.js";
 import ComponentType from "../../discord/components/ComponentType.js";
+import informDeck from "../../mtg/informDeck.js";
+import parseDeckList from "../../mtg/parseDeckList.js";
 import findComponent from "../../utility/findComponent.js";
-import informDeck from "../../utility/informDeck.js";
-import parseDeckList from "../../utility/parseDeckList.js";
 import stringToSeeds from "../../utility/stringToSeeds.js";
 import {
 	CSDMODAL_DECKLIST_ID,
