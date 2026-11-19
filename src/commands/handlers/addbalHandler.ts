@@ -70,6 +70,9 @@ export default async function addbalHandler(
 		throw new Error("Missing guild ID.");
 	}
 
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(guildId); // TODO: Delete.
+
 	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 	const members = (await listGuildMembers(guildId, 1000)).filter(({ roles }) =>
 		roles.includes(role.id)
