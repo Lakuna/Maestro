@@ -44,6 +44,9 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	const data = c.req.valid("json");
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
+			// eslint-disable-next-line no-warning-comments, no-console
+			console.info(JSON.stringify(data)); // TODO: Delete.
+
 			// Handle special cases.
 			try {
 				const pre = preHandleApplicationCommand(data);

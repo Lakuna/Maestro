@@ -29,9 +29,6 @@ export default function addbalHandler(
 		throw new Error("Only administrators can use this command.");
 	}
 
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(JSON.stringify(commandData)); // TODO: Delete.
-
 	const usersOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "users" && type === ApplicationCommandOptionType.MENTIONABLE
