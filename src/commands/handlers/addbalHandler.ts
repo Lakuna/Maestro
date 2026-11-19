@@ -30,7 +30,7 @@ export default function addbalHandler(
 	}
 
 	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(commandData); // TODO: Delete.
+	console.info(JSON.stringify(commandData)); // TODO: Delete.
 
 	const usersOption = commandData.options?.find(
 		({ name, type }) =>
