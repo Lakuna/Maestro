@@ -20,6 +20,9 @@ export default function addbalHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>,
 	commandMember?: DeepReadonly<infer_<typeof guildMember>>
 ): infer_<typeof editWebhookMessage> {
+	// eslint-disable-next-line no-console, no-warning-comments
+	console.info(JSON.stringify(commandData)); // TODO: Delete.
+
 	if (
 		!(
 			BigInt(commandMember?.permissions ?? 0) &
