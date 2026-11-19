@@ -15,7 +15,7 @@ export default function embedForError(e: unknown): infer_<typeof embed> {
 		// `description` is not JSON, display it as-is.
 	}
 
-	if (description.length > 4096) {
+	if (description.length > 0x1000) {
 		// There isn't an easy way to display longer messages than this within Discord, so fall back to the console.
 		// eslint-disable-next-line no-console
 		console.error(description);
