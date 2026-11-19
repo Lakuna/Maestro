@@ -17,6 +17,11 @@ export default async function listGuildMembers(
 	limit?: number,
 	after?: string
 ): Promise<infer_<ReturnType<typeof array<typeof guildMember>>>> {
+	const botToken = process.env["DISCORD_BOT_TOKEN"];
+	if (!botToken) {
+		throw new Error("No bot token.");
+	}
+
 	const url = new URL(`guilds/${id}/members`, "https://discord.com/api/v10/");
 	if (typeof limit === "number") {
 		url.searchParams.set("limit", limit.toString());
@@ -28,6 +33,7 @@ export default async function listGuildMembers(
 	const response = await fetch(url, {
 		headers: {
 			/* eslint-disable @typescript-eslint/naming-convention */
+			Authorization: `Bot ${botToken}`,
 			"Content-Type": "application/json",
 			"User-Agent": userAgent
 			/* eslint-enable @typescript-eslint/naming-convention */
