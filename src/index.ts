@@ -1,6 +1,5 @@
 import type { infer as infer_ } from "zod";
 
-import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import nacl from "tweetnacl";
 
@@ -18,7 +17,7 @@ import waitUntil from "./utility/waitUntil.js";
 const app: Hono = new Hono();
 
 // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+app.post("/api/interactions", async (c) => {
 	// eslint-disable-next-line no-warning-comments, no-console
 	console.info(JSON.stringify(c)); // TODO: Delete.
 
@@ -44,7 +43,18 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 		return c.json(void 0, 401);
 	}
 
-	const data = c.req.valid("json");
+	const result = interaction.safeParse(body);
+	if (!result.success) {
+		return c.json(
+			{
+				data: { embeds: [embedForError(result.error)] },
+				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+			} satisfies infer_<typeof interactionResponse>,
+			200
+		);
+	}
+
+	const { data } = result;
 	// eslint-disable-next-line no-warning-comments, no-console
 	console.info(JSON.stringify(data)); // TODO: Delete.
 	switch (data.type) {
