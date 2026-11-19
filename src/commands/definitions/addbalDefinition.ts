@@ -7,14 +7,14 @@ import ApplicationCommandOptionType from "../../discord/interactions/application
  * @internal
  */
 const addbalDefinition = {
-	description: "Add to one or more users' coin balances.",
+	description: "Add to a user's coin balances.",
 	name: "addbal",
 	options: [
 		{
-			description: "The users to set the balance of.",
-			name: "users",
+			description: "The user to add to the balance of.",
+			name: "user",
 			required: true,
-			type: ApplicationCommandOptionType.MENTIONABLE
+			type: ApplicationCommandOptionType.USER
 		},
 		{
 			description: "The balance to add to the user.",

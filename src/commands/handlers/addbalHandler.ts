@@ -1,12 +1,15 @@
 import type { infer as infer_ } from "zod";
 
+import { sql } from "drizzle-orm";
+
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type guildMember from "../../discord/resources/guild/guildMember.js";
 import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
+import db from "../../db/db.js";
+import { usersTable } from "../../db/schema.js";
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
-import listGuildMembers from "../../discord/resources/guild/listGuildMembers.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 import Permissions from "../../discord/topics/permissions/Permissions.js";
 
@@ -14,14 +17,12 @@ import Permissions from "../../discord/topics/permissions/Permissions.js";
  * Handle the `addbal` command.
  * @param commandData - The Discord application command data.
  * @param commandMember - The guild member that is using the command.
- * @param guildId - The ID of the guild in which the command is being used.
  * @returns The Discord interaction response.
  * @internal
  */
 export default async function addbalHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>,
-	commandMember?: DeepReadonly<infer_<typeof guildMember>>,
-	guildId?: string
+	commandMember?: DeepReadonly<infer_<typeof guildMember>>
 ): Promise<infer_<typeof editWebhookMessage>> {
 	if (
 		!(
@@ -32,12 +33,12 @@ export default async function addbalHandler(
 		throw new Error("Only administrators can use this command.");
 	}
 
-	const usersOption = commandData.options?.find(
+	const userOption = commandData.options?.find(
 		({ name, type }) =>
-			name === "users" && type === ApplicationCommandOptionType.MENTIONABLE
+			name === "user" && type === ApplicationCommandOptionType.USER
 	);
-	if (typeof usersOption?.value !== "string") {
-		throw new Error("Missing users option.");
+	if (typeof userOption?.value !== "string") {
+		throw new Error("Missing user option.");
 	}
 
 	const coinsOption = commandData.options?.find(
@@ -48,42 +49,19 @@ export default async function addbalHandler(
 		throw new Error("Missing coins option.");
 	}
 
-	const member = commandData.resolved?.members?.[usersOption.value];
-	if (member) {
-		return {
-			embeds: [
-				{
-					description: `Member: ${member.nick ?? "(no nickname)"} (\`${usersOption.value}\`)`,
-					title: "Add Balance (User)",
-					type: EmbedType.RICH
-				}
-			]
-		};
-	}
-
-	const role = commandData.resolved?.roles?.[usersOption.value];
-	if (!role) {
-		throw new Error(`Member/role \`${usersOption.value}\` not found.`);
-	}
-
-	if (!guildId) {
-		throw new Error("Missing guild ID.");
-	}
-
-	// eslint-disable-next-line no-console, no-warning-comments
-	console.info(guildId); // TODO: Delete.
-
-	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-	const members = (await listGuildMembers(guildId, 1000)).filter(({ roles }) =>
-		roles.includes(role.id)
-	);
+	await db
+		.insert(usersTable)
+		.values({ coins: coinsOption.value, id: userOption.value })
+		.onConflictDoUpdate({
+			set: { coins: sql`${usersTable.coins} + ${coinsOption.value}` },
+			target: usersTable.id
+		});
 
 	return {
 		embeds: [
 			{
-				// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-				description: `Role: ${role.name} (\`${role.id}\`)\n${members.map(({ nick }) => `- ${nick ?? "(no nickname)"}`).join("\n")}`,
-				title: "Add Balance (Role)",
+				description: `<@${userOption.value}> now has ${coinsOption.value.toString()} more coins.`,
+				title: "Add Balance",
 				type: EmbedType.RICH
 			}
 		]

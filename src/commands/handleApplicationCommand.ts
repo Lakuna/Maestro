@@ -49,7 +49,7 @@ export default async function handleApplicationCommand(
 
 		switch (data.data.name) {
 			case addbalDefinition.name:
-				body ??= await addbalHandler(data.data, data.member, data.guild_id);
+				body ??= await addbalHandler(data.data, data.member);
 				break;
 			case balanceDefinition.name:
 				body ??= await balanceHandler(
