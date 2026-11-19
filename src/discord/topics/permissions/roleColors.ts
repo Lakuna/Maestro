@@ -1,4 +1,4 @@
-import { int, object } from "zod";
+import { int, nullable, object } from "zod";
 
 /**
  * Discord role colors.
@@ -8,8 +8,8 @@ import { int, object } from "zod";
 const roleColors = object({
 	/* eslint-disable @typescript-eslint/naming-convention */
 	primary_color: int(),
-	secondary_color: int(),
-	tertiary_color: int()
+	secondary_color: nullable(int()),
+	tertiary_color: nullable(int())
 	/* eslint-enable @typescript-eslint/naming-convention */
 });
 

@@ -1,6 +1,7 @@
+import type { infer as infer_ } from "zod";
+
 import { Hono } from "hono";
 import nacl from "tweetnacl";
-import { type infer as infer_, prettifyError } from "zod";
 
 import type interactionResponse from "./discord/interactions/receivingAndResponding/interactionResponse.js";
 
@@ -56,7 +57,7 @@ app.post("/api/interactions", async (c) => {
 	if (!result.success) {
 		return c.json(
 			{
-				data: { embeds: [embedForError(prettifyError(result.error))] },
+				data: { embeds: [embedForError(result.error)] },
 				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
 			} satisfies infer_<typeof interactionResponse>,
 			200
