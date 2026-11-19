@@ -19,6 +19,9 @@ const app: Hono = new Hono();
 
 // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
 app.post("/api/interactions", zValidator("json", interaction), async (c) => {
+	// eslint-disable-next-line no-warning-comments, no-console
+	console.info(JSON.stringify(c)); // TODO: Delete.
+
 	const publicKey = process.env["DISCORD_PUBLIC_KEY"];
 	if (!publicKey) {
 		return c.json(void 0, 500);
@@ -42,11 +45,10 @@ app.post("/api/interactions", zValidator("json", interaction), async (c) => {
 	}
 
 	const data = c.req.valid("json");
+	// eslint-disable-next-line no-warning-comments, no-console
+	console.info(JSON.stringify(data)); // TODO: Delete.
 	switch (data.type) {
 		case InteractionType.APPLICATION_COMMAND: {
-			// eslint-disable-next-line no-warning-comments, no-console
-			console.info(JSON.stringify(data)); // TODO: Delete.
-
 			// Handle special cases.
 			try {
 				const pre = preHandleApplicationCommand(data);
