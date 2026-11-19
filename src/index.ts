@@ -43,7 +43,20 @@ app.post("/api/interactions", async (c) => {
 		return c.json(void 0, 401);
 	}
 
-	const result = interaction.safeParse(body);
+	let json: unknown = void 0;
+	try {
+		json ??= JSON.parse(body);
+	} catch (e) {
+		return c.json(
+			{
+				data: { embeds: [embedForError(e)] },
+				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
+			} satisfies infer_<typeof interactionResponse>,
+			200
+		);
+	}
+
+	const result = interaction.safeParse(json);
 	if (!result.success) {
 		return c.json(
 			{
