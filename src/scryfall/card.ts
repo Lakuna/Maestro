@@ -4,6 +4,7 @@ import {
 	enum as enum_,
 	int,
 	iso,
+	nullable,
 	nullish,
 	number,
 	object,
@@ -16,6 +17,27 @@ import {
 
 import colors from "./colors.js";
 import producedMana from "./producedMana.js";
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const image_uris = nullish(
+	partialRecord(
+		enum_([
+			"png",
+			"small",
+			"normal",
+			"large",
+			"border_crop",
+			"art_crop",
+			"thumb",
+			"grid",
+			"display",
+			"crop",
+			"art",
+			"jpeg"
+		]),
+		url()
+	)
+);
 
 /**
  * A Magic: the Gathering card as returned by the Scryfall API.
@@ -60,24 +82,7 @@ const card = object({
 				defense: nullish(string()),
 				flavor_text: nullish(string()),
 				illustration_id: nullish(uuid()),
-				image_uris: nullish(
-					partialRecord(
-						enum_([
-							"png",
-							"small",
-							"normal",
-							"large",
-							"border_crop",
-							"art_crop",
-							"thumb",
-							"grid",
-							"display",
-							"crop",
-							"art"
-						]),
-						url()
-					)
-				),
+				image_uris,
 				layout: nullish(string()),
 				mana_cost: string(),
 				name: string(),
@@ -147,24 +152,7 @@ const card = object({
 	id: uuid(),
 	illustration_id: nullish(uuid()),
 	image_status: enum_(["missing", "placeholder", "lowres", "highres_scan"]),
-	image_uris: nullish(
-		partialRecord(
-			enum_([
-				"png",
-				"small",
-				"normal",
-				"large",
-				"border_crop",
-				"art_crop",
-				"thumb",
-				"grid",
-				"display",
-				"crop",
-				"art"
-			]),
-			url()
-		)
-	),
+	image_uris,
 	keywords: array(string()),
 	lang: string(),
 	layout: string(),
@@ -188,7 +176,7 @@ const card = object({
 		object({
 			previewed_at: iso.date(),
 			source: string(),
-			source_uri: string() // Documented as a URI but appears to also include other strings in practice.
+			source_uri: nullable(string()) // Documented as a URI but appears to also include other strings and `null` in practice.
 		})
 	),
 	prices: partialRecord(
