@@ -60,7 +60,7 @@ export default async function addbalHandler(
 	return {
 		embeds: [
 			{
-				description: `<@${userOption.value}> now has ${Math.abs(coinsOption.value).toString()} ${coinsOption.value >= 0 ? "more" : "fewer"} ${Math.abs(coinsOption.value) === 1 ? "coin" : "coins"}.`,
+				description: `<@${userOption.value}> now has ${Math.abs(coinsOption.value).toString()} ${coinsOption.value >= 0 ? "more" : "less"} ${Math.abs(coinsOption.value) === 1 ? "coin" : "coins"}.`,
 				title: `${coinsOption.value >= 0 ? "Add" : "Subtract"} Balance`,
 				type: EmbedType.RICH
 			}
