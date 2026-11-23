@@ -54,7 +54,7 @@ export default async function payHandler(
 	const [user] = await db
 		.select()
 		.from(usersTable)
-		.where(eq(usersTable.id, userOption.value))
+		.where(eq(usersTable.id, commandUser.id))
 		.limit(1);
 	if ((user?.coins ?? 0) < coinsOption.value) {
 		throw new Error(
