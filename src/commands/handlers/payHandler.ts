@@ -35,6 +35,10 @@ export default async function payHandler(
 		throw new Error("Missing user option.");
 	}
 
+	if (userOption.value === commandUser.id) {
+		throw new Error("Cannot pay yourself.");
+	}
+
 	const coinsOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "coins" && type === ApplicationCommandOptionType.INTEGER

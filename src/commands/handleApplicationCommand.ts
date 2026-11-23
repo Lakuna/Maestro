@@ -72,7 +72,7 @@ export default async function handleApplicationCommand(
 				body ??= await openpackHandler(data.data);
 				break;
 			case payDefinition.name:
-				body ??= await payHandler(data.data, data.user);
+				body ??= await payHandler(data.data, data.member?.user ?? data.user);
 				break;
 			case randcmDefinition.name:
 				body ??= randcmHandler(data.data);
