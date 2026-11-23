@@ -13,6 +13,7 @@ import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeck
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
+import payDefinition from "./definitions/payDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
 import sealedpoolDefinition from "./definitions/sealedpool.js";
 import seedgenDefinition from "./definitions/seedgen.js";
@@ -24,6 +25,7 @@ import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandle
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
+import payHandler from "./handlers/payHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
 import sealedpoolHandler from "./handlers/sealedpoolHandler.js";
 import seedgenHandler from "./handlers/seedgenHandler.js";
@@ -68,6 +70,9 @@ export default async function handleApplicationCommand(
 				break;
 			case openpackDefinition.name:
 				body ??= await openpackHandler(data.data);
+				break;
+			case payDefinition.name:
+				body ??= await payHandler(data.data, data.user);
 				break;
 			case randcmDefinition.name:
 				body ??= randcmHandler(data.data);

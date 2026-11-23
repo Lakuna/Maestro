@@ -7,6 +7,7 @@ import checkSealedDeckDefinition from "./commands/definitions/checkSealedDeck.js
 import checkTribalWarsDeckDefinition from "./commands/definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./commands/definitions/deckcheckDefinition.js";
 import openpackDefinition from "./commands/definitions/openpackDefinition.js";
+import payDefinition from "./commands/definitions/payDefinition.js";
 import randcmDefinition from "./commands/definitions/randcmDefinition.js";
 import sealedpoolDefinition from "./commands/definitions/sealedpool.js";
 import seedgenDefinition from "./commands/definitions/seedgen.js";
@@ -28,6 +29,7 @@ const definitions = [
 	checkTribalWarsDeckDefinition,
 	deckcheckDefinition,
 	openpackDefinition,
+	payDefinition,
 	randcmDefinition,
 	sealedpoolDefinition,
 	seedgenDefinition,

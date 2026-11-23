@@ -15,8 +15,8 @@
 		"@neondatabase/serverless": "^1.2.1",
 		"@vercel/functions": "^3.11.3",
 		"dotenv": "^18.0.10",
-		"drizzle-orm": "^1.0.0-rc.5",
-		"hono": "^4.13.19",
+		"drizzle-orm": "^1.0.0-rc.6",
+		"hono": "^4.13.21",
 		"pure-rand": "^8.4.2",
 		"tweetnacl": "^1.0.3",
 		"zod": "^4.6.7"
@@ -25,7 +25,7 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^26.6.6",
-		"drizzle-kit": "^1.0.0-rc.5",
+		"drizzle-kit": "^1.0.0-rc.6",
 		"eslint": "^10.15.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-perfectionist": "^5.14.0",
