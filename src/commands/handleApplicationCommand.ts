@@ -12,6 +12,7 @@ import balanceDefinition from "./definitions/balanceDefinition.js";
 import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeckDefinition.js";
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
+import leaderboardDefinition from "./definitions/leaderboardDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
 import payDefinition from "./definitions/payDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
@@ -24,6 +25,7 @@ import balanceHandler from "./handlers/balanceHandler.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
+import leaderboardHandler from "./handlers/leaderboardHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import payHandler from "./handlers/payHandler.js";
 import randcmHandler from "./handlers/randcmHandler.js";
@@ -67,6 +69,9 @@ export default async function handleApplicationCommand(
 				break;
 			case deckcheckDefinition.name:
 				body ??= await deckcheckHandler(data.data);
+				break;
+			case leaderboardDefinition.name:
+				body ??= await leaderboardHandler();
 				break;
 			case openpackDefinition.name:
 				body ??= await openpackHandler(data.data);
