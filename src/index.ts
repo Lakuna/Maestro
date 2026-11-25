@@ -96,6 +96,7 @@ app.post("/api/interactions", async (c) => {
 			);
 		}
 		case InteractionType.MESSAGE_COMPONENT:
+			// Set up the asynchronous work to be done.
 			waitUntil(c, handleComponent(data));
 
 			// Immediately return a deferred ("loading") message.

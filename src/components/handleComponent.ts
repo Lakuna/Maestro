@@ -25,6 +25,9 @@ export default async function handleComponent(
 			);
 		}
 
+		// eslint-disable-next-line no-console, no-warning-comments
+		console.info(JSON.stringify(data)); // TODO: Delete.
+
 		switch (data.data.custom_id) {
 			default:
 				throw new Error("Invalid component ID.");
