@@ -10,7 +10,8 @@ import ButtonStyle from "../../discord/components/ButtonStyle.js";
 import ComponentType from "../../discord/components/ComponentType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 
-const PAGE_SIZE = 10;
+// eslint-disable-next-line no-warning-comments
+const PAGE_SIZE = 5; // TODO: Extend.
 
 /**
  * Handle the `leaderboard` command.
@@ -39,14 +40,14 @@ export default async function leaderboardHandler(): Promise<
 					{
 						custom_id: "previous",
 						disabled: page < 1,
-						label: "Previous",
+						emoji: { name: "arrow_backward" },
 						style: ButtonStyle.PRIMARY,
 						type: ComponentType.BUTTON
 					},
 					{
 						custom_id: "next",
 						disabled: users.length < PAGE_SIZE,
-						label: "Next",
+						emoji: { name: "arrow_forward" },
 						style: ButtonStyle.PRIMARY,
 						type: ComponentType.BUTTON
 					}

@@ -94,6 +94,9 @@ app.post("/api/interactions", async (c) => {
 				200
 			);
 		}
+		case InteractionType.MESSAGE_COMPONENT:
+			// eslint-disable-next-line no-warning-comments
+			return c.json(void 0, 400); // TODO
 		case InteractionType.MODAL_SUBMIT:
 			// Set up the asynchronous work to be done.
 			waitUntil(c, handleModal(data));
