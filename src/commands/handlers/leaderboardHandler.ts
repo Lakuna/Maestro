@@ -35,18 +35,23 @@ export default async function leaderboardHandler(): Promise<
 		/* eslint-disable @typescript-eslint/naming-convention */
 		components: [
 			{
-				custom_id: "previous",
-				disabled: page < 1,
-				label: "Previous",
-				style: ButtonStyle.PRIMARY,
-				type: ComponentType.BUTTON
-			},
-			{
-				custom_id: "next",
-				disabled: users.length < PAGE_SIZE,
-				label: "Next",
-				style: ButtonStyle.PRIMARY,
-				type: ComponentType.BUTTON
+				components: [
+					{
+						custom_id: "previous",
+						disabled: page < 1,
+						label: "Previous",
+						style: ButtonStyle.PRIMARY,
+						type: ComponentType.BUTTON
+					},
+					{
+						custom_id: "next",
+						disabled: users.length < PAGE_SIZE,
+						label: "Next",
+						style: ButtonStyle.PRIMARY,
+						type: ComponentType.BUTTON
+					}
+				],
+				type: ComponentType.ACTION_ROW
 			}
 		],
 		embeds: [
