@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
-import type editWebhookMessage from "../../resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../resources/webhook/editWebhookMessageBody.js";
 
 import userAgent from "../../../utility/userAgent.js";
 
@@ -17,7 +17,7 @@ import userAgent from "../../../utility/userAgent.js";
 export default async function editOriginalInteractionResponse(
 	applicationId: string,
 	interactionToken: string,
-	body: DeepReadonly<infer_<typeof editWebhookMessage>>
+	body: DeepReadonly<infer_<typeof editWebhookMessageBody>>
 ): Promise<void> {
 	const response = await fetch(
 		`https://discord.com/api/v10/webhooks/${applicationId}/${interactionToken}/messages/@original`,

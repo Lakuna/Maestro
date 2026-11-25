@@ -1,6 +1,6 @@
 import type { infer as infer_ } from "zod";
 
-import type editWebhookMessage from "../../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../../discord/resources/webhook/editWebhookMessageBody.js";
 import type simpleDeck from "../../../mtg/simpleDeck.js";
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 
@@ -22,7 +22,7 @@ export default function sealedHandler(
 	deck: DeepReadonly<infer_<typeof simpleDeck>>,
 	setCode: string,
 	seeds: readonly number[]
-): infer_<typeof editWebhookMessage> {
+): infer_<typeof editWebhookMessageBody> {
 	const pool = poolFromPacks(setCode, seeds);
 
 	const { mainboard, sideboard } = deck.boards;

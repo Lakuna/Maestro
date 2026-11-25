@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
@@ -15,7 +15,7 @@ import EmbedType from "../../discord/resources/message/EmbedType.js";
  */
 export default function timerHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): infer_<typeof editWebhookMessage> {
+): infer_<typeof editWebhookMessageBody> {
 	const timeOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "time" && type === ApplicationCommandOptionType.STRING

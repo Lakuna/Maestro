@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
@@ -19,7 +19,7 @@ import stringToSeeds from "../../utility/stringToSeeds.js";
  */
 export default async function sealedpoolHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): Promise<infer_<typeof editWebhookMessage>> {
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	const setOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "set" && type === ApplicationCommandOptionType.STRING

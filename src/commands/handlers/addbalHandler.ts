@@ -4,7 +4,7 @@ import { sql } from "drizzle-orm";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
 import type guildMember from "../../discord/resources/guild/guildMember.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import db from "../../db/db.js";
@@ -23,7 +23,7 @@ import Permissions from "../../discord/topics/permissions/Permissions.js";
 export default async function addbalHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>,
 	commandMember?: DeepReadonly<infer_<typeof guildMember>>
-): Promise<infer_<typeof editWebhookMessage>> {
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	if (
 		!(
 			BigInt(commandMember?.permissions ?? 0) &

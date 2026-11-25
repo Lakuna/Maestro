@@ -2,7 +2,7 @@ import type { infer as infer_ } from "zod";
 
 import { desc } from "drizzle-orm";
 
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 
 import db from "../../db/db.js";
 import { usersTable } from "../../db/schema.js";
@@ -19,7 +19,7 @@ const PAGE_SIZE = 5; // TODO: Extend.
  * @internal
  */
 export default async function leaderboardHandler(): Promise<
-	infer_<typeof editWebhookMessage>
+	infer_<typeof editWebhookMessageBody>
 > {
 	// eslint-disable-next-line no-warning-comments, @typescript-eslint/no-inferrable-types
 	const page: number = 0; // TODO: Get from command data.
@@ -41,14 +41,14 @@ export default async function leaderboardHandler(): Promise<
 						custom_id: "previous",
 						disabled: page < 1,
 						label: "◀",
-						style: ButtonStyle.PRIMARY,
+						style: ButtonStyle.SECONDARY,
 						type: ComponentType.BUTTON
 					},
 					{
 						custom_id: "next",
 						disabled: users.length < PAGE_SIZE,
 						label: "▶",
-						style: ButtonStyle.PRIMARY,
+						style: ButtonStyle.SECONDARY,
 						type: ComponentType.BUTTON
 					}
 				],

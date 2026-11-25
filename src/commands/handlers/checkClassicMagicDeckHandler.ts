@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import informDeck from "../../mtg/informDeck.js";
@@ -17,7 +17,7 @@ import classicHandler from "./deckcheck/classicHandler.js";
  */
 export default async function checkClassicMagicDeckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): Promise<infer_<typeof editWebhookMessage>> {
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	return classicHandler(
 		await informDeck(parseDeckList(getMessageContent(commandData)))
 	);

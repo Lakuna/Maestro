@@ -102,7 +102,7 @@ app.post("/api/interactions", async (c) => {
 			// Immediately return a deferred ("loading") message.
 			return c.json(
 				{
-					type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
+					type: InteractionCallbackType.DEFERRED_UPDATE_MESSAGE
 				} satisfies infer_<typeof interactionResponse>,
 				200
 			);

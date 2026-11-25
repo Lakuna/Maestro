@@ -1,6 +1,6 @@
 import type { infer as infer_ } from "zod";
 
-import type editWebhookMessage from "../../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../../discord/resources/webhook/editWebhookMessageBody.js";
 import type simpleDeck from "../../../mtg/simpleDeck.js";
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 
@@ -16,7 +16,7 @@ import makeMarkdownList from "../../../utility/makeMarkdownList.js";
  */
 export default async function tribalHandler(
 	deck: DeepReadonly<infer_<typeof simpleDeck>>
-): Promise<infer_<typeof editWebhookMessage>> {
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	const subtypeMap = new Map<string, number>();
 	for (const creatureType of (await getCatalogCreatureTypes()).data) {
 		subtypeMap.set(creatureType, 0);

@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
@@ -20,7 +20,7 @@ import tribalHandler from "./deckcheck/tribalHandler.js";
  */
 export default async function deckcheckHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): Promise<infer_<typeof editWebhookMessage>> {
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	const subcommandOption = commandData.options?.find(
 		({ type }) => type === ApplicationCommandOptionType.SUB_COMMAND
 	);

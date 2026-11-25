@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type modalSubmitData from "../../discord/interactions/receivingAndResponding/modalSubmitData.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import sealedHandler from "../../commands/handlers/deckcheck/sealedHandler.js";
@@ -18,7 +18,7 @@ import {
 
 export default async function csdmodalHandler(
 	commandData: DeepReadonly<infer_<typeof modalSubmitData>>
-): Promise<infer_<typeof editWebhookMessage>> {
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	const setComponent = findComponent(commandData.components, CSDMODAL_SET_ID);
 	if (setComponent?.type !== ComponentType.TEXT_INPUT) {
 		throw new Error(

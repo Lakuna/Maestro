@@ -1,11 +1,12 @@
 import type { infer as infer_ } from "zod";
 
 import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
-import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
-import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
+import createFollowupMessage from "../discord/interactions/receivingAndResponding/createFollowupMessage.js";
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
+import editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import embedForError from "../utility/embedForError.js";
 
 /**
@@ -17,7 +18,7 @@ import embedForError from "../utility/embedForError.js";
 export default async function handleComponent(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
-	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
+	let body: infer_<typeof editWebhookMessageBody> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.MESSAGE_COMPONENT) {
 			throw new Error(
@@ -36,14 +37,26 @@ export default async function handleComponent(
 		body ??= { embeds: [embedForError(e)] };
 	}
 
+	if (!data.message?.id) {
+		try {
+			await createFollowupMessage(data.application_id, data.token, body);
+		} catch (e) {
+			await createFollowupMessage(data.application_id, data.token, {
+				embeds: [embedForError(e)]
+			});
+		}
+		return;
+	}
+
 	try {
-		await editOriginalInteractionResponse(
+		await editWebhookMessage(
 			data.application_id,
 			data.token,
+			data.message.id,
 			body
 		);
 	} catch (e) {
-		await editOriginalInteractionResponse(data.application_id, data.token, {
+		await editWebhookMessage(data.application_id, data.token, data.message.id, {
 			embeds: [embedForError(e)]
 		});
 	}

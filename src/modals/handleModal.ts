@@ -1,7 +1,7 @@
 import type { infer as infer_ } from "zod";
 
 import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
-import type editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
@@ -19,7 +19,7 @@ import csdmodalHandler from "./handlers/csdmodalHandler.js";
 export default async function handleModal(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
-	let body: infer_<typeof editWebhookMessage> | undefined = void 0;
+	let body: infer_<typeof editWebhookMessageBody> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.MODAL_SUBMIT) {
 			throw new Error(

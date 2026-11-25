@@ -4,7 +4,7 @@ import { uniformInt } from "pure-rand/distribution/uniformInt";
 import { xoroshiro128plus } from "pure-rand/generator/xoroshiro128plus";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type editWebhookMessage from "../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
@@ -19,7 +19,7 @@ import defaultSeed from "../../utility/defaultSeed.js";
  */
 export default function seedgenHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): infer_<typeof editWebhookMessage> {
+): infer_<typeof editWebhookMessageBody> {
 	const countOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "count" && type === ApplicationCommandOptionType.INTEGER

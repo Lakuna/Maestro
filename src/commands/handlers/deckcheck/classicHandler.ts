@@ -1,6 +1,6 @@
 import type { infer as infer_ } from "zod";
 
-import type editWebhookMessage from "../../../discord/resources/webhook/editWebhookMessage.js";
+import type editWebhookMessageBody from "../../../discord/resources/webhook/editWebhookMessageBody.js";
 import type simpleDeck from "../../../mtg/simpleDeck.js";
 import type { DeepReadonly } from "../../../utility/DeepReadonly.js";
 
@@ -127,7 +127,7 @@ const restrictedCards = [
  */
 export default function classicHandler(
 	deck: DeepReadonly<infer_<typeof simpleDeck>>
-): infer_<typeof editWebhookMessage> {
+): infer_<typeof editWebhookMessageBody> {
 	const mainboard = deck.boards["mainboard"] ?? [];
 	const sideboard = deck.boards["sideboard"] ?? [];
 
