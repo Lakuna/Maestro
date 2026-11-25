@@ -31,7 +31,7 @@ export default async function leaderboardPreviousNextHandler(
 	}
 
 	const matches = /(?<page>-?\d+)/u.exec(embed.title);
-	const page = parseInt(matches?.groups?.["page"] ?? "", 10);
+	const page = parseInt(matches?.groups?.["page"] ?? "", 10) - 1;
 	if (isNaN(page)) {
 		throw new Error("Invalid page in embed title.");
 	}
