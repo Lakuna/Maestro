@@ -17,18 +17,24 @@ import EmbedType from "../../discord/resources/message/EmbedType.js";
 export default async function leaderboardHandler(): Promise<
 	infer_<typeof editWebhookMessage>
 > {
+	const offset = 0;
+
 	const users = await db
 		.select()
 		.from(usersTable)
 		.orderBy(desc(usersTable.coins))
+		.offset(offset)
 		.limit(10);
 
 	return {
 		embeds: [
 			{
 				description: users
-					// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-					.map((user) => `- <@${user.id}> ${user.coins.toString()}`)
+					.map(
+						// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+						(user, i) =>
+							`${(1 + offset + i).toString()}. <@${user.id}> ${user.coins.toString()}`
+					)
 					.join("\n"),
 				title: "Coins Leaderboard",
 				type: EmbedType.RICH
