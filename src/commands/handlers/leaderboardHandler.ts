@@ -14,8 +14,7 @@ import ButtonStyle from "../../discord/components/ButtonStyle.js";
 import ComponentType from "../../discord/components/ComponentType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 
-// eslint-disable-next-line no-warning-comments
-const PAGE_SIZE = 5; // TODO: Extend.
+const PAGE_SIZE = 10;
 
 /**
  * Handle the `leaderboard` command.
