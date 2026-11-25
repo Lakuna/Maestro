@@ -23,7 +23,7 @@ export default async function handleModal(
 	try {
 		if (data.type !== InteractionType.MODAL_SUBMIT) {
 			throw new Error(
-				"Attempted to handle a non-application command as an application command."
+				"Attempted to handle a non-modal submit as a modal submit."
 			);
 		}
 

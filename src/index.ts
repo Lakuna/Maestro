@@ -7,6 +7,7 @@ import type interactionResponse from "./discord/interactions/receivingAndRespond
 
 import handleApplicationCommand from "./commands/handleApplicationCommand.js";
 import preHandleApplicationCommand from "./commands/preHandleApplicationCommand.js";
+import handleComponent from "./components/handleComponent.js";
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
@@ -95,8 +96,15 @@ app.post("/api/interactions", async (c) => {
 			);
 		}
 		case InteractionType.MESSAGE_COMPONENT:
-			// eslint-disable-next-line no-warning-comments
-			return c.json(void 0, 400); // TODO
+			waitUntil(c, handleComponent(data));
+
+			// Immediately return a deferred ("loading") message.
+			return c.json(
+				{
+					type: InteractionCallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE
+				} satisfies infer_<typeof interactionResponse>,
+				200
+			);
 		case InteractionType.MODAL_SUBMIT:
 			// Set up the asynchronous work to be done.
 			waitUntil(c, handleModal(data));

@@ -40,14 +40,14 @@ export default async function leaderboardHandler(): Promise<
 					{
 						custom_id: "previous",
 						disabled: page < 1,
-						emoji: { name: "arrow_backward" },
+						label: "◀️",
 						style: ButtonStyle.PRIMARY,
 						type: ComponentType.BUTTON
 					},
 					{
 						custom_id: "next",
 						disabled: users.length < PAGE_SIZE,
-						emoji: { name: "arrow_forward" },
+						label: "▶️",
 						style: ButtonStyle.PRIMARY,
 						type: ComponentType.BUTTON
 					}
