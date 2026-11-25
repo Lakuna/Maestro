@@ -4,6 +4,10 @@ import { desc } from "drizzle-orm";
 
 import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
 
+import {
+	LEADERBOARD_NEXT_ID,
+	LEADERBOARD_PREVIOUS_ID
+} from "../../components/definitions/leaderboardPreviousNextDefinition.js";
 import db from "../../db/db.js";
 import { usersTable } from "../../db/schema.js";
 import ButtonStyle from "../../discord/components/ButtonStyle.js";
@@ -15,14 +19,13 @@ const PAGE_SIZE = 5; // TODO: Extend.
 
 /**
  * Handle the `leaderboard` command.
+ * @param page - The page to display.
  * @returns The Discord interaction response.
  * @internal
  */
-export default async function leaderboardHandler(): Promise<
-	infer_<typeof editWebhookMessageBody>
-> {
-	// eslint-disable-next-line no-warning-comments, @typescript-eslint/no-inferrable-types
-	const page: number = 0; // TODO: Get from command data.
+export default async function leaderboardHandler(
+	page = 0
+): Promise<infer_<typeof editWebhookMessageBody>> {
 	const offset = page * PAGE_SIZE;
 
 	const users = await db
@@ -38,14 +41,14 @@ export default async function leaderboardHandler(): Promise<
 			{
 				components: [
 					{
-						custom_id: "previous",
+						custom_id: LEADERBOARD_PREVIOUS_ID,
 						disabled: page < 1,
 						label: "◀",
 						style: ButtonStyle.SECONDARY,
 						type: ComponentType.BUTTON
 					},
 					{
-						custom_id: "next",
+						custom_id: LEADERBOARD_NEXT_ID,
 						disabled: users.length < PAGE_SIZE,
 						label: "▶",
 						style: ButtonStyle.SECONDARY,

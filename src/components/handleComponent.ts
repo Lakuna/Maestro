@@ -1,13 +1,18 @@
 import type { infer as infer_ } from "zod";
 
 import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
-import type editWebhookMessageBody from "../discord/resources/webhook/editWebhookMessageBody.js";
+import type executeWebhookBody from "../discord/resources/webhook/executeWebhookBody.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import createFollowupMessage from "../discord/interactions/receivingAndResponding/createFollowupMessage.js";
 import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import embedForError from "../utility/embedForError.js";
+import {
+	LEADERBOARD_NEXT_ID,
+	LEADERBOARD_PREVIOUS_ID
+} from "./definitions/leaderboardPreviousNextDefinition.js";
+import leaderboardPreviousNextHandler from "./handlers/leaderboardPreviousNextHandler.js";
 
 /**
  * Handle a Discord message component interaction.
@@ -18,7 +23,7 @@ import embedForError from "../utility/embedForError.js";
 export default async function handleComponent(
 	data: DeepReadonly<infer_<typeof interaction>>
 ): Promise<void> {
-	let body: infer_<typeof editWebhookMessageBody> | undefined = void 0;
+	let body: infer_<typeof executeWebhookBody> | undefined = void 0;
 	try {
 		if (data.type !== InteractionType.MESSAGE_COMPONENT) {
 			throw new Error(
@@ -26,10 +31,13 @@ export default async function handleComponent(
 			);
 		}
 
-		// eslint-disable-next-line no-console, no-warning-comments
-		console.info(JSON.stringify(data)); // TODO: Delete.
-
 		switch (data.data.custom_id) {
+			case LEADERBOARD_NEXT_ID:
+				body ??= await leaderboardPreviousNextHandler(data, 1);
+				break;
+			case LEADERBOARD_PREVIOUS_ID:
+				body ??= await leaderboardPreviousNextHandler(data, -1);
+				break;
 			default:
 				throw new Error("Invalid component ID.");
 		}
