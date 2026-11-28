@@ -24,7 +24,7 @@
 	"description": "The Discord bot for the Magical Maestros Discord server.",
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
-		"@types/node": "^26.6.6",
+		"@types/node": "^26.6.11",
 		"drizzle-kit": "^1.0.0-rc.6",
 		"eslint": "^10.15.0",
 		"eslint-config-prettier": "^10.1.8",
