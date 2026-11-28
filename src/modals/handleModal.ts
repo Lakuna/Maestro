@@ -6,8 +6,12 @@ import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
 import embedForError from "../utility/embedForError.js";
+import { CCMDMODAL_ID } from "./definitions/ccmdmodalDefinition.js";
 import { CSDMODAL_ID } from "./definitions/csdmodalDefinition.js";
+import { CTWDMODAL_ID } from "./definitions/ctwdmodalDefinition.js";
+import ccmdmodalHandler from "./handlers/ccmdmodalHandler.js";
 import csdmodalHandler from "./handlers/csdmodalHandler.js";
+import ctwdmodalHandler from "./handlers/ctwdmodalHandler.js";
 
 /**
  * Handle a Discord modal submit interaction.
@@ -21,8 +25,14 @@ export default async function handleModal(
 	let body: infer_<typeof editWebhookMessageBody> | undefined = void 0;
 	try {
 		switch (data.data.custom_id) {
+			case CCMDMODAL_ID:
+				body ??= await ccmdmodalHandler(data.data);
+				break;
 			case CSDMODAL_ID:
 				body ??= await csdmodalHandler(data.data);
+				break;
+			case CTWDMODAL_ID:
+				body ??= await ctwdmodalHandler(data.data);
 				break;
 			default:
 				throw new Error("Invalid modal ID.");

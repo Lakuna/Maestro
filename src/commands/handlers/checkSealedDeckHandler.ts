@@ -17,12 +17,18 @@ import getMessageContent from "../../utility/getMessageContent.js";
 
 /**
  * Handle the `Check Sealed Deck` message command.
- * @param data - The Discord application command data.
+ * @param commandData - The Discord application command data.
+ * @param set - The set code to prefill the modal with.
+ * @param seeds - The seeds to prefill the modal with.
+ * @param decklist - The decklist to prefill the modal with.
  * @returns The Discord interaction response.
  * @internal
  */
 export default function checkSealedDeckHandler(
-	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
+	commandData: DeepReadonly<infer_<typeof applicationCommandData>>,
+	set?: string,
+	seeds?: string,
+	decklist?: string
 ): infer_<typeof interactionResponse> {
 	return {
 		/* eslint-disable @typescript-eslint/naming-convention */
@@ -34,7 +40,8 @@ export default function checkSealedDeckHandler(
 						max_length: 3,
 						min_length: 3,
 						style: TextInputStyle.SHORT,
-						type: ComponentType.TEXT_INPUT
+						type: ComponentType.TEXT_INPUT,
+						value: set
 					},
 					description: "The code of the set.",
 					label: "Set",
@@ -44,7 +51,8 @@ export default function checkSealedDeckHandler(
 					component: {
 						custom_id: CSDMODAL_SEEDS_ID,
 						style: TextInputStyle.SHORT,
-						type: ComponentType.TEXT_INPUT
+						type: ComponentType.TEXT_INPUT,
+						value: seeds
 					},
 					description:
 						"The comma- and/or whitespace-separated seeds to use in the PRNG.",
@@ -56,7 +64,7 @@ export default function checkSealedDeckHandler(
 						custom_id: CSDMODAL_DECKLIST_ID,
 						style: TextInputStyle.PARAGRAPH,
 						type: ComponentType.TEXT_INPUT,
-						value: getMessageContent(commandData)
+						value: decklist ?? getMessageContent(commandData)
 					},
 					description:
 						"The deck list in Moxfield, Arena, MTGO, or plain text format.",

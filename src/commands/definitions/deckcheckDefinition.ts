@@ -18,7 +18,7 @@ const deckcheckDefinition = {
 				{
 					description: "The link to the deck on Moxfield.",
 					name: "url",
-					required: true,
+					required: false,
 					type: ApplicationCommandOptionType.STRING
 				}
 			],
@@ -31,7 +31,7 @@ const deckcheckDefinition = {
 				{
 					description: "The link to the deck on Moxfield.",
 					name: "url",
-					required: true,
+					required: false,
 					type: ApplicationCommandOptionType.STRING
 				}
 			],
@@ -44,7 +44,7 @@ const deckcheckDefinition = {
 				{
 					description: "The link to the deck on Moxfield.",
 					name: "url",
-					required: true,
+					required: false,
 					type: ApplicationCommandOptionType.STRING
 				},
 				{
@@ -52,14 +52,14 @@ const deckcheckDefinition = {
 					max_length: 3,
 					min_length: 3,
 					name: "set",
-					required: true,
+					required: false,
 					type: ApplicationCommandOptionType.STRING
 				},
 				{
 					description:
 						"The comma- and/or whitespace-separated seeds to use in the PRNG.",
 					name: "seeds",
-					required: true,
+					required: false,
 					type: ApplicationCommandOptionType.STRING
 				}
 			],

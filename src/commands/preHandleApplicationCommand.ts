@@ -5,7 +5,9 @@ import type interactionResponse from "../discord/interactions/receivingAndRespon
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import checkSealedDeckDefinition from "./definitions/checkSealedDeck.js";
+import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import checkSealedDeckHandler from "./handlers/checkSealedDeckHandler.js";
+import deckcheckPreHandler from "./handlers/deckcheckPreHandler.js";
 
 /**
  * Handle special cases for an application command.
@@ -19,6 +21,8 @@ export default function preHandleApplicationCommand(
 	switch (data.data.name) {
 		case checkSealedDeckDefinition.name:
 			return checkSealedDeckHandler(data.data);
+		case deckcheckDefinition.name:
+			return deckcheckPreHandler(data.data);
 		default:
 			return void 0;
 	}
