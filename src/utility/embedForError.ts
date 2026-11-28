@@ -2,6 +2,12 @@ import type { infer as infer_ } from "zod";
 
 import type embed from "../discord/resources/message/embed.js";
 
+/**
+ * Create an embed that represents an error.
+ * @param e - The error.
+ * @returns The embed.
+ * @internal
+ */
 export default function embedForError(e: unknown): infer_<typeof embed> {
 	const rawDescription =
 		typeof e === "string" ? e

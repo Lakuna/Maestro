@@ -12,7 +12,7 @@ import interaction from "./discord/interactions/receivingAndResponding/interacti
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
 import handleModal from "./modals/handleModal.js";
-import embedForError from "./utility/embedForError.js";
+import responseForError from "./utility/responseForError.js";
 import waitUntil from "./utility/waitUntil.js";
 
 const app: Hono = new Hono();
@@ -45,24 +45,12 @@ app.post("/api/interactions", async (c) => {
 	try {
 		json ??= JSON.parse(body);
 	} catch (e) {
-		return c.json(
-			{
-				data: { embeds: [embedForError(e)] },
-				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-			} satisfies infer_<typeof interactionResponse>,
-			200
-		);
+		return c.json(responseForError(e), 200);
 	}
 
 	const result = interaction.safeParse(json);
 	if (!result.success) {
-		return c.json(
-			{
-				data: { embeds: [embedForError(result.error)] },
-				type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-			} satisfies infer_<typeof interactionResponse>,
-			200
-		);
+		return c.json(responseForError(result.error), 200);
 	}
 
 	const { data } = result;
@@ -75,13 +63,7 @@ app.post("/api/interactions", async (c) => {
 					return c.json(pre, 200);
 				}
 			} catch (e) {
-				return c.json(
-					{
-						data: { embeds: [embedForError(e)] },
-						type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
-					} satisfies infer_<typeof interactionResponse>,
-					200
-				);
+				return c.json(responseForError(e), 200);
 			}
 
 			// Set up the asynchronous work to be done.
