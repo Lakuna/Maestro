@@ -1,10 +1,9 @@
 import type { infer as infer_ } from "zod";
 
-import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
+import type { applicationCommandInteraction } from "../discord/interactions/receivingAndResponding/interaction.js";
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
-import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import checkSealedDeckDefinition from "./definitions/checkSealedDeck.js";
 import checkSealedDeckHandler from "./handlers/checkSealedDeckHandler.js";
 
@@ -15,14 +14,8 @@ import checkSealedDeckHandler from "./handlers/checkSealedDeckHandler.js";
  * @internal
  */
 export default function preHandleApplicationCommand(
-	data: DeepReadonly<infer_<typeof interaction>>
+	data: DeepReadonly<infer_<typeof applicationCommandInteraction>>
 ): infer_<typeof interactionResponse> | undefined {
-	if (data.type !== InteractionType.APPLICATION_COMMAND) {
-		throw new Error(
-			"Attempted to handle a non-application command as an application command."
-		);
-	}
-
 	switch (data.data.name) {
 		case checkSealedDeckDefinition.name:
 			return checkSealedDeckHandler(data.data);

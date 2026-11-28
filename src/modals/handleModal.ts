@@ -1,11 +1,10 @@
 import type { infer as infer_ } from "zod";
 
-import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
+import type { modalSubmitInteraction } from "../discord/interactions/receivingAndResponding/interaction.js";
 import type editWebhookMessageBody from "../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
-import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import embedForError from "../utility/embedForError.js";
 import { CSDMODAL_ID } from "./definitions/csdmodalDefinition.js";
 import csdmodalHandler from "./handlers/csdmodalHandler.js";
@@ -17,16 +16,10 @@ import csdmodalHandler from "./handlers/csdmodalHandler.js";
  * @internal
  */
 export default async function handleModal(
-	data: DeepReadonly<infer_<typeof interaction>>
+	data: DeepReadonly<infer_<typeof modalSubmitInteraction>>
 ): Promise<void> {
 	let body: infer_<typeof editWebhookMessageBody> | undefined = void 0;
 	try {
-		if (data.type !== InteractionType.MODAL_SUBMIT) {
-			throw new Error(
-				"Attempted to handle a non-modal submit as a modal submit."
-			);
-		}
-
 		switch (data.data.custom_id) {
 			case CSDMODAL_ID:
 				body ??= await csdmodalHandler(data.data);

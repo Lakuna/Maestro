@@ -1,6 +1,6 @@
 import type { infer as infer_ } from "zod";
 
-import type interaction from "../../discord/interactions/receivingAndResponding/interaction.js";
+import type { messageComponentInteraction } from "../../discord/interactions/receivingAndResponding/interaction.js";
 import type executeWebhookBody from "../../discord/resources/webhook/executeWebhookBody.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
@@ -14,7 +14,7 @@ import leaderboardHandler from "../../commands/handlers/leaderboardHandler.js";
  * @internal
  */
 export default async function leaderboardPreviousNextHandler(
-	commandData: DeepReadonly<infer_<typeof interaction>>,
+	commandData: DeepReadonly<infer_<typeof messageComponentInteraction>>,
 	offset: number
 ): Promise<infer_<typeof executeWebhookBody>> {
 	if (!commandData.message) {

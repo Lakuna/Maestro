@@ -1,11 +1,10 @@
 import type { infer as infer_ } from "zod";
 
-import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
+import type { applicationCommandInteraction } from "../discord/interactions/receivingAndResponding/interaction.js";
 import type editWebhookMessageBody from "../discord/resources/webhook/editWebhookMessageBody.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import editOriginalInteractionResponse from "../discord/interactions/receivingAndResponding/editOriginalInteractionResponse.js";
-import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import embedForError from "../utility/embedForError.js";
 import addbalDefinition from "./definitions/addbalDefinition.js";
 import balanceDefinition from "./definitions/balanceDefinition.js";
@@ -41,16 +40,10 @@ import timerHandler from "./handlers/timerHandler.js";
  * @internal
  */
 export default async function handleApplicationCommand(
-	data: DeepReadonly<infer_<typeof interaction>>
+	data: DeepReadonly<infer_<typeof applicationCommandInteraction>>
 ): Promise<void> {
 	let body: infer_<typeof editWebhookMessageBody> | undefined = void 0;
 	try {
-		if (data.type !== InteractionType.APPLICATION_COMMAND) {
-			throw new Error(
-				"Attempted to handle a non-application command as an application command."
-			);
-		}
-
 		switch (data.data.name) {
 			case addbalDefinition.name:
 				body ??= await addbalHandler(data.data, data.member);

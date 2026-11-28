@@ -1,11 +1,10 @@
 import type { infer as infer_ } from "zod";
 
-import type interaction from "../discord/interactions/receivingAndResponding/interaction.js";
+import type { messageComponentInteraction } from "../discord/interactions/receivingAndResponding/interaction.js";
 import type executeWebhookBody from "../discord/resources/webhook/executeWebhookBody.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
 import createFollowupMessage from "../discord/interactions/receivingAndResponding/createFollowupMessage.js";
-import InteractionType from "../discord/interactions/receivingAndResponding/InteractionType.js";
 import editWebhookMessage from "../discord/resources/webhook/editWebhookMessage.js";
 import embedForError from "../utility/embedForError.js";
 import {
@@ -21,16 +20,10 @@ import leaderboardPreviousNextHandler from "./handlers/leaderboardPreviousNextHa
  * @internal
  */
 export default async function handleComponent(
-	data: DeepReadonly<infer_<typeof interaction>>
+	data: DeepReadonly<infer_<typeof messageComponentInteraction>>
 ): Promise<void> {
 	let body: infer_<typeof executeWebhookBody> | undefined = void 0;
 	try {
-		if (data.type !== InteractionType.MESSAGE_COMPONENT) {
-			throw new Error(
-				"Attempted to handle a non-message component as a message component."
-			);
-		}
-
 		switch (data.data.custom_id) {
 			case LEADERBOARD_NEXT_ID:
 				body ??= await leaderboardPreviousNextHandler(data, 1);
