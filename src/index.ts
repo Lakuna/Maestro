@@ -8,6 +8,7 @@ import type interactionResponse from "./discord/interactions/receivingAndRespond
 import handleApplicationCommand from "./commands/handleApplicationCommand.js";
 import preHandleApplicationCommand from "./commands/preHandleApplicationCommand.js";
 import handleComponent from "./components/handleComponent.js";
+import preHandleComponent from "./components/preHandleComponent.js";
 import interaction from "./discord/interactions/receivingAndResponding/interaction.js";
 import InteractionCallbackType from "./discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import InteractionType from "./discord/interactions/receivingAndResponding/InteractionType.js";
@@ -55,7 +56,7 @@ app.post("/api/interactions", async (c) => {
 
 	const { data } = result;
 	switch (data.type) {
-		case InteractionType.APPLICATION_COMMAND: {
+		case InteractionType.APPLICATION_COMMAND:
 			// Handle special cases.
 			try {
 				const pre = preHandleApplicationCommand(data);
@@ -76,8 +77,17 @@ app.post("/api/interactions", async (c) => {
 				} satisfies infer_<typeof interactionResponse>,
 				200
 			);
-		}
 		case InteractionType.MESSAGE_COMPONENT:
+			// Handle special cases.
+			try {
+				const pre = preHandleComponent(data);
+				if (pre) {
+					return c.json(pre, 200);
+				}
+			} catch (e) {
+				return c.json(responseForError(e), 200);
+			}
+
 			// Set up the asynchronous work to be done.
 			waitUntil(c, handleComponent(data));
 

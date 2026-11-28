@@ -4,7 +4,6 @@ import type { applicationCommandInteraction } from "../discord/interactions/rece
 import type interactionResponse from "../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type { DeepReadonly } from "../utility/DeepReadonly.js";
 
-import responseForError from "../utility/responseForError.js";
 import checkSealedDeckDefinition from "./definitions/checkSealedDeck.js";
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import randcmDefinition from "./definitions/randcmDefinition.js";
@@ -25,22 +24,18 @@ import timerHandler from "./handlers/timerHandler.js";
 export default function preHandleApplicationCommand(
 	data: DeepReadonly<infer_<typeof applicationCommandInteraction>>
 ): infer_<typeof interactionResponse> | undefined {
-	try {
-		switch (data.data.name) {
-			case checkSealedDeckDefinition.name:
-				return checkSealedDeckHandler(data.data);
-			case deckcheckDefinition.name:
-				return deckcheckPreHandler(data.data);
-			case randcmDefinition.name:
-				return randcmHandler(data.data);
-			case seedgenDefinition.name:
-				return seedgenHandler(data.data);
-			case timerDefinition.name:
-				return timerHandler(data.data);
-			default:
-				return void 0;
-		}
-	} catch (e) {
-		return responseForError(e);
+	switch (data.data.name) {
+		case checkSealedDeckDefinition.name:
+			return checkSealedDeckHandler(data.data);
+		case deckcheckDefinition.name:
+			return deckcheckPreHandler(data.data);
+		case randcmDefinition.name:
+			return randcmHandler(data.data);
+		case seedgenDefinition.name:
+			return seedgenHandler(data.data);
+		case timerDefinition.name:
+			return timerHandler(data.data);
+		default:
+			return void 0;
 	}
 }
