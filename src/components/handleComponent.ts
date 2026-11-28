@@ -10,7 +10,7 @@ import embedForError from "../utility/embedForError.js";
 import {
 	LEADERBOARD_NEXT_ID,
 	LEADERBOARD_PREVIOUS_ID
-} from "./definitions/leaderboardPreviousNextDefinition.js";
+} from "./definitions/leaderboard.js";
 import leaderboardPreviousNextHandler from "./handlers/leaderboardPreviousNextHandler.js";
 
 /**

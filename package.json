@@ -12,11 +12,12 @@
 		"url": "https://github.com/Lakuna/Maestro/issues"
 	},
 	"dependencies": {
-		"@neondatabase/serverless": "^1.2.1",
-		"@vercel/functions": "^3.11.3",
+		"@lakuna/umath": "^5.0.0",
+		"@neondatabase/serverless": "^1.2.2",
+		"@vercel/functions": "^3.12.0",
 		"dotenv": "^18.0.10",
 		"drizzle-orm": "^1.0.0-rc.6",
-		"hono": "^4.13.21",
+		"hono": "^4.13.23",
 		"pure-rand": "^8.4.2",
 		"tweetnacl": "^1.0.3",
 		"zod": "^4.6.7"
@@ -26,14 +27,14 @@
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^26.6.11",
 		"drizzle-kit": "^1.0.0-rc.6",
-		"eslint": "^10.15.0",
-		"eslint-config-prettier": "^10.1.8",
+		"eslint": "^10.16.0",
+		"eslint-config-prettier": "^10.1.9",
 		"eslint-plugin-perfectionist": "^5.14.0",
 		"eslint-plugin-prettier": "^5.5.7",
 		"eslint-plugin-tsdoc": "^0.5.4",
 		"prettier": "^3.10.1",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.73.0"
+		"typescript-eslint": "^8.74.0"
 	},
 	"funding": {
 		"type": "individual",

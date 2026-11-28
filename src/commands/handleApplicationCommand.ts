@@ -11,6 +11,7 @@ import balanceDefinition from "./definitions/balanceDefinition.js";
 import checkClassicMagicDeckDefinition from "./definitions/checkClassicMagicDeckDefinition.js";
 import checkTribalWarsDeckDefinition from "./definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
+import gambaDefinition from "./definitions/gambaDefinition.js";
 import leaderboardDefinition from "./definitions/leaderboardDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
 import payDefinition from "./definitions/payDefinition.js";
@@ -21,6 +22,7 @@ import balanceHandler from "./handlers/balanceHandler.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
 import checkTribalWarsDeckHandler from "./handlers/checkTribalWarsDeckHandler.js";
 import deckcheckHandler from "./handlers/deckcheckHandler.js";
+import gambaHandler from "./handlers/gambaHandler.js";
 import leaderboardHandler from "./handlers/leaderboardHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import payHandler from "./handlers/payHandler.js";
@@ -56,6 +58,9 @@ export default async function handleApplicationCommand(
 				break;
 			case deckcheckDefinition.name:
 				body ??= await deckcheckHandler(data.data);
+				break;
+			case gambaDefinition.name:
+				body ??= await gambaHandler(data.data, data.member);
 				break;
 			case leaderboardDefinition.name:
 				body ??= await leaderboardHandler();

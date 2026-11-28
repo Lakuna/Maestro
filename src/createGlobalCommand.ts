@@ -6,6 +6,7 @@ import checkClassicMagicDeckDefinition from "./commands/definitions/checkClassic
 import checkSealedDeckDefinition from "./commands/definitions/checkSealedDeck.js";
 import checkTribalWarsDeckDefinition from "./commands/definitions/checkTribalWarsDeckDefinition.js";
 import deckcheckDefinition from "./commands/definitions/deckcheckDefinition.js";
+import gambaDefinition from "./commands/definitions/gambaDefinition.js";
 import leaderboardDefinition from "./commands/definitions/leaderboardDefinition.js";
 import openpackDefinition from "./commands/definitions/openpackDefinition.js";
 import payDefinition from "./commands/definitions/payDefinition.js";
@@ -29,6 +30,7 @@ const definitions = [
 	checkSealedDeckDefinition,
 	checkTribalWarsDeckDefinition,
 	deckcheckDefinition,
+	gambaDefinition,
 	openpackDefinition,
 	leaderboardDefinition,
 	payDefinition,

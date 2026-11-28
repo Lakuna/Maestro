@@ -3,6 +3,7 @@ import {
 	foreignKey,
 	integer,
 	pgTable,
+	type PgTableExtraConfigValue,
 	primaryKey,
 	varchar
 } from "drizzle-orm/pg-core";
@@ -20,11 +21,24 @@ export const usersTable = pgTable("users", {
  * The table of gambling instances.
  * @internal
  */
-export const gambaTable = pgTable("gambas", {
-	id: integer().generatedAlwaysAsIdentity().primaryKey(),
-	isCalled: boolean().default(false).notNull(),
-	isClosed: boolean().default(false).notNull()
-});
+export const gambaTable = pgTable(
+	"gambas",
+	{
+		id: integer().generatedAlwaysAsIdentity().primaryKey(),
+		isCalled: boolean().default(false).notNull(),
+		isClosed: boolean().default(false).notNull(),
+		winningOptionValue: varchar({ length: 100 })
+	},
+	// Type assertion necessary here due to the use of `optionTable` before its definition.
+	// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+	(self): PgTableExtraConfigValue[] => [
+		foreignKey({
+			columns: [self.id, self.winningOptionValue],
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
+			foreignColumns: [optionTable.gambaId, optionTable.value]
+		})
+	]
+);
 
 /**
  * The table of gambling instance options.

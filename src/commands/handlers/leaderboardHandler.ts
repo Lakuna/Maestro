@@ -7,7 +7,7 @@ import type editWebhookMessageBody from "../../discord/resources/webhook/editWeb
 import {
 	LEADERBOARD_NEXT_ID,
 	LEADERBOARD_PREVIOUS_ID
-} from "../../components/definitions/leaderboardPreviousNextDefinition.js";
+} from "../../components/definitions/leaderboard.js";
 import db from "../../db/db.js";
 import { usersTable } from "../../db/schema.js";
 import ButtonStyle from "../../discord/components/ButtonStyle.js";
