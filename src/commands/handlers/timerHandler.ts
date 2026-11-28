@@ -1,10 +1,11 @@
 import type { infer as infer_ } from "zod";
 
 import type applicationCommandData from "../../discord/interactions/receivingAndResponding/applicationCommandData.js";
-import type editWebhookMessageBody from "../../discord/resources/webhook/editWebhookMessageBody.js";
+import type interactionResponse from "../../discord/interactions/receivingAndResponding/interactionResponse.js";
 import type { DeepReadonly } from "../../utility/DeepReadonly.js";
 
 import ApplicationCommandOptionType from "../../discord/interactions/applicationCommands/ApplicationCommandOptionType.js";
+import InteractionCallbackType from "../../discord/interactions/receivingAndResponding/InteractionCallbackType.js";
 import EmbedType from "../../discord/resources/message/EmbedType.js";
 
 /**
@@ -15,7 +16,7 @@ import EmbedType from "../../discord/resources/message/EmbedType.js";
  */
 export default function timerHandler(
 	commandData: DeepReadonly<infer_<typeof applicationCommandData>>
-): infer_<typeof editWebhookMessageBody> {
+): infer_<typeof interactionResponse> {
 	const timeOption = commandData.options?.find(
 		({ name, type }) =>
 			name === "time" && type === ApplicationCommandOptionType.STRING
@@ -41,24 +42,27 @@ export default function timerHandler(
 	url.searchParams.set("time", time.toFixed());
 
 	return {
-		embeds: [
-			{
-				fields: [
-					{
-						inline: true,
-						name: "Discord Timestamp",
-						value: `<t:${(time / 1000).toFixed()}:R>`
-					},
-					{
-						inline: true,
-						name: "Unix Timestamp",
-						value: `\`${time.toFixed()}\``
-					}
-				],
-				title: `Countdown Timer to <t:${(time / 1000).toFixed()}:f>`,
-				type: EmbedType.RICH,
-				url: url.href
-			}
-		]
+		data: {
+			embeds: [
+				{
+					fields: [
+						{
+							inline: true,
+							name: "Discord Timestamp",
+							value: `<t:${(time / 1000).toFixed()}:R>`
+						},
+						{
+							inline: true,
+							name: "Unix Timestamp",
+							value: `\`${time.toFixed()}\``
+						}
+					],
+					title: `Countdown Timer to <t:${(time / 1000).toFixed()}:f>`,
+					type: EmbedType.RICH,
+					url: url.href
+				}
+			]
+		},
+		type: InteractionCallbackType.CHANNEL_MESSAGE_WITH_SOURCE
 	};
 }

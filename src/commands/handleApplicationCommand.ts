@@ -14,11 +14,8 @@ import deckcheckDefinition from "./definitions/deckcheckDefinition.js";
 import leaderboardDefinition from "./definitions/leaderboardDefinition.js";
 import openpackDefinition from "./definitions/openpackDefinition.js";
 import payDefinition from "./definitions/payDefinition.js";
-import randcmDefinition from "./definitions/randcmDefinition.js";
 import sealedpoolDefinition from "./definitions/sealedpool.js";
-import seedgenDefinition from "./definitions/seedgen.js";
 import setbalDefinition from "./definitions/setbalDefinition.js";
-import timerDefinition from "./definitions/timerDefinition.js";
 import addbalHandler from "./handlers/addbalHandler.js";
 import balanceHandler from "./handlers/balanceHandler.js";
 import checkClassicMagicDeckHandler from "./handlers/checkClassicMagicDeckHandler.js";
@@ -27,11 +24,8 @@ import deckcheckHandler from "./handlers/deckcheckHandler.js";
 import leaderboardHandler from "./handlers/leaderboardHandler.js";
 import openpackHandler from "./handlers/openpackHandler.js";
 import payHandler from "./handlers/payHandler.js";
-import randcmHandler from "./handlers/randcmHandler.js";
 import sealedpoolHandler from "./handlers/sealedpoolHandler.js";
-import seedgenHandler from "./handlers/seedgenHandler.js";
 import setbalHandler from "./handlers/setbalHandler.js";
-import timerHandler from "./handlers/timerHandler.js";
 
 /**
  * Respond to an application command.
@@ -72,20 +66,11 @@ export default async function handleApplicationCommand(
 			case payDefinition.name:
 				body ??= await payHandler(data.data, data.member?.user ?? data.user);
 				break;
-			case randcmDefinition.name:
-				body ??= randcmHandler(data.data);
-				break;
 			case sealedpoolDefinition.name:
 				body ??= await sealedpoolHandler(data.data);
 				break;
-			case seedgenDefinition.name:
-				body ??= seedgenHandler(data.data);
-				break;
 			case setbalDefinition.name:
 				body ??= await setbalHandler(data.data, data.member);
-				break;
-			case timerDefinition.name:
-				body ??= timerHandler(data.data);
 				break;
 			default:
 				throw new Error("Invalid command name.");
