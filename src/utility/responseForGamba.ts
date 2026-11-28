@@ -98,7 +98,7 @@ export default function responseForGamba(
 					const distributablePool = netPool - optionPool;
 					const rawOdds = new BigNumber(
 						distributablePool,
-						Math.min(optionPool, 1)
+						Math.max(optionPool, 1)
 					).limitDenominator(9);
 					const odds =
 						rawOdds.toNumber() < MIN_ODDS.toNumber() ? MIN_ODDS : rawOdds;

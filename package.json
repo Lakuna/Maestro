@@ -12,7 +12,7 @@
 		"url": "https://github.com/Lakuna/Maestro/issues"
 	},
 	"dependencies": {
-		"@lakuna/umath": "^5.0.0",
+		"@lakuna/umath": "^5.0.1",
 		"@neondatabase/serverless": "^1.2.2",
 		"@vercel/functions": "^3.12.0",
 		"dotenv": "^18.0.10",
